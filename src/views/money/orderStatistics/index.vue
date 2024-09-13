@@ -1,8 +1,15 @@
 <template>
     <div class="app-container">
        <el-form :model="queryParams" ref="queryRef" :inline="true">
-          <el-form-item label="项目名称" prop="id">
-            <el-select v-model="queryParams.id" placeholder="项目名称" filterable clearable style="width: 200px">
+        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectEnterpriseName">
+            <el-input
+               v-model="queryParams.projectEnterpriseName"
+               placeholder="请输入客户名称"
+               clearable
+            />
+          </el-form-item>
+          <el-form-item label="需求名称" label-width="80px" prop="id">
+            <el-select v-model="queryParams.id" placeholder="需求名称" filterable clearable style="width: 200px">
                 <el-option
                    v-for="item in artsProjectList"
                    :key="item.projectId"
@@ -11,24 +18,25 @@
                 />
              </el-select>
           </el-form-item>
-          <el-form-item label="项目类别" prop="projectCategoryOneName">
+          <el-form-item label="项目名称" label-width="80px" style="width: 280px" prop="projectCategoryOneName">
             <el-input
                v-model="queryParams.projectCategoryOneName"
-               placeholder="请输入项目类别"
+               placeholder="请输入项目名称"
                clearable
-               style="width: 240px"
+              style="width: 200px"
             />
           </el-form-item>
-          <el-form-item label="部门" prop="deptId">
+          <el-form-item label="部门" label-width="80px" style="width: 280px" prop="deptId">
             <el-cascader
                 v-model="queryParams.deptId"
                 :options="departmentList"
                 :props="props"
+                filterable
                 :show-all-levels="false"
                 @change="handleChangeDept"
                 />
           </el-form-item>
-          <el-form-item label="是否回款" prop="isCollection">
+          <el-form-item label="是否回款" label-width="80px" prop="isCollection">
             <el-select v-model="queryParams.isCollection" placeholder="是否回款" filterable clearable style="width: 200px">
                 <el-option
                    v-for="item in options"
@@ -38,7 +46,44 @@
                 />
              </el-select>
           </el-form-item>
-          <el-form-item label="日期" prop="month">
+          <el-form-item label="项目代码" label-width="80px" style="width: 280px" prop="projectCode">
+            <el-input
+               v-model="queryParams.projectCode"
+               placeholder="请输入项目代码"
+               clearable
+            />
+          </el-form-item>
+          <el-form-item label="项目状态" label-width="80px" prop="projectState">
+                 <el-select
+                    v-model="queryParams.projectState"
+                    placeholder="项目状态"
+                    clearable
+                    style="width: 200px"
+                 >
+                    <el-option
+                       v-for="dict in options1"
+                       :key="dict.value"
+                       :label="dict.label"
+                       :value="dict.value"
+                    />
+                 </el-select>
+              </el-form-item>
+          <el-form-item label="制作类型" label-width="80px" prop="type">
+              <el-select
+                v-model="queryParams.type"
+                placeholder="制作类型"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                    v-for="dict in options2"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                />
+              </el-select>
+          </el-form-item>
+          <el-form-item label="日期" label-width="80px" prop="month">
             <!-- <el-date-picker
               v-model="dateRange"
               value-format="YYYY-MM-DD"
@@ -69,17 +114,26 @@
        <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
           <el-table-column label="序号" width="50" align="center" type="index" />
-          <el-table-column label="项目企业" align="center" min-width="110" prop="projectEnterpriseName" />
+          <el-table-column label="客户名称" align="center" min-width="110" prop="projectEnterpriseName" />
           <el-table-column label="项目代码" align="center" min-width="110" prop="projectCode" />
-          <el-table-column label="项目名称" align="center" min-width="110" prop="projectName" />
-          <el-table-column label="项目类型" align="center" min-width="110" prop="type">
+          <el-table-column label="项目状态" align="center" prop="projectState">
+             <template #default="scope">
+                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-if="scope.row.projectState == '1'">进度正常</span>
+                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '2'">存在风险</span>
+                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '3'">进度失控</span>
+                <span v-else-if="scope.row.projectState == '4'">已完成</span>
+                <!-- <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else>未完成</span> -->
+             </template>
+          </el-table-column>
+          <el-table-column label="需求名称" align="center" min-width="110" prop="projectName" />
+          <el-table-column label="制作类型" align="center" min-width="110" prop="type">
             <template #default="scope">
               <span v-if="scope.row.type == 1">美术</span>
               <span v-if="scope.row.type == 2">开发</span>
               <span v-else></span>
             </template>
           </el-table-column>
-          <el-table-column label="项目类别" align="center" min-width="110" prop="projectCategoryOneName" />
+          <el-table-column label="项目名称" align="center" min-width="110" prop="projectCategoryOneName" />
           <!-- <el-table-column label="图片" align="center" prop="projectThumbnail" /> -->
           <el-table-column label="商务人天" align="center" prop="commerceDay">
             <template #default="scope">
@@ -130,15 +184,6 @@
              <template #default="scope">
                 <span v-if="scope.row.artsProjectFinance && scope.row.artsProjectFinance.isContractor == '1'">是</span>
                 <span v-else>否</span>
-             </template>
-          </el-table-column>
-          <el-table-column label="状态" align="center" prop="projectState">
-             <template #default="scope">
-                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-if="scope.row.projectState == '1'">正常</span>
-                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '2'">紧张</span>
-                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '3'">延期</span>
-                <span v-else-if="scope.row.projectState == '4'">已完成</span>
-                <!-- <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else>未完成</span> -->
              </template>
           </el-table-column>
           <el-table-column label="备注" align="center" prop="remark" />
@@ -625,6 +670,28 @@
         value: 2,
         label: '未回款'
       }]);
+const options1 = ref([{
+    value: 1,
+    label: '正常',
+    disabled: true,
+  }, {
+    value: 2,
+    label: '紧张'
+  }, {
+    value: 3,
+    label: '延期'
+  }, {
+    value: 4,
+    label: '已完成'
+  }]);
+
+const options2 = ref([{
+    value: 1,
+    label: '开发',
+  }, {
+    value: 2,
+    label: '美术'
+  }]);
 
 const shortcuts = [
   {

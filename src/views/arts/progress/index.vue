@@ -1,10 +1,24 @@
 <template>
   <div class="app-container">
      <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch">
-        <el-form-item label="项目名称" prop="projectId">
+        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectEnterpriseName">
+          <el-input
+              v-model="queryParams.projectEnterpriseName"
+              placeholder="请输入客户名称"
+              clearable
+          />
+        </el-form-item>
+        <el-form-item label="项目代码" label-width="80px" style="width: 280px" prop="projectCode">
+          <el-input
+              v-model="queryParams.projectCode"
+              placeholder="请输入项目代码"
+              clearable
+          />
+        </el-form-item>
+        <el-form-item label="需求名称" label-width="80px" style="width: 280px" prop="projectId">
           <el-select
             v-model="queryParams.projectId"
-            placeholder="项目名称"
+            placeholder="需求名称"
             filterable
             clearable
             style="width: 240px"
@@ -17,7 +31,17 @@
           />
           </el-select>
         </el-form-item>
-        <el-form-item label="制作人" prop="producerId">
+        <el-form-item label="部门" label-width="80px" style="width: 280px" prop="deptId">
+          <el-cascader
+              v-model="queryParams.deptId"
+              :options="departmentList"
+              :props="props"
+              filterable
+              :show-all-levels="false"
+              @change="handleChangeDept"
+              />
+        </el-form-item>
+        <el-form-item label="制作人" label-width="80px" style="width: 280px" prop="producerId">
           <el-select
             v-model="queryParams.producerId"
             placeholder="制作人"
@@ -68,11 +92,16 @@
 
      <el-table v-loading="loading" :data="rateList" @selection-change="handleSelectionChange">
         <el-table-column type="index" label="序号" width="50" align="center" fixed="left" />
-        <el-table-column label="项目企业" align="center" min-width="100" prop="projectEnterpriseName" fixed="left" v-if="columns[0].visible" />
+        <el-table-column label="客户名称" align="center" min-width="100" prop="projectEnterpriseName" fixed="left" v-if="columns[0].visible" />
         <el-table-column label="项目代码" align="center" min-width="100" prop="projectCode" fixed="left" v-if="columns[1].visible" />
-        <el-table-column label="项目名称" align="center" min-width="100" prop="projectName" fixed="left" v-if="columns[2].visible" >
+        <el-table-column label="需求名称" align="center" min-width="100" prop="projectName" fixed="left" v-if="columns[2].visible" >
           <template #default="scope">
             <span @click="handleProjectOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="参考原画" align="center" min-width="100" prop="fileUrl" fixed="left" v-if="columns[2].visible" >
+          <template #default="scope">
+            <el-image style="width: 100px; height: 100px" :src="defaultUrl" fit="fit" />
           </template>
         </el-table-column>
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
@@ -246,16 +275,19 @@
 
 <script setup name="Progress">
 import { listRate,addRate,getRate,userList,listProject,getProject } from "@/api/project/progress";
+import { deptList } from "@/api/money/orderStatistics";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
 import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled} from '@element-plus/icons-vue'
 const { proxy } = getCurrentInstance();
 const { project_stage } = proxy.useDict("project_stage");
 const router = useRouter();
+import defaultUrl from '../../../assets/logo/image.png';
 
 const rateList = ref([]);
 const userOptions = ref([]);//成员
 const projectOptions = ref([]);//项目列表
+const departmentList = ref([]);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -279,6 +311,11 @@ const columns = ref([
  { key: 8, label: `计划用时(天)`, visible: true },
  { key: 9, label: `实际用时(天)`, visible: true },
 ]);
+const props = {
+  value: 'id',
+  // expandTrigger: 'hover',
+  checkStrictly : true
+}
 /*** 上传文件*/
 const upload = reactive({
  // 是否显示弹出层（用户导入）
@@ -339,6 +376,19 @@ watch(
 );
 
 const { queryParams, form, rules } = toRefs(data);
+
+ /** 查询部门列表 */
+ function getDeptTreeList() {
+  deptList().then(response => {
+    departmentList.value = response.data;
+ });
+};
+
+//部门下拉选择
+const handleChangeDept = (value) => {
+//   console.log(value)
+  queryParams.value.deptId = value.slice(-1)[0]
+}
 
 /** 查询进度列表 */
 function getList() {
@@ -525,6 +575,7 @@ function submitForm() {
 getTime();
 getList();
 getuserList();
+getDeptTreeList();
 getProjectList();
 </script>
 <style lang="scss" scoped>
