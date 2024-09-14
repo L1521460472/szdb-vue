@@ -4,16 +4,16 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-24 16:28:59
+ * @LastEditTime: 2024-09-14 11:05:28
 -->
 <template>
   <div class="app-container">
     <el-button class="addTab" @click="handleImport">导入数据</el-button>
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClickTabs">
       <el-tab-pane label="团队支出" name="first">
-        <el-table v-loading="loading" :data="tableData">
+        <el-table v-loading="loading" :data="tableData" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
           <el-table-column label="团队名称" align="center" prop="expenditureName" />
           <el-table-column label="总支出" align="center" prop="expenditureCost" />
@@ -35,9 +35,9 @@
         />
       </el-tab-pane>
       <el-tab-pane label="基础费用" name="second">
-        <el-table v-loading="loading" :data="tableDataList">
+        <el-table v-loading="loading" :data="tableDataList" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
           <el-table-column label="费用名称" align="center" prop="expenditureName" />
           <el-table-column label="总支出" align="center" prop="expenditureCost" />

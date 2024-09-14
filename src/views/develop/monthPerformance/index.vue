@@ -71,7 +71,7 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange">
+    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column type="expand">
         <template #default="props">
@@ -99,7 +99,7 @@
           </div>
         </template>
       </el-table-column>
-      <!-- <el-table-column label="序号" width="50" align="center" type="index" /> -->
+      <!-- <el-table-column label="序号" width="55" align="center" type="index" /> -->
       <el-table-column label="制作人" align="center" width="80" prop="userName" />
       <el-table-column label="名称" align="center" prop="assignmentName" />
       <el-table-column label="状态" align="center" prop="status">

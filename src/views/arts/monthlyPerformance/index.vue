@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2023-12-16 13:46:06
+ * @LastEditTime: 2024-09-14 10:55:19
 -->
 <template>
   <div class="app-container">
@@ -65,9 +65,9 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData">
+    <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="序号" width="50" align="center" type="index" fixed="left" />
+      <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
       <el-table-column label="制作人" align="center" prop="producerName" fixed="left">
         <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>

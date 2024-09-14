@@ -42,7 +42,7 @@
             </el-col>
           </el-row>
           <el-table v-loading="loading" :data="tableData">
-            <el-table-column label="序号" width="50" align="center" type="index" />
+            <el-table-column label="序号" width="55" align="center" type="index" />
             <el-table-column label="成员图像" align="center" prop="memberPicture">
               <template #default="scope">
                 <el-image style="width: 100px; height: 50px" :src="scope.row.memberPicture" :preview-src-list="[scope.row.memberPicture]" preview-teleported/>
@@ -86,7 +86,7 @@
         </el-row>
         <el-table v-loading="loading" :data="tableDataList">
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="公司图标" align="center" prop="companyLogo">
             <template #default="scope">
               <el-image style="width: 100px; height: 50px" :src="scope.row.companyLogo" :preview-src-list="[scope.row.companyLogo]" preview-teleported/>

@@ -4,15 +4,15 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-25 10:44:46
+ * @LastEditTime: 2024-09-14 10:29:24
 -->
 <template>
   <div class="app-container">
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClickTabs">
       <el-tab-pane label="我的待办" name="first">
-        <el-table v-loading="loading" :data="tableData">
+        <el-table v-loading="loading" :data="tableData" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="类型" align="center" prop="type">
           <template #default="scope">
               <span v-if="scope.row.type == 1">简历</span>
@@ -52,9 +52,9 @@
         />
       </el-tab-pane>
       <el-tab-pane label="我发起的" name="second">
-        <el-table v-loading="loading" :data="tableDataList">
+        <el-table v-loading="loading" :data="tableDataList" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="类型" align="center" prop="type">
           <template #default="scope">
               <span v-if="scope.row.type == 1">简历</span>

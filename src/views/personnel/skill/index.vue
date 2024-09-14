@@ -75,9 +75,10 @@
       v-loading="loading"
       :data="postList"
       @selection-change="handleSelectionChange"
+      border
     >
       <el-table-column type="selection" width="50" align="center" />
-      <el-table-column label="序号" width="50" align="center" type="index" />
+      <el-table-column label="序号" width="55" align="center" type="index" />
       <el-table-column label="姓名" min-width="100" align="center" prop="applicantName" />
       <el-table-column
         label="应聘岗位"

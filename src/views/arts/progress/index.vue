@@ -90,8 +90,8 @@
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
      </el-row>
 
-     <el-table v-loading="loading" :data="rateList" @selection-change="handleSelectionChange">
-        <el-table-column type="index" label="序号" width="50" align="center" fixed="left" />
+     <el-table v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
+        <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
         <el-table-column label="客户名称" align="center" min-width="100" prop="projectEnterpriseName" fixed="left" v-if="columns[0].visible" />
         <el-table-column label="项目代码" align="center" min-width="100" prop="projectCode" fixed="left" v-if="columns[1].visible" />
         <el-table-column label="需求名称" align="center" min-width="100" prop="projectName" fixed="left" v-if="columns[2].visible" >

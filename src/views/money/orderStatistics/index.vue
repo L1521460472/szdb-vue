@@ -111,9 +111,9 @@
           </el-form-item>
        </el-form>
  
-       <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange">
+       <el-table v-loading="loading" :data="projectList" @selection-change="handleSelectionChange" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="客户名称" align="center" min-width="110" prop="projectEnterpriseName" />
           <el-table-column label="项目代码" align="center" min-width="110" prop="projectCode" />
           <el-table-column label="项目状态" align="center" prop="projectState">

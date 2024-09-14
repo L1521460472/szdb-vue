@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-08-05 19:50:25
+ * @LastEditTime: 2024-09-14 10:50:21
 -->
 <template>
   <div class="app-container">
@@ -96,7 +96,7 @@
       </el-tab-pane>
       <!-- -----------------------------------------------------------------------------------项目分工-------------------------------------------------------------------- -->
       <el-tab-pane label="项目分工" name="second">
-        <el-table v-loading="loading" :data="projectTableData" :span-method="handleSpanMethod">
+        <el-table v-loading="loading" :data="projectTableData" :span-method="handleSpanMethod" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
           <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="项目企业" align="center" prop="projectEnterpriseName">
@@ -123,9 +123,9 @@
       </el-tab-pane>
       <!-- -----------------------------------------------------------------------------------人员排期-------------------------------------------------------------------- -->
       <el-tab-pane label="人员排期" name="third">
-        <el-table v-loading="loading" :data="personnelTableData">
+        <el-table v-loading="loading" :data="personnelTableData" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="制作人员" align="center" min-width="150" prop="producerName" show-overflow-tooltip>
           <!-- <template #default="scope">
               <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>

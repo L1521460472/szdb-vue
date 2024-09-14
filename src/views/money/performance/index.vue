@@ -56,9 +56,9 @@
           </el-form-item>
        </el-form>
  
-       <el-table v-loading="loading" :data="achievementsList" show-summary :summary-method="getSummaries" @selection-change="handleSelectionChange">
+       <el-table v-loading="loading" :data="achievementsList" show-summary :summary-method="getSummaries" @selection-change="handleSelectionChange" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="50" align="center" type="index" />
+          <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="制作人" align="center" prop="producerName" />
           <el-table-column label="部门" align="center" prop="deptName" />
           <el-table-column label="项目企业" align="center" prop="projectEnterpriseName" />

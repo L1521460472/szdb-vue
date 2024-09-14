@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-03 18:11:20
+ * @LastEditTime: 2024-09-14 11:02:33
 -->
 <template>
   <div class="app-container">
@@ -58,10 +58,10 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row> -->
 
-    <el-table v-loading="loading" :data="tableData" v-if="!loading">
+    <el-table v-loading="loading" :data="tableData" v-if="!loading" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="序号" width="50" align="center" type="index" fixed="left" />
-      <el-table-column :label="item.name" min-width="120" align="center" :fixed="index == 0 ? 'left': null" v-for="(item,index) in columnList" :key="index" >
+      <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
+      <el-table-column :label="item.name" min-width="130" align="center" :fixed="index == 0 ? 'left': null" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <span v-if="index == 0">{{ scope.row['1001'] }}</span>
             <span v-else-if="index == 1">{{ scope.row['1002'] }}</span>
@@ -187,7 +187,7 @@
     </el-form>
       <el-table v-loading="loading" :data="detailTableData" v-if="!loading">
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="序号" width="50" align="center" type="index" fixed="left" />
+      <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
       <el-table-column label="姓名" align="center" prop="name">
         <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>

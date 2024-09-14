@@ -158,7 +158,7 @@
                 </div>
               </template>
             </el-table-column>
-            <!-- <el-table-column label="序号" width="50" align="center" type="index" /> -->
+            <!-- <el-table-column label="序号" width="55" align="center" type="index" /> -->
             <el-table-column label="截图" align="center" min-width="100" prop="assignmentThumbnail">
                 <template #default="scope">
                   <el-image style="width: 100px; height: 50px" :src="scope.row.assignmentThumbnail" :preview-src-list="[scope.row.assignmentThumbnail]" preview-teleported/>

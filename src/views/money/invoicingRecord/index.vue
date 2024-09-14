@@ -32,9 +32,9 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData">
+    <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="序号" width="50" align="center" type="index" />
+      <el-table-column label="序号" width="55" align="center" type="index" />
       <el-table-column label="项目名称" align="center" prop="projectName">
         <!-- <template #default="scope">
           <span v-for="item in listTypeInfo.projectList" :key="item.id">
