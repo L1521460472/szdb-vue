@@ -705,7 +705,7 @@
          <el-upload
             ref="uploadRef"
             :limit="1"
-            accept="jpg,png,svg,gif,webp"
+            accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
             :headers="upload.headers"
             :action="upload.url"
             :disabled="upload.isUploading"
