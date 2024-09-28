@@ -182,7 +182,7 @@
           <el-upload
             class="avatar-uploader"
             ref="uploadRef"
-            accept=".jpg,.png,.svg,.gif,.webp"
+            accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
             :show-file-list="false"
             :headers="upload.headers"
             :action="upload.url"

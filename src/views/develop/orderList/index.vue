@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-08-07 10:10:52
+ * @LastEditTime: 2024-09-28 10:44:27
 -->
 <template>
   <div class="app-container">
@@ -126,7 +126,7 @@
                             class="uploadRef"
                             style="width: 100%;height: 50px;"
                             :limit="1"
-                            accept="jpg,png,svg,gif,webp"
+                            accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
                             :headers="upload.headers"
                             :action="upload.url"
                             :disabled="upload.isUploading"
@@ -509,7 +509,7 @@
                         ref="uploadRef"
                         style="width: 100%;height: 100%;"
                         :limit="1"
-                        accept="jpg,png,svg,gif,webp"
+                        accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
                         :headers="upload.headers"
                         :action="upload.url"
                         :disabled="upload.isUploading"
@@ -591,7 +591,7 @@
         <el-upload
           ref="uploadRef"
           :limit="1"
-          accept="jpg,png,svg,gif,webp"
+          accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
           :headers="upload.headers"
           :action="upload.url"
           :disabled="upload.isUploading"
@@ -869,6 +869,10 @@ export default defineComponent({
 }
 .el-table :deep(.el-table__expand-icon>.el-icon){
   font-size: 20px !important;
+}
+.el-tree{
+  height: 76vh;
+  overflow-y: auto;
 }
 .el-tree :deep(.el-tree-node){
   margin-bottom: 5px;

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-14 10:31:22
+ * @LastEditTime: 2024-09-27 15:45:35
 -->
 <template>
   <div class="app-container">
@@ -231,7 +231,7 @@
         <el-upload
           ref="uploadRef"
           :limit="1"
-          accept="jpg,png,svg,gif,webp"
+          accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
           :headers="upload.headers"
           :action="upload.url"
           :disabled="upload.isUploading"

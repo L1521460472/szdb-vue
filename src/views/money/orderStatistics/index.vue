@@ -460,7 +460,7 @@
                 <el-form-item label="附件" class="fileUpload" prop="fileUrl">
                   <el-upload
                     ref="uploadRef"
-                    accept=".jpg,.png,.svg,.gif,.webp,.pdf"
+                    accept=".jpg,.png,.svg,.gif,.webp,.pdf,.jpeg"
                     :headers="upload.headers"
                     :action="upload.url"
                     :disabled="upload.isUploading"
@@ -540,7 +540,7 @@
                 <el-form-item label="附件" class="fileUpload" prop="fileUrl">
                   <el-upload
                     ref="uploadRef1"
-                    accept=".jpg,.png,.svg,.gif,.webp,.pdf"
+                    accept=".jpg,.png,.svg,.gif,.webp,.pdf,.jpeg"
                     :headers="upload1.headers"
                     :action="upload1.url"
                     :disabled="upload1.isUploading"
@@ -599,7 +599,7 @@
                 <el-form-item label="附件" class="fileUpload" prop="fileUrl">
                   <el-upload
                     ref="uploadRef2"
-                    accept=".jpg,.png,.svg,.gif,.webp,.pdf"
+                    accept=".jpg,.png,.svg,.gif,.webp,.pdf,.jpeg"
                     :headers="upload2.headers"
                     :action="upload2.url"
                     :disabled="upload2.isUploading"

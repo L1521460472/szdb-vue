@@ -523,7 +523,7 @@
         <el-upload
           ref="uploadRef"
           class="upload-demo"
-          accept=".jpg,.png,.svg,.gif,.webp,.pdf"
+          accept=".jpg,.jpeg,.png,.svg,.gif,.webp,.pdf"
           drag
           :headers="headers"
           :action="uploadUrl"
@@ -560,7 +560,7 @@
           class="upload-demo"
           drag
           :headers="headers"
-          accept=".jpg,.png,.svg,.gif,.webp"
+          accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
           :action="uploadUrl"
           multiple
           :auto-upload="false"
