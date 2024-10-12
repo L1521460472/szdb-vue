@@ -1,33 +1,40 @@
 <template>
   <div class="app-container home">
     <div class="home-header">
-    <el-row :gutter="20">
-      <el-col :span="6">
-        <div class="home-list one" @click="handleToProject()">
-          <div class="home-list-title"><span>项目总数</span><span><el-icon><Warning /></el-icon></span></div>
-          <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{ total }}</span></div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="home-list tow" @click="handleToProject(1)">
-          <div class="home-list-title"><span>进行中</span><span><el-icon><Warning /></el-icon></span></div>
-          <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{progressiveNumber}}</span></div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="home-list three" @click="handleToProject(3)">
-          <div class="home-list-title"><span>已延期</span><span><el-icon><Warning /></el-icon></span></div>
-          <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{delayNumber}}</span></div>
-        </div>
-      </el-col>
-      <el-col :span="6">
-        <div class="home-list four">
-          <div class="home-list-title"><span>项目完成率</span><span><el-icon><Warning /></el-icon></span></div>
-          <div class="home-list-banner">{{completionRate}}%</div>
-          <div><el-progress :percentage="completionRate" :format="format"/></div>
-        </div>
-      </el-col>
-    </el-row>
+      <div>
+        <el-carousel height="40px" direction="vertical">
+          <el-carousel-item v-for="item in systemMsg" :key="item">
+            <h3 text="2xl" justify="center">{{ item.title }}</h3>
+          </el-carousel-item>
+        </el-carousel>
+      </div>
+      <el-row :gutter="20">
+        <el-col :span="6">
+          <div class="home-list one" @click="handleToProject()">
+            <div class="home-list-title"><span>项目总数</span><span><el-icon><Warning /></el-icon></span></div>
+            <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{ total }}</span></div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="home-list tow" @click="handleToProject(1)">
+            <div class="home-list-title"><span>进行中</span><span><el-icon><Warning /></el-icon></span></div>
+            <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{progressiveNumber}}</span></div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="home-list three" @click="handleToProject(3)">
+            <div class="home-list-title"><span>已延期</span><span><el-icon><Warning /></el-icon></span></div>
+            <div class="home-list-banner"><span style="border-bottom: 1px solid #fff;padding: 0 5px;box-sizing: border-box;">{{delayNumber}}</span></div>
+          </div>
+        </el-col>
+        <el-col :span="6">
+          <div class="home-list four">
+            <div class="home-list-title"><span>项目完成率</span><span><el-icon><Warning /></el-icon></span></div>
+            <div class="home-list-banner">{{completionRate}}%</div>
+            <div><el-progress :percentage="completionRate" :format="format"/></div>
+          </div>
+        </el-col>
+      </el-row>
     </div>
     <div class="home-tabs">
       <!-- <div class="change-date">
@@ -98,7 +105,11 @@ const activeName = ref('first')
 const dateValue = ref('null')
 const chartSeriesData = ref([])
 const chartXAxisData = ref([])
-
+const systemMsg = ref([
+            {id:1,title:'你收到一条关于【国庆放假】的通知，请及时确认处理！'},
+            {id:2,title:'你收到一条关于【本月工作】的通知，请及时确认处理！'},
+            {id:3,title:'你收到一条关于【考勤确认】的通知，请及时确认处理！'}
+        ])
 const option1 = {
     title: {
       text: '个人月度绩效统计分析',
