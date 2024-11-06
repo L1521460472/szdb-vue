@@ -4,14 +4,6 @@
  * @Autor: lijiancong
  * @Date: 2023-04-10 16:49:16
  * @LastEditors: lijiancong
- * @LastEditTime: 2023-12-19 09:38:33
--->
-<!--
- * @Description: 
- * @Version: 1.0.0
- * @Autor: lijiancong
- * @Date: 2023-04-10 16:49:16
- * @LastEditors: lijiancong
  * @LastEditTime: 2023-12-19 09:32:36
 -->
 <template>

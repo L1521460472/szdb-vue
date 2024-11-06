@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-14 13:45:18
  * @LastEditors: lijiancong
- * @LastEditTime: 2023-12-07 10:36:08
+ * @LastEditTime: 2024-10-30 18:21:51
  */
 import { defineConfig, loadEnv } from 'vite'
 import path from 'path'
@@ -39,8 +39,8 @@ export default defineConfig(({ mode, command }) => {
       proxy: {
         // https://cn.vitejs.dev/config/#server-proxy
         '/prod-api': {
-          target: 'http://oa.szdaibao.cn:9030',
-          // target: 'http://127.0.0.1:9030',
+          // target: 'http://oa.szdaibao.cn:9030',
+          target: 'http://oa.szdaibao.cn:8867',
           changeOrigin: true,
           rewrite: (p) => p.replace(/^\/dev-api/, ''),
         }
