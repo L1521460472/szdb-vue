@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-06 20:20:07
+ * @LastEditTime: 2024-11-07 20:34:22
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { listAchievements } from "@/api/project/monthlyPerformance";
+import { getPage,getAdd } from "@/api/task/studyStatistics";
 
 export default function ($vm) {
 
@@ -20,8 +20,12 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    deptId: undefined,
-    producerId: undefined,
+    orderByColumn: '',
+    isAsc: 'asc',
+    reasonable: true,
+    beginTime: '',
+    endTime: '',
+    name: ''
   })
 
   /**
@@ -30,17 +34,27 @@ export default function ($vm) {
   const tableData = ref([]);
   /** 查询表格列表 */
   const getList = () => {
-    loading.value = true;
-    listAchievements(queryParams.value).then(response => {
+    // loading.value = true;
+    getPage(queryParams.value).then(response => {
       tableData.value = response.rows;
-      if(response.rows.length > 0){
-        columnList.value = response.rows[0].achievementList.map((item)=>{
-          item.label = item.time
-          return item
-        })
-       }
+      // if(response.rows.length > 0){
+      //   columnList.value = response.rows[0].achievementList.map((item)=>{
+      //     item.label = item.time
+      //     return item
+      //   })
+      //  }
       total.value = response.total;
-      loading.value = false;
+      // loading.value = false;
+    });
+    loading.value = false;
+  }
+  const handlePush = ()=>{
+    console.log('handlePush');
+    getAdd().then(response => {
+      console.log(response)
+      if(response.code == 200){
+        proxy.$modal.msgSuccess("推送成功");
+      }
     });
   }
   /** 跳转 */
@@ -91,9 +105,9 @@ export default function ($vm) {
 
   onMounted(() => {
     // 获取当月的第一天
-    queryParams.value.beginTime = outputDate(getFirstDayOfMonth());
-    // 获取当月的最后一天
-    queryParams.value.endTime = outputDate(getLastDayOfMonth());  
+    // queryParams.value.beginTime = outputDate(getFirstDayOfMonth());
+    // // 获取当月的最后一天
+    // queryParams.value.endTime = outputDate(getLastDayOfMonth());  
     queryParams.value.month = [queryParams.value.beginTime, queryParams.value.endTime];
     getList()
   });
@@ -111,5 +125,6 @@ export default function ($vm) {
     handleDelete,
     handleChangeDept,
     handleChangeTime,
+    handlePush,
   };
 }

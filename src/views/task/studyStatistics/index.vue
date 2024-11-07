@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-06 20:23:21
+ * @LastEditTime: 2024-11-07 20:30:05
 -->
 <template>
   <div class="app-container">
@@ -32,6 +32,7 @@
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+          <el-button icon="Refresh" @click="handlePush">一键推送</el-button>
       </el-form-item>
     </el-form>
 
@@ -50,7 +51,7 @@
     <el-table v-loading="loading" :data="tableData" border>
       <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
-      <el-table-column label="姓名" align="center" prop="producerName" fixed="left">
+      <el-table-column label="姓名" align="center" prop="name" fixed="left">
         <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template> -->
