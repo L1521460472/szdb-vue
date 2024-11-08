@@ -27,7 +27,6 @@
         <el-tab-pane :label="item.title" :name="index" v-for="(item,index) in tabLists">
           <!-- <el-image v-if="item.manualFile" :src="item.manualFile" :preview-src-list="[item.manualFile]" fit="contain" /> -->
           <div style="width: 100%;height: 100%;" v-if="item.manualFile">
-            {{ item.manualFile }}
             <iframe
             v-if="isPdf"
             :src="item.manualFile"

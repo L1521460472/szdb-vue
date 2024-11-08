@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-07 20:30:05
+ * @LastEditTime: 2024-11-08 11:17:59
 -->
 <template>
   <div class="app-container">
@@ -32,7 +32,7 @@
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
-          <el-button icon="Refresh" @click="handlePush">一键推送</el-button>
+          <el-button icon="Position" @click="handlePush">一键推送</el-button>
       </el-form-item>
     </el-form>
 
@@ -72,7 +72,7 @@
       <el-table-column label="推送学习提醒" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="推送" placement="top">
-                <el-button link type="primary" icon="delete" @click="handleDelete(scope.row)"></el-button>
+                <el-button link type="primary" icon="Position" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
           </template>
       </el-table-column>
