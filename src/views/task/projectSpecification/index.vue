@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-08 17:55:28
+ * @LastEditTime: 2024-11-09 18:20:35
 -->
 <template>
   <div class="app-container">
@@ -133,77 +133,17 @@
             <!-- <div><el-button icon="Plus" v-if="type == 'add'" @click="handleAddRate">新增</el-button></div> -->
           </div>
           <div class="dialog-box-banner">
-            <el-card class="box-card" v-for="(item,index) in formInfo.data.artsProjectRateAddListRequestList" :key="index">
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="项目名称">
-                    {{ item.projectName }}
-                    <!-- <el-select
-                      v-model="item.projectId"
-                      placeholder="项目名称"
-                      clearable
-                      style="width: 240px"
-                    >
-                      <el-option
-                        v-for="item in listTypeInfo.projectList"
-                        :key="item.id"
-                        :label="item.projectName"
-                        :value="item.id"
-                        :disabled="item.disabled"
-                      />
-                    </el-select> -->
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="阶段">
-                    {{ item.projectStage }}
-                    <!-- <el-select v-model="item.projectStage" placeholder="岗位状态" clearable style="width: 200px">
-                      <el-option
-                          v-for="dict in project_stage"
-                          :key="dict.value"
-                          :label="dict.label"
-                          :value="dict.value"
-                      />
-                    </el-select> -->
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="12">
-                  <el-form-item label="进度(%)">
-                    <el-input v-model="item.projectRate" placeholder="请输入进度" @change="handleProjectRate" />
-                  </el-form-item>
-                </el-col>
-                <el-col :span="12">
-                  <el-form-item label="绩效(天)">
-                    <el-input v-model="item.time" placeholder="请输入绩效" @change="handleTime" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label="备注">
-                    {{ item.remarks }}
-                    <!-- <el-input v-model="item.remarks" placeholder="请输入进度" /> -->
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="24">
-                  <div style="height: 200px;display: flex;justify-content: center;align-items: center;background-color: #e5e5e5;">
-                    <el-image v-if="item.rateFile" style="width: 100%;height: 200px;" :src="item.rateFile" fit="fill" />
-                    <div v-else>请上传工作截图</div>
-                  </div>
-                </el-col>
-              </el-row>
-              <!-- <el-row>
-                <el-col :span="24">
-                  <div style="display: flex;justify-content: center;align-items: center;height: 40px;margin-top: 10px;">
-                    <el-button icon="Plus" @click="openUpload(index)">工作截图</el-button>
-                  </div>
-                </el-col>
-              </el-row> -->
-            </el-card>
+            <quill-editor
+                ref="myQuillEditor"
+                class="ql-editor"
+                v-model:content="content"
+                :options="editorOption"
+                contentType="html"
+                @blur="onEditorBlur($event)"
+                @focus="onEditorFocus($event)"
+                @ready="onEditorReady($event)"
+                @change="onEditorChange($event)"
+              />
           </div>
           <div class="dialog-box-title" v-if="type == 'view'">
             <div>审批备注 </div>
@@ -228,13 +168,22 @@
   </div>
 </template>
 
-<script name="PendingApproval">
+<script>
 // import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled} from '@element-plus/icons-vue'
+import {QuillEditor, Quill } from '@vueup/vue-quill'
+import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
+// import quillTool from '@/utils/quillTool.js'
+// Quill.register(quillTool, true)
+Quill.register('modules/ImageExtend', ImageExtend)
+import 'quill/dist/quill.core.css'
+import 'quill/dist/quill.snow.css'
+import 'quill/dist/quill.bubble.css'
 import { ref,  getCurrentInstance, defineComponent} from "vue";
 import {mainForm, mainTable, baseDialog} from "./hooks/index";
 
+
 export default defineComponent({
-  components: { },
+  components: { QuillEditor },
   setup() {
     const instance = getCurrentInstance()?.proxy;
 
@@ -268,6 +217,70 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+/* 富文本框汉化 */
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+  content: "14px";
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+  content: "10px";
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+  content: "18px";
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+  content: "32px";
+}
+
+.ql-snow .ql-picker.ql-header .ql-picker-label::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item::before {
+  content: "文本";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="1"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="1"]::before {
+  content: "标题1";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="2"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="2"]::before {
+  content: "标题2";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="3"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="3"]::before {
+  content: "标题3";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="4"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="4"]::before {
+  content: "标题4";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="5"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="5"]::before {
+  content: "标题5";
+}
+.ql-snow .ql-picker.ql-header .ql-picker-label[data-value="6"]::before,
+.ql-snow .ql-picker.ql-header .ql-picker-item[data-value="6"]::before {
+  content: "标题6";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-label::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item::before {
+  content: "标准字体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before {
+  content: "衬线字体";
+}
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before {
+  content: "等宽字体";
+}
+:deep(.ql-editor){
+  width: 100%;
+  max-height: 300px;
+}
 .dialog-box-title{
   width: 100%;
   height: 40px;

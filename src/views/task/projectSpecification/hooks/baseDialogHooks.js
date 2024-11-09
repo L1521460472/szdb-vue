@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-22 10:29:43
+ * @LastEditTime: 2024-11-09 14:45:46
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
@@ -13,6 +13,54 @@ import Cookies from "js-cookie";
 // import { useRouter } from 'vue-router'
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
+  const editorOption = ref({
+    placeholder: "请输入需要编写的内容...",
+    modules: {
+      // imageDrop: true, //图片拖拽
+      // imageResize: {
+      //   //放大缩小
+      //   displayStyles: {
+      //     backgroundColor: "black",
+      //     border: "none",
+      //     color: "white",
+      //   },
+      //   modules: ["Resize", "DisplaySize", "Toolbar"],
+      // },
+      // 需要重置工具，不然富文本工具上的功能会缺失
+      toolbar: [
+        ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
+        ["blockquote", "code-block"], // 引用  代码块
+        [{ header: 1 }, { header: 2 }], // 1、2 级标题
+        [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
+        [{ script: "sub" }, { script: "super" }], // 上标/下标
+        [{ indent: "-1" }, { indent: "+1" }], // 缩进
+        [{ direction: "rtl" }], // 文本方向
+        [
+          {
+            size: [
+              "12",
+              "14",
+              "16",
+              "18",
+              "20",
+              "22",
+              "24",
+              "28",
+              "32",
+              "36",
+            ],
+          },
+        ], // 字体大小
+        [{ header: [1, 2, 3, 4, 5, 6] }], // 标题
+        [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
+        // [{ font: ['songti'] }], // 字体种类
+        [{ align: [] }], // 对齐方式
+        ["clean"], // 清除文本格式
+        // ["image", "video"], // 链接、图片、视频
+      ],
+    },
+  })
+  const content = ref("1111111");
   const dialogInfo = reactive({
     visible: false,
     type: "",
@@ -152,6 +200,22 @@ export default function ($vm) {
       editingTime: newTime,
     })
   };
+  // 失去焦点事件
+  const onEditorBlur = () => {
+    console.log('失去��点事件');
+  }
+  // 获得焦点事件
+  const onEditorFocus = () => {
+    console.log('获得��点事件');
+  }
+  // 准备编辑器
+  const onEditorReady = () => {
+    console.log('编辑器准备好了');
+  }
+  // 内容改变事件
+  const onEditorChange = () => {
+    console.log('内容改变了');
+  }
 
   const getTwo = (val)=>{
     if(val.length > 2){
@@ -161,12 +225,18 @@ export default function ($vm) {
   }
 
   return {
+    editorOption,
+    content,
     dialogInfo,
     formInfo,
     close,
     confirm,
     handleProjectRate,
     handleTime,
-    getTwo
+    getTwo,
+    onEditorBlur,
+    onEditorFocus,
+    onEditorReady,
+    onEditorChange,
   };
 }
