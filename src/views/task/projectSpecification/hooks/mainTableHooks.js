@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { listApprove,getProcessingDays } from "@/api/task/pendingApproval";
+import { getPage,getAdd,deptList } from "@/api/task/projectSpecification";
 
 export default function ($vm) {
 
@@ -37,12 +37,18 @@ export default function ($vm) {
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
-    listApprove(queryParams.value).then(response => {
+    getPage(queryParams.value).then(response => {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
     });
   }
+  /** 查询部门树 */
+  function getDeptTreeList() {
+    deptList().then(response => {
+      $vm.departmentOptions = response.data;
+  });
+  };
    /** 搜索按钮操作 */
   function handleQuery() {
     queryParams.value.pageNum = 1;
@@ -84,6 +90,7 @@ export default function ($vm) {
 
   onMounted(() => {
     getList()
+    getDeptTreeList()
   });
 
 

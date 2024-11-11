@@ -69,34 +69,11 @@
     <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="序号" width="55" align="center" type="index" />
-      <el-table-column label="项目名称" align="center" prop="projectName">
-      <!-- <template #default="scope">
-          <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
-        </template> -->
+      <el-table-column label="制作规范文件名称" align="center" prop="standardName">
       </el-table-column>
-      <el-table-column label="制作人" align="center" prop="producerName" />
-      <el-table-column label="当前阶段" align="center" prop="projectStage" />
-      <el-table-column label="当前进度" align="center" prop="projectRate" >
-        <template #default="scope">
-          <span>{{ scope.row.projectRate }} <span v-if="scope.row.projectRate">%</span></span>
-          </template>
-      </el-table-column>
-      <el-table-column label="所用工时(天)" align="center" width="100" prop="timeConsuming" />
-      <el-table-column label="工作截图" align="center" width="130" prop="producerTime">
-        <template #default="scope">
-          <el-image style="width: 100px; height: 50px" :src="scope.row.rateFile" :preview-src-list="[scope.row.rateFile]" preview-teleported/>
-        </template>
-      </el-table-column>
-      <el-table-column label="创建时间" align="center" width="160" prop="createTime" />
-      <el-table-column label="审批状态" align="center" prop="approveStatus">
-        <template #default="scope">
-          <span v-if="scope.row.approveStatus == 1">待提交</span>
-          <span v-if="scope.row.approveStatus == 2">待审核</span>
-          <span v-if="scope.row.approveStatus == 3">审核通过</span>
-          <span v-if="scope.row.approveStatus == 4">已撤回</span>
-        </template>
-      </el-table-column>
-      <el-table-column label="审批备注" align="center" prop="approveRemarks" />
+      <el-table-column label="文件适用部门" align="center" prop="deptName" />
+      <el-table-column label="发布时间" align="center" prop="updateTime" />
+      <el-table-column label="发布人员" align="center" prop="updateBy" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="审核" placement="top">
@@ -122,28 +99,50 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-    <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="80px">
-          <div style="margin: 10px 0;"><span style="margin-right: 20px;">制作人</span>   {{ formInfo.data.producerName }}</div>
-          <div class="dialog-box-title">
-            <div>任务事项 </div>
-            <div style="display: flex;">
-              <div style="width: 120px;display: flex;align-items: center; justify-content: center;background-color: #0da9f7;font-weight: 400;color: #000;"><span style="margin-right: 10px;color: #333;">商务天</span> {{ num1 }}</div>
-              <div style="width: 120px;display: flex;align-items: center; justify-content: center;background-color: #ffc000;font-weight: 400;color: #fff;"><span style="margin-right: 10px;color: #fff;">剩余人天</span> {{ num2 }}</div>
-            </div>
-            <!-- <div><el-button icon="Plus" v-if="type == 'add'" @click="handleAddRate">新增</el-button></div> -->
-          </div>
+      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="80px">
+        <el-form :model="formInfo.data" ref="tabsRef" label-width="80px">
+            <el-form-item label="文件名称" prop="name" :rules="
+              {
+                required: true,
+                message: '请输入文件名称',
+                trigger: 'blur',
+              }">
+                <div class="tabs-text">
+                  <el-input
+                    v-model="formInfo.data.name"
+                  />
+                </div>
+            </el-form-item>
+            <el-form-item label="文件名称" prop="deptId" :rules="
+              {
+                required: true,
+                message: '请输入文件名称',
+                trigger: 'blur',
+              }">
+                <div class="tabs-text">
+                  <el-cascader  v-model="formInfo.data.deptId" :options="departmentOptions" :props="props" filterable :show-all-levels="false" clearable />
+                </div>
+            </el-form-item>
+            <el-form-item label="文件" prop="fileName" class="fileUpload">
+              <div style="border: 1px solid #ccc">
+                <Toolbar
+                  style="border-bottom: 1px solid #ccc"
+                  :editor="editorRef"
+                  :defaultConfig="toolbarConfig"
+                  :mode="mode"
+                />
+                <Editor
+                  style="height: 500px; overflow-y: hidden;"
+                  v-model="valueHtml"
+                  :defaultConfig="editorConfig"
+                  :mode="mode"
+                  @onCreated="handleCreated"
+                />
+              </div>
+            </el-form-item>
+          </el-form>
           <div class="dialog-box-banner">
-            <quill-editor
-                ref="myQuillEditor"
-                class="ql-editor"
-                v-model:content="content"
-                :options="editorOption"
-                contentType="html"
-                @blur="onEditorBlur($event)"
-                @focus="onEditorFocus($event)"
-                @ready="onEditorReady($event)"
-                @change="onEditorChange($event)"
-              />
+            
           </div>
           <div class="dialog-box-title" v-if="type == 'view'">
             <div>审批备注 </div>
@@ -170,22 +169,112 @@
 
 <script>
 // import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled} from '@element-plus/icons-vue'
-import {QuillEditor, Quill } from '@vueup/vue-quill'
-import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
+// import {QuillEditor, Quill } from '@vueup/vue-quill'
+// import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
 // import quillTool from '@/utils/quillTool.js'
 // Quill.register(quillTool, true)
-Quill.register('modules/ImageExtend', ImageExtend)
-import 'quill/dist/quill.core.css'
-import 'quill/dist/quill.snow.css'
-import 'quill/dist/quill.bubble.css'
-import { ref,  getCurrentInstance, defineComponent} from "vue";
-import {mainForm, mainTable, baseDialog} from "./hooks/index";
+// Quill.register('modules/ImageExtend', ImageExtend)
+// import 'quill/dist/quill.core.css'
+// import 'quill/dist/quill.snow.css'
+// import 'quill/dist/quill.bubble.css'
 
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import { ref, getCurrentInstance, defineComponent,onBeforeUnmount, shallowRef, onMounted} from "vue";
+import {mainForm, mainTable, baseDialog} from "./hooks/index";
+import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import { getToken } from "@/utils/auth";
 
 export default defineComponent({
-  components: { QuillEditor },
+  components: { Editor, Toolbar },
   setup() {
     const instance = getCurrentInstance()?.proxy;
+
+    // 编辑器实例，必须用 shallowRef
+    const editorRef = shallowRef()
+    const editorConfig = { placeholder: "请输入内容...", MENU_CONF: {} };
+    // 内容 HTML
+    const valueHtml = ref('<p>hello</p>')
+    const props = {
+      value: 'id',
+      // expandTrigger: 'hover',
+      checkStrictly : true
+    }
+    
+
+    editorConfig.MENU_CONF['uploadImage'] = {
+      headers: { Authorization: "Bearer " + getToken() },
+      fieldName: 'file',
+      server: import.meta.env.VITE_APP_BASE_API + "/common/upload",
+      // 自定义插入图片
+      customInsert(res, insertFn) {
+          insertFn(res.url, res.originalFilename, res.url)
+      },
+    }
+
+    // 模拟 ajax 异步获取内容
+    onMounted(() => {
+        setTimeout(() => {
+            valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+        }, 1500)
+    })
+
+    const toolbarConfig = {}
+
+    // 组件销毁时，也及时销毁编辑器
+    onBeforeUnmount(() => {
+        const editor = editorRef.value
+        if (editor == null) return
+        editor.destroy()
+    })
+
+    const handleCreated = (editor) => {
+      editorRef.value = editor // 记录 editor 实例，重要！
+    }
+    function customCheckImageFn(src, alt, url) {                                                    // JS 语法
+      if (!src) {
+        return
+      }
+      if (src.indexOf('http') !== 0) {
+          return import.meta.env.VITE_APP_BASE_API + "/common/upload"
+      }
+      return true
+
+      // 返回值有三种选择：
+      // 1. 返回 true ，说明检查通过，编辑器将正常插入图片
+      // 2. 返回一个字符串，说明检查未通过，编辑器会阻止插入。会 alert 出错误信息（即返回的字符串）
+      // 3. 返回 undefined（即没有任何返回），说明检查未通过，编辑器会阻止插入。但不会提示任何信息
+    } 
+
+    // 转换图片链接
+    function customParseImageSrc(src) {               // JS 语法
+        if (src.indexOf('http') !== 0) {
+            return `http://${src}`
+        }
+        return src
+    }
+
+    // 插入图片
+    editorConfig.MENU_CONF['insertImage'] = {
+        onInsertedImage(imageNode) {                    // JS 语法
+            if (imageNode == null) return
+
+            const { src, alt, url, href } = imageNode
+            console.log('inserted image', src, alt, url, href)
+        },
+        checkImage: customCheckImageFn, // 也支持 async 函数
+        parseImageSrc: customParseImageSrc, // 也支持 async 函数
+    }
+    // 编辑图片
+    editorConfig.MENU_CONF['editImage'] = {
+        onUpdatedImage(imageNode) {                    // JS 语法
+            if (imageNode == null) return
+
+            const { src, alt, url } = imageNode
+            console.log('updated image', src, alt, url)
+        },
+        checkImage: customCheckImageFn, // 也支持 async 函数
+        parseImageSrc: customParseImageSrc, // 也支持 async 函数
+    }
 
     /* 事件回调统一处理 */
     const handleClick = (event, dada, item) => {
@@ -204,12 +293,20 @@ export default defineComponent({
     };
 
     return {
+      props,
+      valueHtml,
       // project_stage,
       handleClick,
       handleEvent,
       ...mainForm(instance),
       ...mainTable(instance),
       ...baseDialog(instance),
+      editorRef,
+      valueHtml,
+      mode: 'simple', // 或 'simple'  'default'
+      toolbarConfig,
+      editorConfig,
+      handleCreated,
     }
   }
 })

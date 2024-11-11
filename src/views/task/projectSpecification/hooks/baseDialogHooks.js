@@ -10,61 +10,16 @@ import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
+import { getAdd } from "../../../../api/task/projectSpecification";
 // import { useRouter } from 'vue-router'
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
-  const editorOption = ref({
-    placeholder: "请输入需要编写的内容...",
-    modules: {
-      // imageDrop: true, //图片拖拽
-      // imageResize: {
-      //   //放大缩小
-      //   displayStyles: {
-      //     backgroundColor: "black",
-      //     border: "none",
-      //     color: "white",
-      //   },
-      //   modules: ["Resize", "DisplaySize", "Toolbar"],
-      // },
-      // 需要重置工具，不然富文本工具上的功能会缺失
-      toolbar: [
-        ["bold", "italic", "underline", "strike"], // 加粗 斜体 下划线 删除线
-        ["blockquote", "code-block"], // 引用  代码块
-        [{ header: 1 }, { header: 2 }], // 1、2 级标题
-        [{ list: "ordered" }, { list: "bullet" }], // 有序、无序列表
-        [{ script: "sub" }, { script: "super" }], // 上标/下标
-        [{ indent: "-1" }, { indent: "+1" }], // 缩进
-        [{ direction: "rtl" }], // 文本方向
-        [
-          {
-            size: [
-              "12",
-              "14",
-              "16",
-              "18",
-              "20",
-              "22",
-              "24",
-              "28",
-              "32",
-              "36",
-            ],
-          },
-        ], // 字体大小
-        [{ header: [1, 2, 3, 4, 5, 6] }], // 标题
-        [{ color: [] }, { background: [] }], // 字体颜色、字体背景颜色
-        // [{ font: ['songti'] }], // 字体种类
-        [{ align: [] }], // 对齐方式
-        ["clean"], // 清除文本格式
-        // ["image", "video"], // 链接、图片、视频
-      ],
-    },
-  })
+  const departmentOptions = ref([]);//部门
   const content = ref("1111111");
   const dialogInfo = reactive({
     visible: false,
     type: "",
-    title: "任务审批",
+    title: "新增",
     width: "40%",
     btnList: [
       {
@@ -84,22 +39,9 @@ export default function ($vm) {
     ref: {},
     span: 12,
     data: {
-      type: 1,
-      producerId: '',
-      artsProjectRateAddListRequestList: [
-        {
-          projectId:null,
-          projectStage:null,
-          projectRate:null,
-          time:null,
-          rateFile:null,
-        }
-      ],
-      approveRecordVo:{
-        approveName:null,
-        time:null,
-        attributeVoList:[],
-      }
+      name: '',
+      deptId: '',
+      standardContent: '',
     },
     disabled: false,
     fieldList: [],
@@ -162,11 +104,10 @@ export default function ($vm) {
   const confirm = () => {
     formInfo.data.type = 1;
     const params = {
-      projectRate:formInfo.data.artsProjectRateAddListRequestList[0].projectRate,
-      timeConsuming:formInfo.data.artsProjectRateAddListRequestList[0].time,
-      id:formInfo.data.id,
+      ...formInfo.data,
+      standardContent: $vm.valueHtml,
     }
-    approveOperate(params).then(response => {
+    getAdd(params).then(response => {
       if(response.code == 200){
         $vm.getList()
         dialogInfo.visible = false;
@@ -200,22 +141,6 @@ export default function ($vm) {
       editingTime: newTime,
     })
   };
-  // 失去焦点事件
-  const onEditorBlur = () => {
-    console.log('失去��点事件');
-  }
-  // 获得焦点事件
-  const onEditorFocus = () => {
-    console.log('获得��点事件');
-  }
-  // 准备编辑器
-  const onEditorReady = () => {
-    console.log('编辑器准备好了');
-  }
-  // 内容改变事件
-  const onEditorChange = () => {
-    console.log('内容改变了');
-  }
 
   const getTwo = (val)=>{
     if(val.length > 2){
@@ -225,7 +150,6 @@ export default function ($vm) {
   }
 
   return {
-    editorOption,
     content,
     dialogInfo,
     formInfo,
@@ -234,9 +158,5 @@ export default function ($vm) {
     handleProjectRate,
     handleTime,
     getTwo,
-    onEditorBlur,
-    onEditorFocus,
-    onEditorReady,
-    onEditorChange,
   };
 }
