@@ -141,7 +141,7 @@
                 </el-col>
                 <el-col :span="12">
                   <el-form-item label="阶段" required>
-                    <el-select v-model="item.projectStage" placeholder="阶段" clearable style="width: 200px">
+                    <el-select v-model="item.projectStage" placeholder="参与阶段" clearable style="width: 200px">
                       <!-- <el-option
                           v-for="dict in project_stage"
                           :key="dict.value"
@@ -162,28 +162,35 @@
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="进度(%)" required>
-                    <el-input v-model="item.projectRate" type="number" placeholder="请输入进度" />
+                  <el-form-item label="制作工时" required>
+                    <el-input v-model="item.time1" type="number" :step="0.1" min="0" placeholder="请输入制作工时" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
-                  <el-form-item label="绩效(天)" required>
-                    <el-input v-model="item.time" type="number" placeholder="请输入绩效" />
+                  <el-form-item label="绩效人天" required>
+                    <el-input v-model="item.time" type="number" :step="0.1" min="0" placeholder="请输入绩效人天" />
                   </el-form-item>
                 </el-col>
               </el-row>
               <el-row>
                 <el-col :span="12">
-                  <el-form-item label="日期">
+                  <el-form-item label="进度(%)" required>
+                    <el-input v-model="item.projectRate" type="number" min="0" placeholder="请输入进度" />
+                  </el-form-item>
+                </el-col>
+                <el-col :span="12">
+                  <el-form-item label="日报日期">
                     <el-date-picker
                       v-model="item.taskTime"
                       type="date"
                       value-format="YYYY-MM-DD"
-                      placeholder="请选择日期"
+                      placeholder="请选择日报日期"
                     />
                   </el-form-item>
                 </el-col>
-                <el-col :span="12">
+              </el-row>
+              <el-row>
+                <el-col :span="24">
                   <el-form-item label="备注">
                     <el-input v-model="item.remarks" placeholder="请输入备注" />
                   </el-form-item>
