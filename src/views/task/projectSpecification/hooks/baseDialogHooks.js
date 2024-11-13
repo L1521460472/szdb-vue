@@ -4,17 +4,17 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-09 14:45:46
+ * @LastEditTime: 2024-11-13 10:09:48
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
-import { getAdd } from "../../../../api/task/projectSpecification";
+import { getAdd,getEdit } from "../../../../api/task/projectSpecification";
 // import { useRouter } from 'vue-router'
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
-  const departmentOptions = ref([]);//部门
+  const refDep = ref(null);//部门
   const content = ref("1111111");
   const dialogInfo = reactive({
     visible: false,
@@ -39,14 +39,15 @@ export default function ($vm) {
     ref: {},
     span: 12,
     data: {
-      name: '',
+      standardName: '',
       deptId: '',
+      deptName: '',
       standardContent: '',
     },
     disabled: false,
     fieldList: [],
     rules: {
-      name: [
+      standardName: [
         { required: true, message: '必填', trigger: 'blur' }
       ],
     },
@@ -72,21 +73,7 @@ export default function ($vm) {
         Object.keys(obj).forEach((k) => {
           obj[k] = null;
         });
-        formInfo.data.artsProjectRateAddListRequestList = [
-          {
-            projectId:null,
-            projectStage:null,
-            projectRate:null,
-            time:null,
-            remarks:null,
-            rateFile:null,
-          }
-        ]
-        formInfo.data.approveRecordVo = {
-          approveName:null,
-          time:null,
-          attributeVoList:[],
-        }
+        $vm.valueHtml = '';
         $vm.type = 'add';
       }
       // nextTick(() => {
@@ -102,18 +89,32 @@ export default function ($vm) {
   };
   /** 保存 */
   const confirm = () => {
-    formInfo.data.type = 1;
+    console.log(formInfo.data,$vm.valueHtml);
+    // formInfo.data.type = 1;
+    if(Array.isArray(formInfo.data.deptId)){
+      formInfo.data.deptId = formInfo.data.deptId.slice(-1)[0]
+    }
     const params = {
       ...formInfo.data,
       standardContent: $vm.valueHtml,
     }
-    getAdd(params).then(response => {
-      if(response.code == 200){
-        $vm.getList()
-        dialogInfo.visible = false;
-        $vm.$modal.msgSuccess("保存成功");
-      }
-    });
+    if($vm.type === 'add'){
+      getAdd(params).then(response => {
+        if(response.code == 200){
+          $vm.getList()
+          dialogInfo.visible = false;
+          $vm.$modal.msgSuccess("保存成功");
+        }
+      });
+    }else{
+      getEdit(params).then(response => {
+        if(response.code == 200){
+          $vm.getList()
+          dialogInfo.visible = false;
+          $vm.$modal.msgSuccess("修改成功");
+        }
+      });
+    }
   };
   /** change */
   const handleProjectRate = (val) => {
@@ -141,6 +142,10 @@ export default function ($vm) {
       editingTime: newTime,
     })
   };
+  /** change */
+  const handleChangeDept = (val) => {
+    formInfo.data.deptName = refDep.value.getCheckedNodes()[0].label
+  };
 
   const getTwo = (val)=>{
     if(val.length > 2){
@@ -150,6 +155,7 @@ export default function ($vm) {
   }
 
   return {
+    refDep,
     content,
     dialogInfo,
     formInfo,
@@ -158,5 +164,6 @@ export default function ($vm) {
     handleProjectRate,
     handleTime,
     getTwo,
+    handleChangeDept
   };
 }

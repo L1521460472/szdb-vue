@@ -42,8 +42,16 @@ export function getDelete(id) {
   })
 }
 
+// 制作规范详情
+export function getDetail(id) {
+  return request({
+    url: '/system/standard/' + id,
+    method: 'GET',
+  })
+}
+
 // 导出制作规范列表
-export function getLearn(data) {
+export function getExport(data) {
   return request({
     url: '/system/standard/export',
     method: 'POST',

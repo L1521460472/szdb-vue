@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-09 18:20:35
+ * @LastEditTime: 2024-11-13 10:12:27
 -->
 <template>
   <div class="app-container">
@@ -72,12 +72,15 @@
       <el-table-column label="制作规范文件名称" align="center" prop="standardName">
       </el-table-column>
       <el-table-column label="文件适用部门" align="center" prop="deptName" />
-      <el-table-column label="发布时间" align="center" prop="updateTime" />
-      <el-table-column label="发布人员" align="center" prop="updateBy" />
+      <el-table-column label="发布时间" align="center" prop="createTime" />
+      <el-table-column label="发布人员" align="center" prop="createBy" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
-            <el-tooltip content="审核" placement="top">
-                <el-button link type="primary" icon="Edit" @click="handleApproval(scope.row)"></el-button>
+            <el-tooltip content="编辑" placement="top">
+                <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="删除" placement="top">
+                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
           </template>
       </el-table-column>
@@ -101,29 +104,29 @@
     >
       <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="80px">
         <el-form :model="formInfo.data" ref="tabsRef" label-width="80px">
-            <el-form-item label="文件名称" prop="name" :rules="
+            <el-form-item label="制作规范名称" prop="standardName" :rules="
               {
                 required: true,
-                message: '请输入文件名称',
+                message: '请输入制作规范名称',
                 trigger: 'blur',
               }">
                 <div class="tabs-text">
                   <el-input
-                    v-model="formInfo.data.name"
+                    v-model="formInfo.data.standardName"
                   />
                 </div>
             </el-form-item>
-            <el-form-item label="文件名称" prop="deptId" :rules="
+            <el-form-item label="文件适用部门" prop="deptId" :rules="
               {
                 required: true,
-                message: '请输入文件名称',
+                message: '请输入文件适用部门',
                 trigger: 'blur',
               }">
                 <div class="tabs-text">
-                  <el-cascader  v-model="formInfo.data.deptId" :options="departmentOptions" :props="props" filterable :show-all-levels="false" clearable />
+                  <el-cascader ref="refDep" v-model="formInfo.data.deptId" :options="departmentOptions" :props="props" filterable :show-all-levels="false" @change="handleChangeDept" clearable />
                 </div>
             </el-form-item>
-            <el-form-item label="文件" prop="fileName" class="fileUpload">
+            <el-form-item label="内容规范" prop="fileName" class="fileUpload">
               <div style="border: 1px solid #ccc">
                 <Toolbar
                   style="border-bottom: 1px solid #ccc"

@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-08 17:58:48
+ * @LastEditTime: 2024-11-13 10:17:54
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,getAdd,deptList } from "@/api/task/projectSpecification";
+import { getPage,getAdd,deptList,getDelete,getDetail } from "@/api/task/projectSpecification";
 
 export default function ($vm) {
 
@@ -63,28 +63,27 @@ export default function ($vm) {
   function handleAddOpen() {
     $vm.dialogInfo.visible = true;
   }
-  /** 审核 */
-  const handleApproval = (row) => {
-    getProcessingDays(row.projectId).then(response => {
-      num1.value = response.data.commerceDay
-      num2.value = response.data.remainingDay
-    });
-    oldProjectRate.value = row.projectRate
-    oldTimeConsuming.value = row.timeConsuming
-    $vm.formInfo.data.id = row.id;
-    $vm.formInfo.data.producerName = row.producerName;
-    $vm.formInfo.data.artsProjectRateAddListRequestList = [
-      {
-        projectId:Number(row.projectId),
-        projectName:row.projectName,
-        projectStage:row.projectStage,
-        projectRate:row.projectRate,
-        time:row.timeConsuming,
-        remarks:row.remarks,
-        rateFile:row.rateFile,
+  /** 编辑 */
+  const handleEdit = (row) => {
+    type.value = 'edit'
+    getDetail(row.id).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        $vm.formInfo.data = response.data
+        $vm.valueHtml = response.data.standardContent
+        $vm.dialogInfo.visible = true;
       }
-    ]
-    $vm.dialogInfo.visible = true;
+    });
+    
+  }
+  /** 删除 */
+  const handleDelete = (row) => {
+    $vm.$modal.confirm('是否确认删除').then(function () {
+      return getDelete(row.id);
+    }).then(() => {
+      getList();
+      $vm.$modal.msgSuccess("删除成功");
+    }).catch(() => {});
   }
 
 
@@ -106,7 +105,8 @@ export default function ($vm) {
     oldProjectRate,
     oldTimeConsuming,
     getList,
-    handleApproval,
+    handleEdit,
+    handleDelete,
     handleQuery,
     resetQuery,
     handleAddOpen
