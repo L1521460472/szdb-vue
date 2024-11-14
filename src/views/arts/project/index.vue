@@ -477,6 +477,22 @@
                   </div>
                 </div>
               </div>
+              <div class="dialog-member-box-left">
+                <div style="margin-bottom: 16px;font-size: 16px;margin-left: 24px;">PM跟进人</div>
+                <el-result v-if="form.projectResponsibilityUserId" :title="form.responsibleUserName" sub-title="">
+                  <template #icon>
+                    <div class="title-circle title-circle-leader">{{ getTwo(form.responsibleUserName) }}</div>
+                  </template>
+                  <template #extra>
+                    <el-button :icon="Setting" @click="handleSetMember1" circle />
+                  </template>
+                </el-result>
+                <div style="height: 100%;display: flex;justify-content: center;" v-else>
+                  <div class="title-circle title-circle-leader" @click="handleAddMember">
+                    <el-icon style="color: #fff;"><Plus /></el-icon>
+                  </div>
+                </div>
+              </div>
               <div class="dialog-member-box-right">
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 26px;">项目制作人</div>
                 <div class="member-box-list">
