@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-14 11:02:33
+ * @LastEditTime: 2024-11-15 18:22:35
 -->
 <template>
   <div class="app-container">
-    <!-- <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
       <el-form-item label="部门" prop="deptId">
           <el-select
             v-model="queryParams.deptId"
@@ -44,9 +44,9 @@
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
       </el-form-item>
-    </el-form> -->
+    </el-form>
 
-    <!-- <el-row :gutter="10" class="mb8">
+    <el-row :gutter="10" class="mb8">
       <el-col :span="1.5">
           <el-button
             type="primary"
@@ -56,83 +56,34 @@
           >新增</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
-    </el-row> -->
+    </el-row>
 
-    <el-table v-loading="loading" :data="tableData" v-if="!loading" border>
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+    <el-table v-loading="loading" :data="tableData" border>
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
-      <el-table-column :label="item.name" min-width="130" align="center" :fixed="index == 0 ? 'left': null" v-for="(item,index) in columnList" :key="index" >
-          <template #default="scope">
-            <span v-if="index == 0">{{ scope.row['1001'] }}</span>
-            <span v-else-if="index == 1">{{ scope.row['1002'] }}</span>
-            <span v-else-if="index == 2">{{ scope.row['1003'] }}</span>
-            <span v-else-if="index == 3">{{ scope.row['1004'] }}</span>
-            <span v-else-if="index == 4">{{ scope.row['1005'] }}</span>
-            <span v-else-if="index == 5">{{ scope.row['177973307'] }}</span>
-            <span v-else-if="index == 6">{{ scope.row['177973308'] }}</span>
-            <span v-else-if="index == 7">{{ scope.row['177973309'] }}</span>
-            <span v-else-if="index == 8">{{ scope.row['177973310'].toFixed(2) }}</span>
-            <span v-else-if="index == 9">{{ scope.row['177973311'] }}</span>
-            <span v-else-if="index == 10">{{ (scope.row['177973312'] / 60).toFixed(2) }}</span>
-            <span v-else-if="index == 11" :class="{boxBj:scope.row['177973313'] > 3}">{{ scope.row['177973313'] }}</span>
-            <span v-else-if="index == 12" :class="{boxBj:scope.row['177973314'] > 60}">{{ scope.row['177973314'] }}</span>
-            <span v-else-if="index == 13">{{ scope.row['177973315'] }}</span>
-            <span v-else-if="index == 14">{{ scope.row['177973316'] }}</span>
-            <span v-else-if="index == 15" :class="{boxBj:scope.row['177973317'] > 0}">{{ scope.row['177973317'] }}</span>
-            <span v-else-if="index == 16" :class="{boxBj:scope.row['177973318'] > 0}">{{ scope.row['177973318'] }}</span>
-            <span v-else-if="index == 17" :class="{boxBj:scope.row['177973319'] > 0}">{{ scope.row['177973319'] }}</span>
-            <span v-else-if="index == 18" :class="{boxBj:scope.row['177973320'] > 0}">{{ scope.row['177973320'] }}</span>
-            <span v-else-if="index == 19" :class="{boxBj:scope.row['177973321'] > 0}">{{ scope.row['177973321'] }}</span>
-            <span v-else-if="index == 20" :class="{boxBj:scope.row['177973322'] > 0}">{{ scope.row['177973322'] }}</span>
-            <span v-else-if="index == 21">{{ scope.row['177973323'] }}</span>
-            <span v-else-if="index == 22">{{ scope.row['177973324'] }}</span>
-            <span v-else-if="index == 23"></span>
-            <span v-else-if="index == 24"></span>
-            <span v-else-if="index == 25"></span>
-            <span v-else-if="index == 26"></span>
-            <span v-else-if="index == 27"></span>
-            <span v-else-if="index == 28"></span>
-            <span v-else-if="index == 29"></span>
-            <span v-else-if="index == 30"></span>
-            <span v-else-if="index == 31"></span>
-            <span v-else-if="index == 32">{{ scope.row['177973326'] }}</span>
-            <span v-else-if="index == 33">{{ scope.row['177973327'] }}</span>
-            <span v-else-if="index == 34">{{ scope.row['177973328'] }}</span>
-            <span v-else-if="index == 35">{{ scope.row['177973329'] }}</span>
-            <span v-else-if="index == 36">{{ scope.row['177973330'] }}</span>
-            <span v-else-if="index == 37">{{ scope.row['177973331'] }}</span>
-            <span v-else-if="index == 38">{{ scope.row['177973332'] }}</span>
-            <span v-else-if="index == 39">{{ scope.row['177973333'] }}</span>
-            <span v-else-if="index == 40">{{ scope.row['177973334'] }}</span>
-            <span v-else-if="index == 41">{{ scope.row['177973335'] }}</span>
-            <span v-else-if="index == 42">{{ scope.row['177973336'] }}</span>
-            <span v-else-if="index == 43">{{ scope.row['177973337'] }}</span>
-            <span v-else-if="index == 44">{{ scope.row['177973338'] }}</span>
-            <span v-else-if="index == 45">{{ scope.row['177973339'] }}</span>
-            <span v-else-if="index == 46">{{ scope.row['177973340'] }}</span>
-            <span v-else-if="index == 47">{{ scope.row['177973341'] }}</span>
-            <span v-else-if="index == 48">{{ scope.row['177973342'] }}</span>
-            <span v-else-if="index == 49">{{ scope.row['177973343'] }}</span>
-            <span v-else-if="index == 50">{{ scope.row['177973344'] }}</span>
-            <span v-else-if="index == 51">{{ scope.row['177973345'] }}</span>
-            <span v-else></span>
-           </template>
-        </el-table-column>
-      <!-- <el-table-column label="姓名" align="center" prop="projectEnterpriseName">
+      <el-table-column label="姓名" align="center" prop="projectEnterpriseName" fixed="left">
         <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="考勤组" align="center" prop="projectName" />
       <el-table-column label="部门" align="center" prop="responsibleDepartmentName" />
-      <el-table-column label="工号" align="center" prop="responsibleUserName" />
       <el-table-column label="职位" align="center" prop="responsibleUserName" />
-      <el-table-column label="出勤天数" align="center" prop="responsibleUserName" />
-      <el-table-column label="休息天数" align="center" prop="responsibleUserName" />
-      <el-table-column label="工作时长（分钟）" align="center" prop="responsibleUserName" />
+      <el-table-column label="考勤状态" align="center" prop="projectName" />
+      <el-table-column label="入职时间" align="center" prop="responsibleUserName" />
+      <el-table-column label="应出勤天数" align="center" prop="responsibleUserName" />
+      <el-table-column label="核算工资出勤天数" align="center" prop="responsibleUserName" />
+      <el-table-column label="加班（小时）" align="center" prop="responsibleUserName" />
+      <el-table-column label="事假" align="center" prop="responsibleUserName" />
+      <el-table-column label="病假" align="center" prop="responsibleUserName" />
+      <el-table-column label="年假" align="center" prop="responsibleUserName" />
+      <el-table-column label="婚/丧/陪产假" align="center" prop="responsibleUserName" />
+      <el-table-column label="全勤奖" align="center" prop="responsibleUserName" />
       <el-table-column label="迟到次数" align="center" prop="responsibleUserName" />
-      <el-table-column label="迟到时长（分钟）" align="center" prop="responsibleUserName" />
-      <el-table-column label="备注" align="center" prop="projectRemarks" /> -->
+      <el-table-column label="缺卡次数" align="center" prop="responsibleUserName" />
+      <el-table-column label="考勤扣款" align="center" prop="responsibleUserName" />
+      <el-table-column label="年假剩余（小时）" align="center" prop="responsibleUserName" />
+      <el-table-column label="调休剩余（小时）" align="center" prop="responsibleUserName" />
+      <el-table-column label="备注" align="center" prop="projectRemarks" />
       <el-table-column label="操作" align="center" width="80" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="详情" placement="top">

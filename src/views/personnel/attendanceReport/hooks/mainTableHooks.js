@@ -4,17 +4,17 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-03 18:10:17
+ * @LastEditTime: 2024-11-15 18:15:14
  */
 import { onMounted,onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { attendanceList } from "@/api/personnel/attendance";
+import { getPage,deptList,getDelete,getDetail } from "@/api/personnel/attendanceReport";
 import { formatDate } from "@/utils/index";
 
 export default function ($vm) {
 
   const router = useRouter();
-  const loading = ref(true);
+  const loading = ref(false);
   const showSearch = ref(true);
   const columnList = ref([])
   const total = ref(0);
@@ -33,32 +33,8 @@ export default function ($vm) {
   /** 查询表格列表 */
   const getList =  () => {
     loading.value = true;
-    attendanceList(queryParams.value).then(async(response) => {
-      columnList.value =await response.attendanceGetAttColumns.map((item,index)=>{
-        // item.list = []
-        // // item.expression_id = item.id
-        // response.columnsValue.map((items,idx)=>{
-        //   Object.keys(items).forEach((key,indexs) => {
-        //     item.list.push(items[key])
-        //     console.log(item.value,items[key])
-        //     // if(item.id == key){
-        //     //   console.log(item.id,key)
-        //     //   item.value = items[key]
-        //     // }else{
-        //     //   item.value = ''
-        //     // }
-        //   }) 
-        // })
-        return item
-      });
-      // console.log(response.attendanceGetAttColumns)
-      tableData.value = response.columnsValue;
-      // if(response.rows.length > 0){
-      //   columnList.value = response.rows[0].achievementList.map((item)=>{
-      //     item.label = item.time
-      //     return item
-      //   })
-      //  }
+    getPage(queryParams.value).then(async(response) => {
+      tableData.value = response.data;
       total.value = response.total;
       loading.value = false;
     });
@@ -80,7 +56,7 @@ export default function ($vm) {
     console.log(row)
   }
   onBeforeMount(() => {
-    getList()
+    // getList()
   }),
 
   onMounted(() => {

@@ -52,8 +52,8 @@ export default function ($vm) {
     });
   };
   onBeforeMount(()=>{
-    getDepartmentList()
-    getuserList()
+    // getDepartmentList()
+    // getuserList()
   })
 
   return {

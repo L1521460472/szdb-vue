@@ -8,7 +8,7 @@
  */
 import { ref, reactive, watch, nextTick,onBeforeMount } from "vue";
 import { useRouter } from 'vue-router'
-import { attendanceDetail } from "@/api/personnel/attendance";
+import { getAdd,getEdit } from "@/api/personnel/attendanceReport";
 export default function ($vm) {
 
   const detailTableData = ref([]);

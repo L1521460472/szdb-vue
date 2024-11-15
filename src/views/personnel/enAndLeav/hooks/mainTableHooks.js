@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,getAdd,deptList,getDelete,getDetail,getStatistics } from "@/api/task/enAndLeav";
+import { getPage,deptList,getDelete,getDetail,getStatistics } from "@/api/task/enAndLeav";
 
 export default function ($vm) {
 
