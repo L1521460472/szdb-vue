@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,getAdd,deptList,getDelete,getDetail } from "@/api/task/projectSpecification";
+import { getPage,getAdd,deptList,getDelete,getDetail,getStatistics } from "@/api/task/enAndLeav";
 
 export default function ($vm) {
 
@@ -41,6 +41,9 @@ export default function ($vm) {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
+    });
+    getStatistics().then(response => {
+      console.log(response)
     });
   }
   /** 查询部门树 */

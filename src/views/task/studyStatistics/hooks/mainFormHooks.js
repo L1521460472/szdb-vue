@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-06 20:23:21
+ * @LastEditTime: 2024-11-15 09:51:04
  */
 import { reactive, onBeforeMount } from "vue";
 import { deptList,userList } from "@/api/project/project";
@@ -52,8 +52,8 @@ export default function ($vm) {
     });
   };
   onBeforeMount(()=>{
-    getDepartmentList()
-    getuserList()
+    // getDepartmentList()
+    // getuserList()
   })
 
   return {

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-22 10:11:39
+ * @LastEditTime: 2024-11-15 09:50:31
  */
 import { reactive, onBeforeMount } from "vue";
 import { listProject,artsList } from "@/api/project/project";
@@ -52,8 +52,8 @@ export default function ($vm) {
   };
 
   onBeforeMount(()=>{
-    getArtsList()
-    getUserList()
+    // getArtsList()
+    // getUserList()
   })
 
   return {
