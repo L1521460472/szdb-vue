@@ -18,13 +18,10 @@ export default function ($vm) {
       { key: "启用", value: true },
       { key: "停用", value: false },
     ],
-    dateList: [
-      { key: "近一周", value: '1' },
-      { key: "近一个月", value: '2' },
-      { key: "近三个月", value: '3' },
-      { key: "近半年", value: '4' },
-      { key: "全年", value: '5' },
-      { key: "指定日期", value: '6' },
+    statusList: [
+      { key: "已确认", value: '1' },
+      { key: "未确认", value: '2' },
+      { key: "异常", value: '3' }
     ],
     depList:[],
     userList:[],
@@ -52,8 +49,8 @@ export default function ($vm) {
     });
   };
   onBeforeMount(()=>{
-    // getDepartmentList()
-    // getuserList()
+    getDepartmentList()
+    getuserList()
   })
 
   return {

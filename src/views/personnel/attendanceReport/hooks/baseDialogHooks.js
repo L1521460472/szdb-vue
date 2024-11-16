@@ -8,12 +8,45 @@
  */
 import { ref, reactive, watch, nextTick,onBeforeMount } from "vue";
 import { useRouter } from 'vue-router'
-import { getAdd,getEdit } from "@/api/personnel/attendanceReport";
+import { getAdd,getEdit,getImport } from "@/api/personnel/attendanceReport";
+import { getToken } from "@/utils/auth";
 export default function ($vm) {
 
   const detailTableData = ref([]);
   const detailcolumnList = ref([]);
   const visible = ref(false);
+  const formInfo = reactive({
+    visible: false,
+    ref: {},
+    span: 12,
+    data: {},
+    disabled: false,
+    fieldList: [],
+    rules: {
+      attendanceMonth: [
+        { required: true, message: '必填', trigger: 'blur' }
+      ],
+      // file: [
+      //   { required: true, message: '必填', trigger: 'blur' }
+      // ],
+    },
+    labelWidth: "150px",
+  });
+  /*** 用户导入参数 */
+  const upload = reactive({
+    // 是否显示弹出层（用户导入）
+    open: false,
+    // 弹出层标题（用户导入）
+    title: "",
+    // 是否禁用上传
+    isUploading: false,
+    // 是否更新已经存在的用户数据
+    updateSupport: 0,
+    // 设置上传的请求头部
+    headers: { Authorization: "Bearer " + getToken() },
+    // 上传的地址
+    url: import.meta.env.VITE_APP_BASE_API + "/system/report/import"
+  });
   /**
    * @description: 监听弹窗表单disabled属性，为true时，隐藏弹窗【确定】按钮
    * @param {*}
@@ -25,34 +58,51 @@ export default function ($vm) {
   //     dialogInfo.btnList[1].show = val;
   //   }
   // );
-  /** 查询表格列表 */
-  const getDetailList =  () => {
-    attendanceDetail($vm.queryParams).then(async(response) => {
-      let startDate = null
-      let endDate = null
-      response.attendance_result_list.map((item)=>{
-        if(item.check_type == 'OnDuty'){
-          startDate = item.user_check_time
-        }
-        if(item.check_type == 'OffDuty'){
-          endDate = item.user_check_time
-        }
-      })
-      if(response.attendance_result_list.length > 0){
-        detailTableData.value = [{
-          name: $vm.userName,
-          startDate: startDate,
-          endDate: endDate,
-          date: $vm.queryParams.workDate
-        }]
+    /** 下载模板操作 */
+    function importTemplate() {
+      $vm.download("system/report/importTemplate", {
+      }, `report_template_${new Date().getTime()}.xlsx`);
+    };
+    /**文件上传中处理 */
+    const handleFileUploadProgress = (event, file, fileList) => {
+      upload.isUploading = true;
+    };
+    /** 文件上传成功处理 */
+    const handleFileSuccess = (response, file, fileList) => {
+      console.log(response, file, fileList)
+      if(response.code == 200){
+        upload.open = false;
+        upload.isUploading = false;
+        $vm.$refs["uploadRef"].handleRemove(file);
+        $vm.$modal.msgSuccess(response.msg);
+        $vm.getList();
+      }
+    };
+
+  /** 导入确定 */
+  const submitFileForm = () => {
+    console.log('submitFileForm')
+    $vm.$refs["reportRef"].validate( async valid => {
+      if (valid) {
+        $vm.$refs["uploadRef"].submit();
       }
     });
   }
 
-  /** 确定 */
-  const submitFileForm = () => {
+  /** 编辑确定 */
+  const handleConfirm = () => {
     console.log('submitFileForm')
+    $vm.$refs["rateRef"].validate( async valid => {
+      if (valid) {
+        getEdit(formInfo.data).then((res)=>{
+          console.log(res)
+          $vm.visible = false;
+          $vm.getList()
+        })
+      }
+    });
   }
+  
   /** 搜索按钮操作 */
   const handleQuery = () => {
     $vm.queryParams.pageNum = 1;
@@ -63,17 +113,19 @@ export default function ($vm) {
     $vm.resetForm("queryRef");
     handleQuery();
   }
-  // onBeforeMount(() => {
-  //   getDetailList()
-  // })
 
   return {
+    formInfo,
+    upload,
     detailTableData,
     detailcolumnList,
     visible,
-    getDetailList,
     submitFileForm,
     handleQuery,
     resetQuery,
+    importTemplate,
+    handleFileUploadProgress,
+    handleFileSuccess,
+    handleConfirm
   };
 }

@@ -19,11 +19,9 @@ export default function ($vm) {
       { key: "启用", value: true },
       { key: "停用", value: false },
     ],
-    approveStatusList: [
-      { key: "待提交", value: '1' },
-      { key: "待审核", value: '2' },
-      { key: "审核通过", value: '3' },
-      { key: "已撤回", value: '4' },
+    statusList: [
+      { key: "离职", value: '1' },
+      { key: "在职", value: '2' },
     ],
     projectList: [],
     userList: [],

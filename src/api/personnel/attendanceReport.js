@@ -58,3 +58,11 @@ export function getExport(data) {
     data: data
   })
 }
+// 导入人事考勤报表列表
+export function getImport(data) {
+  return request({
+    url: '/system/report/import',
+    method: 'POST',
+    data: data
+  })
+}

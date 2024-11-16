@@ -2,14 +2,6 @@
     <div class="app-container">
        <el-form :model="queryParams" ref="queryRef" :inline="true">
           <el-form-item label="日期" prop="month">
-            <!-- <el-select v-model="queryParams.month" placeholder="月份" clearable style="width: 200px">
-                <el-option
-                   v-for="item in options"
-                   :key="item.value"
-                   :label="item.label"
-                   :value="item.value"
-                />
-             </el-select> -->
              <el-date-picker
               v-model="queryParams.month"
               type="monthrange"

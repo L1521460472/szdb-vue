@@ -8,7 +8,7 @@
  */
 import { onMounted,onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail } from "@/api/personnel/attendanceReport";
+import { getPage,deptList,getDelete,getDetail,getImport } from "@/api/personnel/attendanceReport";
 import { formatDate } from "@/utils/index";
 
 export default function ($vm) {
@@ -22,8 +22,10 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    userId: undefined,
-    workDate: undefined,
+    name: undefined,
+    deptId: undefined,
+    attendanceStatus: undefined,
+    attendanceMonth: undefined,
   })
 
   /**
@@ -34,29 +36,53 @@ export default function ($vm) {
   const getList =  () => {
     loading.value = true;
     getPage(queryParams.value).then(async(response) => {
-      tableData.value = response.data;
+      tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
     });
   }
+
+  /** 导入按钮操作 */
+  function handleImport() {
+    $vm.upload.title = "人事-考勤报表导入";
+    $vm.upload.open = true;
+  };
+
   /** 跳转 */
-  const handleToDoOpen = (row) => {
-    console.log(row)
+  const handleAdd = () => {
+    console.log(111)
   }
-  /** 详情 */
-  const handleView = (row) => {
-    // console.log(row)
-    queryParams.value.userId = row['1004']
-    userName.value = row['1001']
-    $vm.getDetailList()
-    $vm.visible = true
+  /** 编辑 */
+  const handleEdit = (row) => {
+    // type.value = 'edit'
+    getDetail(row.id).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        $vm.formInfo.data = response.data
+        $vm.formInfo.data.attendanceStatus = response.data.attendanceStatus + ''
+        $vm.visible = true;
+      }
+    });
+  }
+  /** 删除 */
+  const handleDelete = (row) => {
+    $vm.$modal.confirm('是否确认删除').then(function () {
+      return getDelete(row.id);
+    }).then(() => {
+      getList();
+      $vm.$modal.msgSuccess("删除成功");
+    }).catch(() => {});
+  }
+  /** 一键推送 */
+  const handlePush = () => {
+    console.log('一键推送')
   }
   /** 发送确认 */
   const handlePromotion = (row) => {
     console.log(row)
   }
   onBeforeMount(() => {
-    // getList()
+    getList()
   }),
 
   onMounted(() => {
@@ -73,8 +99,11 @@ export default function ($vm) {
     columnList,
     userName,
     getList,
-    handleToDoOpen,
-    handleView,
+    handleAdd,
+    handleEdit,
+    handleDelete,
+    handlePush,
     handlePromotion,
+    handleImport,
   };
 }
