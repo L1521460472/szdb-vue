@@ -15,7 +15,9 @@ import { getAdd,getEdit } from "@/api/personnel/supplier";
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
   const refDep = ref(null);//部门
-  const content = ref("1111111");
+  const imageUrl1 = ref('')
+  const imageUrl2 = ref('')
+  const imageUrl3 = ref('')
   const dialogInfo = reactive({
     visible: false,
     type: "",
@@ -206,6 +208,7 @@ export default function ($vm) {
   const handleFileSuccess = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
+      imageUrl1.value = URL.createObjectURL(file.raw)
       upload1.open = false;
       upload1.isUploading = false;
       $vm.$refs["uploadRef1"].handleRemove(file);
@@ -220,6 +223,7 @@ export default function ($vm) {
   const handleFileSuccess1 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
+      imageUrl2.value = URL.createObjectURL(file.raw)
       upload2.open = false;
       upload2.isUploading = false;
       $vm.$refs["uploadRef2"].handleRemove(file);
@@ -234,6 +238,7 @@ export default function ($vm) {
   const handleFileSuccess2 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
+      imageUrl3.value = URL.createObjectURL(file.raw)
       upload3.open = false;
       upload3.isUploading = false;
       $vm.$refs["uploadRef3"].handleRemove(file);
@@ -243,9 +248,11 @@ export default function ($vm) {
 
   return {
     refDep,
-    content,
     dialogInfo,
     formInfo,
+    imageUrl1,
+    imageUrl2,
+    imageUrl3,
     upload1,
     upload2,
     upload3,

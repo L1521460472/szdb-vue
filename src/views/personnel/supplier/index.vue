@@ -218,7 +218,7 @@
                       :on-progress="handleFileUploadProgress"
                       :on-success="handleFileSuccess"
                     >
-                      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                      <img v-if="imageUrl1" :src="imageUrl1" class="avatar" />
                       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                     </el-upload>
                   </el-form-item>
@@ -236,7 +236,7 @@
                       :on-progress="handleFileUploadProgress"
                       :on-success="handleFileSuccess"
                     >
-                      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                      <img v-if="imageUrl2" :src="imageUrl2" class="avatar" />
                       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                     </el-upload>
                   </el-form-item>
@@ -254,7 +254,7 @@
                       :on-progress="handleFileUploadProgress"
                       :on-success="handleFileSuccess"
                     >
-                      <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+                      <img v-if="imageUrl3" :src="imageUrl3" class="avatar" />
                       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
                     </el-upload>
                   </el-form-item>
