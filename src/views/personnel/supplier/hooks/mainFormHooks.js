@@ -20,11 +20,27 @@ export default function ($vm) {
       { key: "停用", value: false },
     ],
     statusList: [
-      { key: "离职", value: '1' },
-      { key: "在职", value: '2' },
+      { key: "场景", value: '1' },
+      { key: "次时代", value: '2' },
+      { key: "原画", value: '3' },
+      { key: "特效", value: '4' },
     ],
-    projectList: [],
-    userList: [],
+    supplierList: [
+      { key: "1-5", value: '1' },
+      { key: "5-10", value: '2' },
+      { key: "10-20", value: '3' },
+      { key: "20-30", value: '4' },
+      { key: "30-50", value: '5' },
+      { key: "50-100", value: '6' },
+      { key: "100-500", value: '7' },
+      { key: "500-1000", value: '8' },
+    ],
+    supplierDJList: [
+      { key: "优选供应商", value: '优选供应商' },
+      { key: "合格供应商", value: '合格供应商' },
+      { key: "淘汰供应商", value: '淘汰供应商' },
+      { key: "退出供应商", value: '退出供应商' },
+    ],
   });
 
   const topFormInfo = reactive({

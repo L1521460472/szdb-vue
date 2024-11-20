@@ -83,6 +83,9 @@ export default function ($vm) {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
+        $vm.imageUrl1 = response.data.supplierLogo
+        $vm.imageUrl2 = response.data.supplierBusinessLicense
+        $vm.imageUrl3 = response.data.supplierQualificationCertificate
         $vm.dialogInfo.visible = true;
       }
     });

@@ -81,7 +81,18 @@
       <el-table-column label="归属城市" align="center" prop="locationCity" />
       <el-table-column label="供应商等级" align="center" prop="supplierLevel" />
       <el-table-column label="供应商规模" align="center" prop="supplierScale" />
-      <el-table-column label="联系人" align="center" prop="supplierScale" />
+        <!-- <template #default="scope">
+          <el-select v-model="scope.row.supplierScale">
+              <el-option
+                v-for="item in listTypeInfo.supplierList"
+                :key="item.value"
+                :label="item.key"
+                :value="item.value"
+              ></el-option>
+          </el-select>
+        </template>
+      </el-table-column> -->
+      <el-table-column label="联系人" align="center" prop="contactPerson" />
       <el-table-column label="联系电话" align="center" prop="mobile" />
       <el-table-column label="职务" align="center" prop="positionLiaisonPerson" />
       <el-table-column label="入库时间" align="center" prop="storageTime" />
@@ -126,26 +137,32 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="所在城市">
-                      <el-select v-model="formInfo.data.locationCity" multiple placeholder="请选择所在城市">
+                      <!-- <el-select v-model="formInfo.data.locationCity" multiple placeholder="请选择所在城市">
                           <el-option
-                            v-for="item in postOptions"
-                            :key="item.postId"
-                            :label="item.postName"
-                            :value="item.postId"
-                            :disabled="item.status == 1"
+                            v-for="item in cityCode"
+                            :key="item.adcode"
+                            :label="item.name"
+                            :value="item.adcode"
                           ></el-option>
-                      </el-select>
+                      </el-select> -->
+                      <el-tree-select
+                        v-model="formInfo.data.locationCity"
+                        :data="cityCode"
+                        :props="{ value: 'name', label: 'name', children: 'city' }"
+                        value-key="name"
+                        placeholder="请选择所在城市"
+                        check-strictly
+                     />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="供应商规模">
-                      <el-select v-model="formInfo.data.supplierScale" multiple placeholder="请选择供应商规模">
+                      <el-select v-model="formInfo.data.supplierScale" placeholder="请选择供应商规模">
                           <el-option
-                            v-for="item in postOptions"
-                            :key="item.postId"
-                            :label="item.postName"
-                            :value="item.postId"
-                            :disabled="item.status == 1"
+                            v-for="item in listTypeInfo.supplierList"
+                            :key="item.value"
+                            :label="item.key"
+                            :value="item.key"
                           ></el-option>
                       </el-select>
                     </el-form-item>
@@ -172,18 +189,33 @@
               <el-row>
                 <el-col :span="8">
                     <el-form-item label="供应商等级:" prop="supplierLevel">
-                      <el-input v-model="formInfo.data.supplierLevel" placeholder="请输入供应商等级:" maxlength="30" />
+                      <el-select v-model="formInfo.data.supplierLevel" placeholder="请选择供应商等级">
+                          <el-option
+                            v-for="item in listTypeInfo.supplierDJList"
+                            :key="item.value"
+                            :label="item.key"
+                            :value="item.key"
+                          ></el-option>
+                      </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="业务范围" prop="scopeBusiness">
-                      <el-input v-model="formInfo.data.scopeBusiness" placeholder="请输入业务范围" maxlength="30" />
+                      <!-- multiple -->
+                      <el-select v-model="formInfo.data.scopeBusiness" placeholder="请选择业务范围">
+                          <el-option
+                            v-for="item in listTypeInfo.statusList"
+                            :key="item.value"
+                            :label="item.key"
+                            :value="item.value"
+                          ></el-option>
+                      </el-select>
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                     <el-form-item label="入库时间" prop="storageTime">
                       <el-date-picker
-                        v-model="queryParams.storageTime"
+                        v-model="formInfo.data.storageTime"
                         type="date"
                         placeholder="入库时间"
                         format="YYYY-MM-DD"
@@ -311,6 +343,7 @@ import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { ref, getCurrentInstance, defineComponent,onBeforeUnmount, shallowRef, onMounted} from "vue";
 import {mainForm, mainTable, baseDialog} from "./hooks/index";
 import { getToken } from "@/utils/auth";
+import { cityCode } from "@/utils/china";
 
 export default defineComponent({
   components: { },
@@ -344,6 +377,7 @@ export default defineComponent({
 
     return {
       props,
+      cityCode,
       activeNames,
       handleChange,
       // project_stage,

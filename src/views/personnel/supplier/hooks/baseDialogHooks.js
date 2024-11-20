@@ -136,14 +136,17 @@ export default function ($vm) {
   };
   /** 保存 */
   const confirm = () => {
-    console.log(formInfo.data,$vm.valueHtml);
+    console.log(formInfo.data,imageUrl1.value);
     // formInfo.data.type = 1;
-    if(Array.isArray(formInfo.data.deptId)){
-      formInfo.data.deptId = formInfo.data.deptId.slice(-1)[0]
-    }
+    // if(Array.isArray(formInfo.data.deptId)){
+    //   formInfo.data.deptId = formInfo.data.deptId.slice(-1)[0]
+    // }
     const params = {
       ...formInfo.data,
-      standardContent: $vm.valueHtml,
+      // scopeBusiness:formInfo.data.scopeBusiness.split(','),
+      supplierLogo: imageUrl1.value,
+      supplierBusinessLicense: imageUrl2.value,
+      supplierQualificationCertificate: imageUrl3.value,
     }
     if($vm.type === 'add'){
       getAdd(params).then(response => {
@@ -208,7 +211,7 @@ export default function ($vm) {
   const handleFileSuccess = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
-      imageUrl1.value = URL.createObjectURL(file.raw)
+      imageUrl1.value = response.url
       upload1.open = false;
       upload1.isUploading = false;
       $vm.$refs["uploadRef1"].handleRemove(file);
@@ -223,7 +226,7 @@ export default function ($vm) {
   const handleFileSuccess1 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
-      imageUrl2.value = URL.createObjectURL(file.raw)
+      imageUrl2.value = response.url
       upload2.open = false;
       upload2.isUploading = false;
       $vm.$refs["uploadRef2"].handleRemove(file);
@@ -238,7 +241,7 @@ export default function ($vm) {
   const handleFileSuccess2 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
-      imageUrl3.value = URL.createObjectURL(file.raw)
+      imageUrl3.value = response.url
       upload3.open = false;
       upload3.isUploading = false;
       $vm.$refs["uploadRef3"].handleRemove(file);
