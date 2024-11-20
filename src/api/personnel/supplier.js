@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0.0
+ * @Autor: lijiancong
+ * @Date: 2024-11-19 09:19:28
+ * @LastEditors: lijiancong
+ * @LastEditTime: 2024-11-20 17:32:52
+ */
 import request from '@/utils/request'
 
 // 查询人事供应商列表
@@ -16,7 +24,7 @@ export function deptList(query) {
   })
 }
 
-// 新增人事考勤报表
+// 新增人事供应商
 export function getAdd(data) {
   return request({
     url: '/system/supplier',
@@ -25,7 +33,7 @@ export function getAdd(data) {
   })
 }
 
-// 修改人事考勤报表
+// 修改人事供应商
 export function getEdit(data) {
   return request({
     url: '/system/supplier',
@@ -34,7 +42,7 @@ export function getEdit(data) {
   })
 }
 
-// 删除人事考勤报表
+// 删除人事供应商
 export function getDelete(id) {
   return request({
     url: '/system/supplier/' + id,
@@ -42,7 +50,7 @@ export function getDelete(id) {
   })
 }
 
-// 人事考勤报表详情
+// 人事供应商详情
 export function getDetail(id) {
   return request({
     url: '/system/supplier/' + id,
@@ -50,7 +58,7 @@ export function getDetail(id) {
   })
 }
 
-// 导出人事考勤报表列表
+// 导出人事供应商列表
 export function getExport(data) {
   return request({
     url: '/system/supplier/export',
@@ -58,7 +66,7 @@ export function getExport(data) {
     data: data
   })
 }
-// 导入人事考勤报表列表
+// 导入人事供应商列表
 export function getImport(data) {
   return request({
     url: '/system/supplier/import',

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:12:27
+ * @LastEditTime: 2024-11-20 17:31:50
 -->
 <template>
   <div class="app-container">
@@ -120,13 +120,13 @@
           <el-collapse-item title="供应商基础信息" name="1">
               <el-row>
                 <el-col :span="8">
-                    <el-form-item label="公司名称" prop="name">
-                      <el-input v-model="formInfo.data.name" placeholder="请输入公司名称" maxlength="30" />
+                    <el-form-item label="公司名称" prop="supplierName">
+                      <el-input v-model="formInfo.data.supplierName" placeholder="请输入公司名称" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="所在城市">
-                      <el-select v-model="formInfo.data.post" multiple placeholder="请选择所在城市">
+                      <el-select v-model="formInfo.data.locationCity" multiple placeholder="请选择所在城市">
                           <el-option
                             v-for="item in postOptions"
                             :key="item.postId"
@@ -139,7 +139,7 @@
                 </el-col>
                 <el-col :span="8">
                   <el-form-item label="供应商规模">
-                      <el-select v-model="formInfo.data.post" multiple placeholder="请选择供应商规模">
+                      <el-select v-model="formInfo.data.supplierScale" multiple placeholder="请选择供应商规模">
                           <el-option
                             v-for="item in postOptions"
                             :key="item.postId"
@@ -153,13 +153,13 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                    <el-form-item label="对接人" prop="mobile">
-                      <el-input v-model="formInfo.data.mobile" placeholder="请输入对接人" maxlength="30" />
+                    <el-form-item label="对接人" prop="contactPerson">
+                      <el-input v-model="formInfo.data.contactPerson" placeholder="请输入对接人" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="对接人职位:" prop="rank">
-                      <el-input v-model="formInfo.data.rank" placeholder="请输入供应商规模:" maxlength="30" />
+                    <el-form-item label="对接人职位:" prop="positionLiaisonPerson">
+                      <el-input v-model="formInfo.data.positionLiaisonPerson" placeholder="请输入对接人职位:" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -171,19 +171,19 @@
        
               <el-row>
                 <el-col :span="8">
-                    <el-form-item label="供应商等级:" prop="rank">
-                      <el-input v-model="formInfo.data.rank" placeholder="请输入供应商等级:" maxlength="30" />
+                    <el-form-item label="供应商等级:" prop="supplierLevel">
+                      <el-input v-model="formInfo.data.supplierLevel" placeholder="请输入供应商等级:" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="业务范围" prop="mobile">
-                      <el-input v-model="formInfo.data.mobile" placeholder="请输入业务范围" maxlength="30" />
+                    <el-form-item label="业务范围" prop="scopeBusiness">
+                      <el-input v-model="formInfo.data.scopeBusiness" placeholder="请输入业务范围" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="入库时间" prop="time1">
+                    <el-form-item label="入库时间" prop="storageTime">
                       <el-date-picker
-                        v-model="queryParams.time1"
+                        v-model="queryParams.storageTime"
                         type="date"
                         placeholder="入库时间"
                         format="YYYY-MM-DD"
@@ -194,13 +194,13 @@
               </el-row>
               <el-row>
                 <el-col :span="8">
-                    <el-form-item label="公司经营地址" prop="salary">
-                      <el-input v-model="formInfo.data.salary" placeholder="请输入公司经营地址" maxlength="30" />
+                    <el-form-item label="公司经营地址" prop="businessAddressCompany">
+                      <el-input v-model="formInfo.data.businessAddressCompany" placeholder="请输入公司经营地址" maxlength="30" />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="公司介绍" prop="time2">
-                    <el-input v-model="formInfo.data.resignationReason" placeholder="请输入公司介绍" maxlength="30" />
+                  <el-form-item label="公司介绍" prop="companyIntroduction">
+                    <el-input v-model="formInfo.data.companyIntroduction" placeholder="请输入公司介绍" maxlength="30" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -233,8 +233,8 @@
                       :action="upload2.url"
                       :disabled="upload2.isUploading"
                       :auto-upload="true"
-                      :on-progress="handleFileUploadProgress"
-                      :on-success="handleFileSuccess"
+                      :on-progress="handleFileUploadProgress1"
+                      :on-success="handleFileSuccess1"
                     >
                       <img v-if="imageUrl2" :src="imageUrl2" class="avatar" />
                       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -251,8 +251,8 @@
                       :action="upload3.url"
                       :disabled="upload3.isUploading"
                       :auto-upload="true"
-                      :on-progress="handleFileUploadProgress"
-                      :on-success="handleFileSuccess"
+                      :on-progress="handleFileUploadProgress2"
+                      :on-success="handleFileSuccess2"
                     >
                       <img v-if="imageUrl3" :src="imageUrl3" class="avatar" />
                       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
@@ -264,37 +264,37 @@
           <el-collapse-item title="供应商财务信息" name="2">
             <el-row>
               <el-col :span="12">
-                <el-form-item label="发票抬头" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入发票抬头" maxlength="30" />
+                <el-form-item label="发票抬头" prop="invoiceHeader">
+                  <el-input v-model="formInfo.data.invoiceHeader" placeholder="请输入发票抬头" maxlength="30" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="发票抬头" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入发票抬头" maxlength="30" />
-                </el-form-item>
-              </el-col>
-            </el-row>
-            <el-row>
-              <el-col :span="12">
-                <el-form-item label="开户银行" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入开户银行" maxlength="30" />
-                </el-form-item>
-              </el-col>
-              <el-col :span="12">
-                <el-form-item label="银行账号" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入银行账号" maxlength="30" />
+                <el-form-item label="企业税号" prop="enterpriseNumber">
+                  <el-input v-model="formInfo.data.enterpriseNumber" placeholder="请输入企业税号" maxlength="30" />
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="12">
-                <el-form-item label="单位地址" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入单位地址" maxlength="30" />
+                <el-form-item label="开户银行" prop="bankDeposit">
+                  <el-input v-model="formInfo.data.bankDeposit" placeholder="请输入开户银行" maxlength="30" />
                 </el-form-item>
               </el-col>
               <el-col :span="12">
-                <el-form-item label="电话号码" prop="remarks">
-                  <el-input v-model="formInfo.data.remarks" placeholder="请输入电话号码" maxlength="30" />
+                <el-form-item label="银行账号" prop="bankAccount">
+                  <el-input v-model="formInfo.data.bankAccount" placeholder="请输入银行账号" maxlength="30" />
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="单位地址" prop="unitAddress">
+                  <el-input v-model="formInfo.data.unitAddress" placeholder="请输入单位地址" maxlength="30" />
+                </el-form-item>
+              </el-col>
+              <el-col :span="12">
+                <el-form-item label="电话号码" prop="phoneNumber">
+                  <el-input v-model="formInfo.data.phoneNumber" placeholder="请输入电话号码" maxlength="30" />
                 </el-form-item>
               </el-col>
             </el-row>
@@ -321,7 +321,7 @@ export default defineComponent({
       // expandTrigger: 'hover',
       checkStrictly : true
     }
-    const activeNames = ref(['1'])
+    const activeNames = ref(['1','2'])
     const handleChange = (val) => {
       console.log(val)
     }
@@ -367,6 +367,11 @@ export default defineComponent({
 }
 .app-container .el-table{
   flex: 1;
+}
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
 }
 .avatar-uploader .el-upload {
   border: 1px dashed var(--el-border-color);
