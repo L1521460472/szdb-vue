@@ -106,6 +106,7 @@ import useAppStore from '@/store/modules/app'
 import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 import { setWatermark } from "@/api/login";
+import { getUnconfirmed,getConfirmed } from "@/api/personnel/attendanceReport";
 
 const instance = getCurrentInstance().proxy
 const appStore = useAppStore()
@@ -222,6 +223,9 @@ onMounted(() => {
     watermarkValue.value = false
   }
   userStore.getShow(watermarkValue.value)
+  getUnconfirmed().then((res)=>{
+    console.log(res)
+  })
 })
 </script>
 

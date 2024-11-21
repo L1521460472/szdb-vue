@@ -66,3 +66,17 @@ export function getImport(data) {
     data: data
   })
 }
+// 获取未确认的考勤报表
+export function getUnconfirmed() {
+  return request({
+    url: '/system/report/getUnconfirmed',
+    method: 'GET',
+  })
+}
+// 确认考勤报表
+export function getConfirmed() {
+  return request({
+    url: '/system/report/confirmed',
+    method: 'GET',
+  })
+}

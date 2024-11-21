@@ -8,8 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail } from "@/api/personnel/supplier";
-import { getUser, } from "@/api/system/user";
+import { getPage,getAdd,deptList,getDelete,getDetail } from "@/api/task/projectSpecification";
 
 export default function ($vm) {
 
@@ -17,33 +16,28 @@ export default function ($vm) {
   const loading = ref(true);
   const showSearch = ref(true);
   const total = ref(0);
-  const atWork = ref(0);
-  const resign = ref(0);
-  const resignationRate = ref(0);
+  const num1 = ref(0);
+  const num2 = ref(0);
   const type = ref('add');
   const oldProjectRate = ref('');
   const oldTimeConsuming = ref('');
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    name: undefined,
-    post: undefined,
-    status: undefined,
-    time: undefined,
+    projectId: undefined,
+    projectName: undefined,
+    producerId: undefined,
+    approveStatus: undefined,
   })
 
   /**
    * @description: 表格数据
    */
   const tableData = ref([]);
-  const postOptions = ref([]);
-  const roleOptions = ref([]);
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
     getPage(queryParams.value).then(response => {
-      // tableData.value = [{}];
-      // total.value = 1;
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
@@ -53,14 +47,7 @@ export default function ($vm) {
   function getDeptTreeList() {
     deptList().then(response => {
       $vm.departmentOptions = response.data;
-    }); 
-  };
-  /** 查询user */
-  function getUserData() {
-    getUser().then(response => {
-      postOptions.value = response.posts;
-      roleOptions.value = response.roles;
-    });
+  });
   };
    /** 搜索按钮操作 */
   function handleQuery() {
@@ -74,7 +61,6 @@ export default function ($vm) {
   }
   // 新增
   function handleAddOpen() {
-    type.value = 'add'
     $vm.dialogInfo.visible = true;
   }
   /** 编辑 */
@@ -84,12 +70,11 @@ export default function ($vm) {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
-        $vm.imageUrl1 = response.data.supplierLogo
-        $vm.imageUrl2 = response.data.supplierBusinessLicense
-        $vm.imageUrl3 = response.data.supplierQualificationCertificate
+        $vm.valueHtml = response.data.standardContent
         $vm.dialogInfo.visible = true;
       }
     });
+    
   }
   /** 删除 */
   const handleDelete = (row) => {
@@ -105,24 +90,20 @@ export default function ($vm) {
   onMounted(() => {
     getList()
     getDeptTreeList()
-    getUserData()
   });
 
 
   return {
     tableData,
     total,
-    atWork,
-    resign,
-    resignationRate,
+    num1,
+    num2,
     type,
     loading,
     showSearch,
     queryParams,
     oldProjectRate,
     oldTimeConsuming,
-    postOptions,
-    roleOptions,
     getList,
     handleEdit,
     handleDelete,

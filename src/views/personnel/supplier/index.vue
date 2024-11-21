@@ -126,7 +126,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="110px">
+      <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="供应商基础信息" name="1">
               <el-row>
@@ -136,7 +136,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="所在城市">
+                  <el-form-item label="所在城市" prop="locationCity">
                       <!-- <el-select v-model="formInfo.data.locationCity" multiple placeholder="请选择所在城市">
                           <el-option
                             v-for="item in cityCode"
@@ -156,7 +156,7 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                  <el-form-item label="供应商规模">
+                  <el-form-item label="供应商规模" prop="supplierScale">
                       <el-select v-model="formInfo.data.supplierScale" placeholder="请选择供应商规模">
                           <el-option
                             v-for="item in listTypeInfo.supplierList"

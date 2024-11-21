@@ -163,7 +163,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="制作工时" required>
-                    <el-input v-model="item.time1" type="number" :step="0.1" min="0" placeholder="请输入制作工时" />
+                    <el-input v-model="item.makeTime" type="number" :step="0.1" min="0" placeholder="请输入制作工时" />
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">

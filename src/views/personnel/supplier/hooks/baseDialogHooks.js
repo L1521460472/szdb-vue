@@ -41,7 +41,7 @@ export default function ($vm) {
     ref: {},
     span: 12,
     data: {
-      standardName: '',
+      supplierName: '',
       deptId: '',
       deptName: '',
       standardContent: '',
@@ -49,8 +49,53 @@ export default function ($vm) {
     disabled: false,
     fieldList: [],
     rules: {
-      standardName: [
-        { required: true, message: '必填', trigger: 'blur' }
+      supplierName: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      locationCity: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      supplierScale: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      contactPerson: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      positionLiaisonPerson: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      mobile: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      supplierLevel: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      scopeBusiness: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      storageTime: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      businessAddressCompany: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      invoiceHeader: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      enterpriseNumber: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      bankDeposit: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      bankAccount: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      unitAddress: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+      phoneNumber: [
+        { required: true, message: '必填', trigger: 'blur' },
       ],
     },
     labelWidth: "150px",
@@ -137,34 +182,34 @@ export default function ($vm) {
   /** 保存 */
   const confirm = () => {
     console.log(formInfo.data,imageUrl1.value);
-    // formInfo.data.type = 1;
-    // if(Array.isArray(formInfo.data.deptId)){
-    //   formInfo.data.deptId = formInfo.data.deptId.slice(-1)[0]
-    // }
-    const params = {
-      ...formInfo.data,
-      // scopeBusiness:formInfo.data.scopeBusiness.split(','),
-      supplierLogo: imageUrl1.value,
-      supplierBusinessLicense: imageUrl2.value,
-      supplierQualificationCertificate: imageUrl3.value,
-    }
-    if($vm.type === 'add'){
-      getAdd(params).then(response => {
-        if(response.code == 200){
-          $vm.getList()
-          dialogInfo.visible = false;
-          $vm.$modal.msgSuccess("保存成功");
+    $vm.$refs["supplierRef"].validate(valid => {
+      if (valid) {
+        const params = {
+          ...formInfo.data,
+          // scopeBusiness:formInfo.data.scopeBusiness.split(','),
+          supplierLogo: imageUrl1.value,
+          supplierBusinessLicense: imageUrl2.value,
+          supplierQualificationCertificate: imageUrl3.value,
         }
-      });
-    }else{
-      getEdit(params).then(response => {
-        if(response.code == 200){
-          $vm.getList()
-          dialogInfo.visible = false;
-          $vm.$modal.msgSuccess("修改成功");
+        if($vm.type === 'add'){
+          getAdd(params).then(response => {
+            if(response.code == 200){
+              $vm.getList()
+              dialogInfo.visible = false;
+              $vm.$modal.msgSuccess("保存成功");
+            }
+          });
+        }else{
+          getEdit(params).then(response => {
+            if(response.code == 200){
+              $vm.getList()
+              dialogInfo.visible = false;
+              $vm.$modal.msgSuccess("修改成功");
+            }
+          });
         }
-      });
-    }
+      }
+    });
   };
   /** change */
   const handleProjectRate = (val) => {

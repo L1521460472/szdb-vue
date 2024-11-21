@@ -49,6 +49,7 @@ export default function ($vm) {
           projectId:null,
           projectStage:null,
           projectRate:null,
+          makeTime:null,
           time:null,
           taskTime:null,
           rateFile:null,
@@ -216,6 +217,7 @@ export default function ($vm) {
           type:1,
           projectStageName:formInfo.data.artsProjectRateAddListRequestList[0].projectStage,
           projectId:formInfo.data.artsProjectRateAddListRequestList[0].projectId,
+          makeTime:formInfo.data.artsProjectRateAddListRequestList[0].makeTime,
           remarks:formInfo.data.artsProjectRateAddListRequestList[0].remarks
         }
         editTask(params).then(response => {
