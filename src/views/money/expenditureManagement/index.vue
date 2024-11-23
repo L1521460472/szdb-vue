@@ -10,31 +10,7 @@
   <div class="app-container">
     <el-button class="addTab" @click="handleImport">导入数据</el-button>
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClickTabs">
-      <el-tab-pane label="团队支出" name="first">
-        <el-table v-loading="loading" :data="tableData" border>
-          <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="55" align="center" type="index" />
-          <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
-          <el-table-column label="团队名称" align="center" prop="expenditureName" />
-          <el-table-column label="总支出" align="center" prop="expenditureCost" />
-          <el-table-column label="费用导入时间" align="center" prop="createTime" />
-          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
-              <template #default="scope">
-                <el-tooltip content="删除" placement="top">
-                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
-          </el-table-column>
-        </el-table>
-        <pagination
-          v-show="total > 0"
-          :total="total"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList"
-        />
-      </el-tab-pane>
-      <el-tab-pane label="基础费用" name="second">
+      <el-tab-pane label="基础费用" name="first">
         <el-table v-loading="loading" :data="tableDataList" border>
           <!-- <el-table-column type="selection" width="55" align="center" /> -->
           <el-table-column label="序号" width="55" align="center" type="index" />
@@ -56,6 +32,30 @@
           v-model:page="queryParams.pageNum"
           v-model:limit="queryParams.pageSize"
           @pagination="getDataList"
+        />
+      </el-tab-pane>
+      <el-tab-pane label="工资数据" name="second">
+        <el-table v-loading="loading" :data="tableData" border>
+          <!-- <el-table-column type="selection" width="55" align="center" /> -->
+          <el-table-column label="序号" width="55" align="center" type="index" />
+          <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
+          <el-table-column label="团队名称" align="center" prop="expenditureName" />
+          <el-table-column label="总支出" align="center" prop="expenditureCost" />
+          <el-table-column label="费用导入时间" align="center" prop="createTime" />
+          <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+              <template #default="scope">
+                <el-tooltip content="删除" placement="top">
+                    <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
+                </el-tooltip>
+              </template>
+          </el-table-column>
+        </el-table>
+        <pagination
+          v-show="total > 0"
+          :total="total"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
         />
       </el-tab-pane>
     </el-tabs>

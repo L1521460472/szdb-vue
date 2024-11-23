@@ -79,18 +79,35 @@
      </el-form>
 
      <el-row :gutter="10" class="mb8">
-        <el-col :span="1.5">
+        <el-col :span="4">
            <!-- <el-button
               type="primary"
               plain
               icon="Plus"
               @click="handleAdd"
            >新增</el-button> -->
+          <el-radio-group v-model="activeName">
+            <el-radio-button label="汇总预览" value="汇总预览" />
+            <el-radio-button label="汇总详情" value="汇总详情" />
+          </el-radio-group>
         </el-col>
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
      </el-row>
-
-     <el-table v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
+     <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
+        <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
+        <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
+        <el-table-column label="本月工时" width="100" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
+        <el-table-column :label="item.label" min-width="160" align="center" v-for="(item,index) in columnList" :key="index" >
+          <template #default="scope">
+            <div style="display: flex;align-items: center;width: 100%;margin-bottom: 5px;" v-for="v in scope.row.artsProjectRateDataListResponses[index].artsProjectRates">
+              <div style="width: 50px;">{{ v.projectStageName }}</div>
+              <div style="width: 50px;">{{ v.timeConsuming }}</div>
+              <el-image style="width: 100px; height: 50px" :src="v.rateFile" :preview-src-list="[v.rateFile]" :z-index="9999" preview-teleported/>
+            </div>
+           </template>
+        </el-table-column>
+     </el-table>
+     <el-table v-show="activeName == '汇总详情'" v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
         <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
         <el-table-column label="客户名称" align="center" min-width="100" prop="projectEnterpriseName" fixed="left" v-if="columns[0].visible" />
         <el-table-column label="项目代码" align="center" min-width="100" prop="projectCode" fixed="left" v-if="columns[1].visible" />
@@ -298,6 +315,8 @@ const total = ref(0);
 const title = ref("");
 const uploadRef = ref(null);
 const userId = ref(Cookies.get("userId"));
+const activeName = ref('汇总预览')
+const options = ['汇总预览', '汇总详情']
 // 列显隐信息
 const columns = ref([
  { key: 0, label: `项目企业`, visible: true },
