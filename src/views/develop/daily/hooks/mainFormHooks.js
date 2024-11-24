@@ -26,7 +26,7 @@ export default function ($vm) {
       { key: "已撤回", value: '4' },
     ],
     projectList: [],
-    userList: [],
+    stageNameList: [],
   });
 
   const topFormInfo = reactive({

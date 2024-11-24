@@ -10,7 +10,7 @@ import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
-import { getAdd,getEdit } from "../../../../api/task/projectSpecification";
+import { getAdd,getEdit } from "@/api/develop/daily";
 // import { useRouter } from 'vue-router'
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
@@ -111,7 +111,7 @@ export default function ($vm) {
     }
     const params = {
       ...formInfo.data,
-      standardContent: $vm.valueHtml,
+      explanatory: $vm.valueHtml,
     }
     if($vm.type === 'add'){
       getAdd(params).then(response => {
@@ -158,8 +158,31 @@ export default function ($vm) {
     })
   };
   /** change */
-  const handleChangeDept = (val) => {
-    formInfo.data.deptName = refDep.value.getCheckedNodes()[0].label
+  const handleChange = (val) => {
+    console.log(val)
+    let arr = $vm.departmentOptions.find(item => item.assignmentName == val).stageNameList
+    $vm.listTypeInfo.stageNameList = arr.map((items,index)=>{
+      return {
+        label: items,
+        value: items
+      }
+    })
+    console.log($vm.listTypeInfo.stageNameList)
+  };
+  /** 提交上传文件 */
+  function submitFileForm() {
+    $vm.$refs["uploadRef"].submit();
+  };
+  /**文件上传中处理 */
+  const handleFileUploadProgress = (event, file, fileList) => {
+    upload1.isUploading = true;
+  };
+  /** 文件上传成功处理 */
+  const handleFileSuccess = (response, file, fileList) => {
+    formInfo.data.stageFile = response.url
+    upload1.open = false;
+    upload1.isUploading = false;
+    $vm.$refs["uploadRef"].handleRemove(file);
   };
 
   const getTwo = (val)=>{
@@ -180,6 +203,8 @@ export default function ($vm) {
     handleProjectRate,
     handleTime,
     getTwo,
-    handleChangeDept
+    handleChange,
+    handleFileUploadProgress,
+    handleFileSuccess
   };
 }

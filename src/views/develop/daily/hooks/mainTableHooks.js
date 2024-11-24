@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,getAdd,deptList,getDelete,getDetail } from "@/api/task/projectSpecification";
+import { getPage,getAdd,getUserAssignment,getDelete,getDetail } from "@/api/develop/daily";
 
 export default function ($vm) {
 
@@ -43,9 +43,9 @@ export default function ($vm) {
       loading.value = false;
     });
   }
-  /** 查询部门树 */
+  /** 获取该用户的任务及阶段 */
   function getDeptTreeList() {
-    deptList().then(response => {
+    getUserAssignment().then(response => {
       $vm.departmentOptions = response.data;
   });
   };
@@ -65,6 +65,7 @@ export default function ($vm) {
   }
   /** 编辑 */
   const handleEdit = (row) => {
+    console.log(row)
     type.value = 'edit'
     getDetail(row.id).then(response => {
       if(response.code == 200){

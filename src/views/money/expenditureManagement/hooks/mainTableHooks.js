@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { expenditureList,delExpenditure } from "@/api/money/expenditureManagement";
+import { expenditureList,delExpenditure,getPage } from "@/api/money/expenditureManagement";
 import { getToken } from "@/utils/auth";
 
 export default function ($vm) {
@@ -51,7 +51,7 @@ export default function ($vm) {
    */
   const tableData = ref([]);
   const tableDataList = ref([]);
-  /** 查询团队支出列表 */
+  /** 查询基础费用列表 */
   const getList = () => {
     loading.value = true;
     queryParams.value.type = 1;
@@ -61,11 +61,10 @@ export default function ($vm) {
       loading.value = false;
     });
   }
-  /** 查询基础费用列表 */
+  /** 查询工资数据列表 */
   const getDataList = () => {
     loading.value = true;
-    queryParams.value.type = 2;
-    expenditureList(2,queryParams.value.pageNum,queryParams.value.pageSize).then(response => {
+    getPage(queryParams.value).then(response => {
       tableDataList.value = response.rows;
       totalValue.value = response.total;
       loading.value = false;

@@ -22,3 +22,53 @@ export function delExpenditure(id) {
     method: 'post',
   })
 }
+// 查询财务员工成本管理列表
+export function getPage(data) {
+  return request({
+    url: '/system/cost/list',
+    method: 'GET',
+    data
+  })
+}
+// 新增财务员工成本管理
+export function getAdd(data) {
+  return request({
+    url: '/system/cost',
+    method: 'POST',
+    data: data
+  })
+}
+
+// 修改财务员工成本管理
+export function getEdit(data) {
+  return request({
+    url: '/system/cost',
+    method: 'PUT',
+    data: data
+  })
+}
+
+// 删除财务员工成本管理
+export function getDelete(id) {
+  return request({
+    url: '/system/cost/' + id,
+    method: 'DELETE',
+  })
+}
+
+// 财务员工成本管理详情
+export function getDetail(id) {
+  return request({
+    url: '/system/cost/' + id,
+    method: 'GET',
+  })
+}
+
+// 导出员工成本管理
+export function getExport(data) {
+  return request({
+    url: '/system/cost/export',
+    method: 'POST',
+    data: data
+  })
+}

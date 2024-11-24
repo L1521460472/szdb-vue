@@ -15,7 +15,7 @@ export function getPage(data) {
       method: 'GET',
     })
 }
-// 查询人事入离职列表
+// 查询人事入离职列表统计
 export function getStatistics(data) {
     return request({
       url: '/system/exit/dataStatistics',

@@ -69,23 +69,23 @@
     <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="序号" width="55" align="center" type="index" />
-      <el-table-column label="项目名称" align="center" prop="projectName">
+      <el-table-column label="姓名" align="center" prop="createBy"/>
+      <el-table-column label="项目名称" align="center" prop="assignmentName">
       <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="日报日期" align="center" width="160" prop="createTime" />
-      <el-table-column label="参与阶段" align="center" prop="projectStage" />
+      <el-table-column label="日报日期" align="center" width="160" prop="stageTime" />
+      <el-table-column label="参与阶段" align="center" prop="stageName" />
       <!-- <el-table-column label="当前进度" align="center" prop="projectRate" >
         <template #default="scope">
           <span>{{ scope.row.projectRate }} <span v-if="scope.row.projectRate">%</span></span>
           </template>
       </el-table-column> -->
-      <el-table-column label="工作人天" align="center" width="100" prop="timeConsuming" />
-      <el-table-column label="绩效人天" align="center" width="100" prop="timeConsuming1" />
-      <el-table-column label="工作截图" align="center" width="130" prop="producerTime">
+      <el-table-column label="工作人天" align="center" width="100" prop="workDay" />
+      <el-table-column label="工作截图" align="center" width="130" prop="stageFile">
         <template #default="scope">
-          <el-image style="width: 100px; height: 50px" :src="scope.row.rateFile" :preview-src-list="[scope.row.rateFile]" preview-teleported/>
+          <el-image style="width: 100px; height: 50px" :src="scope.row.stageFile" :preview-src-list="[scope.row.stageFile]" preview-teleported/>
         </template>
       </el-table-column>
       
@@ -97,7 +97,7 @@
           <span v-if="scope.row.approveStatus == 4">已撤回</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="工作总结" align="center" prop="approveRemarks" />
+      <el-table-column label="工作总结" align="center" prop="explanatory" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="编辑" placement="top">
@@ -129,14 +129,21 @@
     <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px">
       <el-row>
           <el-col :span="8">
-              <el-form-item label="关联项目" prop="supplierName">
-                <el-input v-model="formInfo.data.supplierName" placeholder="请输入关联项目" maxlength="30" />
+              <el-form-item label="关联项目" prop="assignmentName">
+                <el-select v-model="formInfo.data.assignmentName" placeholder="请选择关联项目" @change="handleChange">
+                    <el-option
+                      v-for="item in departmentOptions"
+                      :key="item.assignmentId"
+                      :label="item.assignmentName"
+                      :value="item.assignmentName"
+                    ></el-option>
+                </el-select>
               </el-form-item>
           </el-col>
           <el-col :span="8">
-              <el-form-item label="日报日期" prop="storageTime">
+              <el-form-item label="日报日期" prop="stageTime">
                 <el-date-picker
-                  v-model="formInfo.data.storageTime"
+                  v-model="formInfo.data.stageTime"
                   type="date"
                   placeholder="日报日期"
                   format="YYYY-MM-DD"
@@ -145,13 +152,13 @@
               </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="参与阶段" prop="supplierScale">
-                <el-select v-model="formInfo.data.supplierScale" placeholder="请选择参与阶段">
+            <el-form-item label="参与阶段" prop="stageName">
+                <el-select v-model="formInfo.data.stageName" placeholder="请选择参与阶段">
                     <el-option
-                      v-for="item in listTypeInfo.supplierList"
+                      v-for="item in listTypeInfo.stageNameList"
                       :key="item.value"
-                      :label="item.key"
-                      :value="item.key"
+                      :label="item.label"
+                      :value="item.label"
                     ></el-option>
                 </el-select>
               </el-form-item>
@@ -159,21 +166,14 @@
         </el-row>
         <el-row>
           <el-col :span="8">
-              <el-form-item label="工作人天:" prop="positionLiaisonPerson">
-                <el-input v-model="formInfo.data.positionLiaisonPerson" placeholder="请输入工作人天:" maxlength="30" />
+              <el-form-item label="工作人天:" prop="workDay">
+                <el-input v-model="formInfo.data.workDay" placeholder="请输入工作人天:" maxlength="30" />
               </el-form-item>
           </el-col>
           <el-col :span="8">
-              <el-form-item label="绩效人天" prop="businessAddressCompany">
-                <el-input v-model="formInfo.data.businessAddressCompany" placeholder="请输入绩效人天" maxlength="30" />
-              </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="8">
-            <el-form-item label="完成截图" prop="status">
+            <el-form-item label="完成截图" prop="stageFile">
               <el-upload
-                ref="uploadRef1"
+                ref="uploadRef"
                 class="avatar-uploader"
                 :show-file-list="false"
                 :headers="upload1.headers"
@@ -183,7 +183,7 @@
                 :on-progress="handleFileUploadProgress"
                 :on-success="handleFileSuccess"
               >
-                <img v-if="imageUrl1" :src="imageUrl1" class="avatar" />
+                <img v-if="formInfo.data.stageFile" :src="formInfo.data.stageFile" class="avatar" />
                 <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
               </el-upload>
             </el-form-item>
@@ -191,7 +191,7 @@
         </el-row>
       <el-row>
         <el-col :span="24">
-          <el-form-item label="工作总结" prop="phoneNumber">
+          <el-form-item label="工作总结" prop="explanatory">
             <div style="border: 1px solid #ccc">
           <Toolbar
             style="border-bottom: 1px solid #ccc"
@@ -231,7 +231,7 @@ export default defineComponent({
     const editorRef = shallowRef()
     const editorConfig = { placeholder: "请输入内容...", MENU_CONF: {} };
     // 内容 HTML
-    const valueHtml = ref('<p>hello</p>')
+    const valueHtml = ref('')
     const props = {
       value: 'id',
       // expandTrigger: 'hover',

@@ -55,35 +55,41 @@
         </el-dropdown>
       </div>
     </div>
-    <el-dialog v-model="centerDialogVisible" title="考勤确认提醒" width="90%" center>
+    <el-dialog v-model="centerDialogVisible" title="考勤确认提醒" width="95%" center>
       <p
         >亲爱的同学，您好！这是 2024 年 8 月 份的考勤确认提醒，此数据尤为重要，如有错误，将影响您的工资核算，请认真核对。如无异议，请点击确认，如有异常，请拒绝签收并联系人事部处理。谢谢！</p
       >
       <el-table :data="tableData" border style="width: 100%">
         <el-table-column prop="name" label="姓名" />
-        <el-table-column prop="name0" label="部门" />
-        <el-table-column prop="name1" label="职位" />
-        <el-table-column prop="name2" label="入职时间" />
-        <el-table-column prop="name3" label="应出勤天" />
-        <el-table-column prop="name4" label="核算工资出勤天数" />
-        <el-table-column prop="name5" label="加班（小时）" />
-        <el-table-column prop="name6" label="事假" />
-        <el-table-column prop="name7" label="病假" />
-        <el-table-column prop="name8" label="年假" />
-        <el-table-column prop="name9" label="婚/丧/陪产假" />
-        <el-table-column prop="name10" label="全勤奖" />
-        <el-table-column prop="name11" label="迟到次数" />
-        <el-table-column prop="name12" label="缺卡次数" />
-        <el-table-column prop="name13" label="考勤扣款" />
-        <el-table-column prop="name14" label="年假剩余（小时）" />
-        <el-table-column prop="name15" label="调休剩余（小时）" />
-        <el-table-column prop="name16" label="备注" />
-        <el-table-column prop="name17" label="状态" />
+        <el-table-column prop="deptName" label="部门" />
+        <el-table-column prop="positionName" label="职位"/>
+        <el-table-column prop="employmentTime" label="入职时间" width="120" />
+        <el-table-column prop="attendanceDay" label="应出勤天" />
+        <el-table-column prop="accountingAttendanceDay" label="核算工资出勤天数" />
+        <el-table-column prop="workOvertime" label="加班（小时）" />
+        <el-table-column prop="compassionateLeave" label="事假" />
+        <el-table-column prop="sickLeave" label="病假" />
+        <el-table-column prop="annualLeave" label="年假" />
+        <el-table-column prop="marriageBereavementPaternityLeave" label="婚/丧/陪产假" />
+        <el-table-column prop="totalManagementSystem" label="全勤奖" />
+        <el-table-column prop="numberLatencies" label="迟到次数" />
+        <el-table-column prop="numberMissingCards" label="缺卡次数" />
+        <el-table-column prop="attendanceDeduction" label="考勤扣款" />
+        <el-table-column prop="remainingAnnualLeave" label="年假剩余（小时）" />
+        <el-table-column prop="remainingCompensatoryLeave" label="调休剩余（小时）" />
+        <el-table-column prop="remarks" label="备注" />
+        <el-table-column label="考勤状态" prop="attendanceStatus">
+          <template #default="scope">
+            <span v-if="scope.row.attendanceStatus == 1">已确认</span>
+            <span v-if="scope.row.attendanceStatus == 2">未确认</span>
+            <span v-if="scope.row.attendanceStatus == 3">异常</span>
+          </template>
+        </el-table-column>
       </el-table>
       <template #footer>
         <span class="dialog-footer">
-          <el-button @click="centerDialogVisible = false">拒 绝</el-button>
-          <el-button type="primary" @click="centerDialogVisible = false"
+          <el-button @click="handleClickKQ(0)">拒 绝</el-button>
+          <el-button type="primary" @click="handleClickKQ(1)"
             >确 认</el-button
           >
         </span>
@@ -118,29 +124,7 @@ const number = ref(0)
 const flag = ref(true)
 const centerDialogVisible = ref(true)
 
-const tableData = ref([
-  {
-    name: 'Tom',
-    name0: 'Tom0',
-    name1: 'Tom1',
-    name2: 'Tom2',
-    name3: 'Tom3',
-    name4: 'Tom4',
-    name5: 'Tom5',
-    name6: 'Tom6',
-    name7: 'Tom7',
-    name8: 'Tom8',
-    name9: 'Tom9',
-    name10: 'Tom10',
-    name11: 'Tom11',
-    name12: 'Tom12',
-    name13: 'Tom13',
-    name14: 'Tom14',
-    name15: 'Tom15',
-    name16: 'Tom16',
-    name17: 'Tom17',
-  },
-])
+const tableData = ref([])
 
 function toggleSideBar() {
   appStore.toggleSideBar()
@@ -207,6 +191,20 @@ function handleWater(val) {
   // console.log(val)
   flag.value = true
 }
+function handleClickKQ(val) {
+  // console.log(val)
+  if(val == 1){
+    getConfirmed().then((res)=>{
+      console.log(res)
+      instance.$modal.msgSuccess("考勤已确认");
+      centerDialogVisible.value = false
+    })
+  }else{
+    console.log(res)
+    instance.$modal.msgError("考勤已拒绝，待重新确认");
+    centerDialogVisible.value = false
+  }
+}
 
 const emits = defineEmits(['setLayout'])
 function setLayout() {
@@ -225,6 +223,12 @@ onMounted(() => {
   userStore.getShow(watermarkValue.value)
   getUnconfirmed().then((res)=>{
     console.log(res)
+    if(res.data){
+      centerDialogVisible.value = true
+      tableData.value = [res.data]
+    }else{
+      centerDialogVisible.value = false
+    }
   })
 })
 </script>
