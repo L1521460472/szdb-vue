@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-22 09:21:20
+ * @LastEditTime: 2024-11-27 20:01:19
  */
 import { reactive, onBeforeMount } from "vue";
 import { listProject,listCategory,userList,listCategoryDetail,flowPathList,departmentList,dictData,deptList,listCategoryByType } from "@/api/project/project";
@@ -55,9 +55,13 @@ export default function ($vm) {
   const getOrderList = ()=> {
     orderList().then(response => {
       if(response.data.length > 0){
-        $vm.oId = response.data[0].orderId
+        $vm.oId = response.data[0].levelId
+        listTypeInfo.orderList = response.data.map(item =>{
+          item.orderId = item.levelId
+          item.orderName = item.levelName
+          return item
+        })
       }
-      listTypeInfo.orderList = response.data;
     });
   };
   /** 查询企业 */

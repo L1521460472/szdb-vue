@@ -4,13 +4,13 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-28 10:44:27
+ * @LastEditTime: 2024-11-27 20:26:01
 -->
 <template>
   <div class="app-container">
     <el-row :gutter="20">
         <!--部门数据-->
-        <el-col :span="4" :xs="24" style="position: relative;">
+        <el-col :span="5" :xs="24" style="position: relative;">
           <div class="head-bottom">
             <el-button icon="Plus" @click="handleAddOrder">新建订单</el-button>
           </div>
@@ -30,7 +30,7 @@
                 :expand-on-click-node="false"
                 :filter-node-method="filterNode"
                 ref="deptTreeRef"
-                node-key="id"
+                node-key="orderId"
                 highlight-current
                 default-expand-all
                 @node-click="handleNodeClick"
@@ -54,7 +54,7 @@
           
       </el-col>
       <!--用户数据-->
-      <el-col :span="20" :xs="24" style="border-left: 1px solid #e5e5e5;">
+      <el-col :span="19" :xs="24" style="border-left: 1px solid #e5e5e5;">
           <div class="title">
             <div class="title-text">
               <span class="title-text-one">订单名称： <span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.orderName }}</span> </span>

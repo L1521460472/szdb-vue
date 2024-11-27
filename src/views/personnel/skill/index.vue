@@ -202,6 +202,7 @@
             <div>
               <el-button @click="submitResume">上传简历</el-button>
               <el-button @click="submitWorks">上传作品</el-button>
+              <el-button @click="submitWorksPDF">上传作品PDF</el-button>
               <el-button @click="submitTest">上传测试</el-button>
               <!-- <el-button @click="submitForm">保 存</el-button>
               <el-button @click="cancel">关 闭</el-button> -->
@@ -292,6 +293,13 @@
                 {{ "作品" }}
               </div>
               <div
+                @click="selectFilter('zuopingPDF')"
+                class="main-tab-item"
+                :class="{ 'main-tab-item-active': selectTab == 'zuopingPDF' }"
+              >
+                {{ "作品PFD" }}
+              </div>
+              <div
                 @click="selectFilter('ceshi')"
                 class="main-tab-item"
                 :class="{ 'main-tab-item-active': selectTab == 'ceshi' }"
@@ -340,6 +348,31 @@
                 </div>
               </div>
               <div style="width: 100%;height: 300px;line-height: 300px;text-align: center;" v-else> 请上传作品 </div>
+            </div>
+            <div class="main-banner" v-if="selectTab == 'zuopingPDF'">
+              <div class="main-banner-item">
+                <div style="width: 100%;height: 100%;" v-if="imageUrl1">
+                  <iframe
+                  v-if="isPdf1"
+                  :src="imageUrl1 + '#toolbar=0'"
+                  type="application/x-google-chrome-pdf"
+                  width="100%"
+                  frameborder="0"
+                  scrolling="auto"
+                  height="100%" />
+                  <el-image
+                    v-else
+                    :src="imageUrl1"
+                    :zoom-rate="1.2"
+                    :preview-src-list="[imageUrl1]"
+                    :initial-index="4"
+                    fit="cover"
+                  />
+                </div>
+                <div style="width: 100%;height: 300px;line-height: 300px;text-align: center;" v-else> 请上传作品PDF </div>
+                <div style="position: absolute;top: 0;right: 80px;" @click="handleDeleteSkill"><el-button>删 除</el-button></div>
+                <div style="position: absolute;top: 0;right: 0;" @click="handleDownLoadSkill('',imageUrl1)"><el-button>下 载</el-button></div>
+              </div>
             </div>
             <div class="main-banner" v-else>
               <div class="main-banner-item1 test">
@@ -583,6 +616,42 @@
         </span>
       </template>
     </el-dialog>
+    <!-- 上传作品 -->
+    <el-dialog
+      v-model="dialogVisible3"
+      title="上传作品"
+      :close-on-click-modal="false"
+      width="30%"
+      :before-close="handleClose3"
+    >
+        <el-upload
+          ref="uploadRef3"
+          class="upload-demo"
+          drag
+          :headers="headers"
+          accept=".pdf"
+          :action="uploadUrl"
+          multiple
+          :auto-upload="false"
+          :beforeUpload="beforeUpload3"
+          :onRemove="onRemove3"
+          :onSuccess="onSuccess3"
+          :onChange="onChange3"
+        >
+          <el-icon class="el-icon--upload"><upload-filled /></el-icon>
+          <div class="el-upload__text">
+            将文件托到此处，或 <em>点击上传</em>
+          </div>
+        </el-upload>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button type="primary" @click="handleConfirm3">确 定</el-button>
+          <el-button @click="dialogVisible3 = false">
+            取 消
+          </el-button>
+        </span>
+      </template>
+    </el-dialog>
     <!-- 上传测试文件 -->
     <el-dialog
       v-model="dialogVisible2"
@@ -662,6 +731,7 @@ const activeNames = ref(['1','2','3','4'])
 const dialogVisible = ref(false)
 const dialogVisible1 = ref(false)
 const dialogVisible2 = ref(false)
+const dialogVisible3 = ref(false) // 作品PDF
 const queryRef = ref(null)
 const resumeId = ref(null)
 
@@ -697,13 +767,18 @@ const { queryParams, form, rules } = toRefs(data);
 const uploadRef = ref(null)
 const uploadRef1 = ref(null)
 const uploadRef2 = ref(null)
+const uploadRef3 = ref(null)
 const imageUrl = ref(null)
+const imageUrl1 = ref(null)
 const filesUrl = ref(null)
 const isPdf = ref(false)
+const isPdf1 = ref(false)
 const file = ref(null)
+const files1 = ref(null)
 const files = ref([])
 const testFiles = ref([])
 const fileList = ref([])
+const fileList1 = ref([])
 const props = {
   value: 'id',
   // expandTrigger: 'hover',
@@ -774,6 +849,7 @@ function getPostOptionsList() {
 /** 取消按钮 */
 function cancel() {
   imageUrl.value = null;
+  imageUrl1.value = null;
   filesUrl.value = null;
   file.value = null;
   files.value = [];
@@ -811,6 +887,7 @@ function handleSelectionChange(selection) {
 function handleAdd() {
   reset();
   imageUrl.value = null;
+  imageUrl1.value = null;
   filesUrl.value = null;
   fileList.value = [];
   nextTick(() => {
@@ -837,6 +914,12 @@ function handleUpdate(row) {
     imageUrl.value = import.meta.env.VITE_APP_BASE_API + row.resumeFileList[0].fileName;
   }else{
     imageUrl.value = null
+  }
+  if(row.resumeFileList1 && row.resumeFileList1.length > 0){
+    files1.value = row.resumeFileList1
+    imageUrl1.value = import.meta.env.VITE_APP_BASE_API + row.resumeFileList1[0].fileName;
+  }else{
+    imageUrl1.value = null
   }
   if(row.testFileList.length > 0){
     testFiles.value = row.testFileList
@@ -883,6 +966,10 @@ function handleDeleteZuopin(index){
 /** 上传作品 */
 function submitWorks() {
   dialogVisible1.value = true
+}
+/** 上传作品 */
+function submitWorksPDF() {
+  dialogVisible3.value = true
 }
 /** 上传测试 */
 function submitTest() {
@@ -1008,6 +1095,39 @@ const onSuccess2 = (response, file, fileLists) => {
   testFiles.value.push(response)
   setTimeout(()=>{
     dialogVisible2.value = false
+  },300)
+}
+// 上传作品文件前
+const beforeUpload3 = (obj) => {
+  const isPDF = obj.type === 'application/pdf';
+  if (isPDF) {
+    proxy.$modal.msgError("上传文件不能是 PDF 格式!");
+  }
+  return !isPDF;
+}
+// 移除作品文件
+const onRemove3 = (ob) => {
+  // file.value = {}
+}
+// 上传作品文件时
+const onChange3 = (files) => {
+  // console.log(files, fileList.value)
+  // fileList.value = files.fileList
+}
+// 上传作品文件成功
+const onSuccess3 = (response, file, fileLists) => {
+  // console.log(response, file, fileLists)
+  if(dialogForm.value.id){
+    response.personnelResumeId = dialogForm.value.id;
+    response.type = 2;
+  }else{
+    // response.personnelResumeId = null;
+    response.type = 2;
+  }
+  fileList1.value.push(response)
+  proxy.$refs["uploadRef3"].handleRemove(file);
+  setTimeout(()=>{
+    dialogVisible3.value = false
   },300)
 }
 /** 提交按钮 */
