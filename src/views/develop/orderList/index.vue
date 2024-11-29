@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-29 17:21:07
+ * @LastEditTime: 2024-11-29 18:11:37
 -->
 <template>
   <div class="app-container">
@@ -58,29 +58,33 @@
           <div class="title">
             <div class="title-text">
               <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-                <el-form-item label="任务名称" prop="name">
+                <el-form-item label="任务名称" prop="assignmentName">
                   <el-input
-                        v-model="queryParams.name"
+                        v-model="queryParams.assignmentName"
                         placeholder="请输入任务名称"
                         clearable
                         style="width: 240px"
                       />
                 </el-form-item>
-                <el-form-item label="参与成员" prop="name">
-                  <el-input
-                        v-model="queryParams.name"
-                        placeholder="请输入参与成员"
-                        clearable
-                        style="width: 240px"
-                      />
+                <el-form-item label="参与成员" prop="userId">
+                  <el-select v-model="queryParams.userId" placeholder="参与成员" clearable filterable style="width: 200px">
+                    <el-option
+                        v-for="item in listTypeInfo.userList"
+                        :key="item.userId"
+                        :label="item.userName"
+                        :value="item.userId"
+                    />
+                  </el-select>
                 </el-form-item>
                 <el-form-item label="任务日期" prop="attendanceMonth">
                   <el-date-picker
-                    v-model="queryParams.attendanceMonth"
-                    type="date"
+                    v-model="date"
+                    type="daterange"
                     placeholder="任务日期"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
+                    start-placeholder="计划开始日期"
+                    end-placeholder="计划结束日期"
                   />
                 </el-form-item>
                 <el-form-item>
@@ -226,7 +230,11 @@
             <!-- <div v-show="total > 0" style="border-left: 5px solid #409eff;color: #666;font-weight: 600;padding-left: 5px;">订单统计  <span class="orderText">订单名称：{{ totalObj.orderName }}</span><span class="orderText">计划人天：{{ totalObj.planDay }}</span><span class="orderText">最终人天：{{ totalObj.ultimatelyDay }}</span></div> -->
             <div v-show="total > 0">
               <span style="font-weight: 600;margin-right: 20px;"> 订单统计</span>  
-              订单名称：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.orderName }}</span>
+              订单名称：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.orderName }} 
+                <el-tooltip :content="totalObj.orderRemarks" effect="light" placement="top">
+                  <el-icon><ChatDotRound /></el-icon>
+                </el-tooltip>
+              </span>
               计划人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.planDay }}</span>
               最终人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.ultimatelyDay }}</span>
             </div>

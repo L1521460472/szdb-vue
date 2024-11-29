@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-08-06 10:18:27
+ * @LastEditTime: 2024-11-29 18:18:26
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -22,6 +22,7 @@ export default function ($vm) {
   const taskIndex = ref(0);
   const memberIndex = ref(0);
   const ids = ref([]);
+  const date = ref([]);
   const taskIds = ref([]);
   const queryParams = ref({
     pageNum: 1,
@@ -29,12 +30,17 @@ export default function ($vm) {
     projectId: undefined,
     orderByColumn: undefined,
     isAsc: undefined,
+    assignmentName: undefined,
+    userId: undefined,
+    plannedStartTime: undefined,
+    plannedEndTime: undefined,
   })
   const totalObj = ref({
     ultimatelyDay: null,
     supplementDay: null,
     planDay: null,
     orderName: null,
+    orderRemarks: null,
   })
 
   /**
@@ -46,7 +52,18 @@ export default function ($vm) {
   const getList = (orderId,orderByColumn,isAsc) => {
     loading.value = true;
     oId.value = orderId
-    taskList({orderId: oId.value,pageNum:queryParams.value.pageNum,pageSize:queryParams.value.pageSize,orderByColumn:orderByColumn,isAsc:queryParams.value.isAsc}).then(response => {
+    const params = {
+      orderId: oId.value,
+      assignmentName: queryParams.value.assignmentName,
+      userId: queryParams.value.userId,
+      plannedStartTime: queryParams.value.plannedStartTime,
+      plannedEndTime: queryParams.value.plannedEndTime,
+      pageNum: queryParams.value.pageNum,
+      pageSize: queryParams.value.pageSize,
+      orderByColumn: orderByColumn,
+      isAsc: queryParams.value.isAsc,
+    }
+    taskList(params).then(response => {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
@@ -249,6 +266,16 @@ export default function ($vm) {
       return 'fileUploads'
     }
   }
+  /** 搜索按钮操作 */
+  const handleQuery = () => {
+    $vm.queryParams.pageNum = 1;
+    getList(oId.value);
+  }
+  /** 重置按钮操作 */
+  const resetQuery = () => {
+    $vm.resetForm("queryRef");
+    handleQuery();
+  }
 
   onMounted(() => {
     setTimeout(() => {
@@ -269,6 +296,7 @@ export default function ($vm) {
     queryParams,
     totalObj,
     ids,
+    date,
     taskIds,
     orderId,
     getList,
@@ -291,5 +319,7 @@ export default function ($vm) {
     handleDelAll,
     handleDelMember,
     handleDeleteUserImg,
+    handleQuery,
+    resetQuery,
   };
 }
