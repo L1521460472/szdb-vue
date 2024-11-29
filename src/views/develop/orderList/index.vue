@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-28 18:33:12
+ * @LastEditTime: 2024-11-29 17:21:07
 -->
 <template>
   <div class="app-container">
@@ -57,17 +57,48 @@
       <el-col :span="19" :xs="24" style="border-left: 1px solid #e5e5e5;">
           <div class="title">
             <div class="title-text">
-              <!-- <span class="title-text-one">订单名称： <span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.orderName }}</span> </span>
-              <span class="title-text-one">计划总人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.planDay }}</span></span>
-              <span class="title-text-one">增补人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.supplementDay }}</span></span>
-              <span class="title-text-one">最终总人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.ultimatelyDay }}</span></span> -->
+              <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+                <el-form-item label="任务名称" prop="name">
+                  <el-input
+                        v-model="queryParams.name"
+                        placeholder="请输入任务名称"
+                        clearable
+                        style="width: 240px"
+                      />
+                </el-form-item>
+                <el-form-item label="参与成员" prop="name">
+                  <el-input
+                        v-model="queryParams.name"
+                        placeholder="请输入参与成员"
+                        clearable
+                        style="width: 240px"
+                      />
+                </el-form-item>
+                <el-form-item label="任务日期" prop="attendanceMonth">
+                  <el-date-picker
+                    v-model="queryParams.attendanceMonth"
+                    type="date"
+                    placeholder="任务日期"
+                    format="YYYY-MM-DD"
+                    value-format="YYYY-MM-DD"
+                  />
+                </el-form-item>
+                <el-form-item>
+                    <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
+                    <el-button icon="Refresh" @click="resetQuery">重置</el-button>
+                </el-form-item>
+              </el-form>
+               <div style="margin-bottom: 22px;">
+                  <el-button type="primary" plain icon="Plus" @click="handleAdd">新增任务</el-button>
+                  <el-button type="danger" plain icon="Delete" @click="handleDelAll">批量删除</el-button>
+                  <el-button type="warning" plain icon="Upload" @click="handleImport">导入</el-button>
+                </div>
             </div>
-            <div>
-              <!-- <el-button plain icon="Upload" @click="handleImport">批量导入</el-button> -->
+            <!-- <div>
               <el-button plain icon="Plus" @click="handleAdd">新增任务</el-button>
               <el-button plain icon="Delete" @click="handleDelAll">批量删除</el-button>
               <el-button plain icon="Upload" @click="handleImport">导入</el-button>
-            </div>
+            </div> -->
           </div>
 
           <el-table v-loading="loading" style="min-height: 400px;" border :data="tableData" @expand-change="expandChange" @selection-change="handleSelectionChangeTask" @sort-change="handleSortChange" row-key="id">
@@ -772,21 +803,21 @@ export default defineComponent({
   border-right: 1px solid #e5e5e5 !important;
 }
 .title{
-  height: 50px;
+  height: auto;
   display: flex;
   justify-content: space-between;
   align-items: center;
   .title-text{
-    width: 70%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-left: 5px solid #ed7d31;
-    padding-left: 5px;
-    .title-text-one{
-      font-size: 18px;
-      color: #ed7d31;
-    }
+    // width: 70%;
+    // display: flex;
+    // justify-content: space-between;
+    // align-items: center;
+    // border-left: 5px solid #ed7d31;
+    // padding-left: 5px;
+    // .title-text-one{
+    //   font-size: 18px;
+    //   color: #ed7d31;
+    // }
   }
 }
 
