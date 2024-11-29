@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-15 18:22:35
+ * @LastEditTime: 2024-11-28 18:12:36
 -->
 <template>
   <div class="app-container">
@@ -384,8 +384,8 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .app-container{
-  height: calc(100vh - 136px) !important;
-  min-height: calc(100vh - 136px) !important;
+  height: calc(100vh - 84px) !important;
+  min-height: calc(100vh - 84px) !important;
   display: flex;
   flex-direction: column;
 }

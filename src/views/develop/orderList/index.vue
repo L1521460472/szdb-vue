@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-27 20:26:01
+ * @LastEditTime: 2024-11-28 18:33:12
 -->
 <template>
   <div class="app-container">
@@ -57,10 +57,10 @@
       <el-col :span="19" :xs="24" style="border-left: 1px solid #e5e5e5;">
           <div class="title">
             <div class="title-text">
-              <span class="title-text-one">订单名称： <span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.orderName }}</span> </span>
+              <!-- <span class="title-text-one">订单名称： <span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.orderName }}</span> </span>
               <span class="title-text-one">计划总人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.planDay }}</span></span>
               <span class="title-text-one">增补人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.supplementDay }}</span></span>
-              <span class="title-text-one">最终总人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.ultimatelyDay }}</span></span>
+              <span class="title-text-one">最终总人天：<span style="border-bottom: 1px solid #ed7d31;color: #409eff;padding: 0 5px;box-sizing: border-box;">{{ totalObj.ultimatelyDay }}</span></span> -->
             </div>
             <div>
               <!-- <el-button plain icon="Upload" @click="handleImport">批量导入</el-button> -->
@@ -191,13 +191,30 @@
             </el-table-column>
           </el-table>
 
-          <pagination
+          <div style="display: flex;justify-content: space-between;align-items: center;">
+            <!-- <div v-show="total > 0" style="border-left: 5px solid #409eff;color: #666;font-weight: 600;padding-left: 5px;">订单统计  <span class="orderText">订单名称：{{ totalObj.orderName }}</span><span class="orderText">计划人天：{{ totalObj.planDay }}</span><span class="orderText">最终人天：{{ totalObj.ultimatelyDay }}</span></div> -->
+            <div v-show="total > 0">
+              <span style="font-weight: 600;margin-right: 20px;"> 订单统计</span>  
+              订单名称：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.orderName }}</span>
+              计划人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.planDay }}</span>
+              最终人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.ultimatelyDay }}</span>
+            </div>
+            <pagination
+              v-show="total > 0"
+              :total="total"
+              v-model:page="queryParams.pageNum"
+              v-model:limit="queryParams.pageSize"
+              @pagination="getList(oId)"
+            />
+          </div>
+
+          <!-- <pagination
             v-show="total > 0"
             :total="total"
             v-model:page="queryParams.pageNum"
             v-model:limit="queryParams.pageSize"
             @pagination="getList(oId)"
-          />
+          /> -->
       </el-col>
     </el-row>
 
@@ -726,7 +743,7 @@ export default defineComponent({
 // }
 .app-container {
   padding: 20px;
-  height: calc(100vh - 84px);
+  height: calc(100vh - 114px);
 }
 
 .app-container>.el-row {
@@ -738,14 +755,14 @@ export default defineComponent({
   overflow: hidden;
 }
 
-.el-col-20 {
+.el-col-19 {
   height: 100%;
   display: flex !important;
   flex-direction: column;
   overflow: hidden;
 }
 
-.el-col-20 .el-table {
+.el-col-19 .el-table {
   flex: 1;
 }
 .el-table :deep(.el-table__cell){
