@@ -110,6 +110,8 @@
             <el-table-column type="expand">
               <template #default="props">
                 <div style="margin-left: 60px;">
+                  <el-button style="margin-bottom: 10px;" @click="handleAddMember(props.row.id)">添加成员</el-button>
+                  <el-button style="margin-bottom: 10px;" @click="handleDelMember()">批量删除成员</el-button>
                   <el-table :data="props.row.developOrderMembers" :row-class-name="tableRowClassName" :cell-class-name="cellClassName" @selection-change="handleSelectionChange">
                     <el-table-column type="selection" width="50" align="center" />
                     <el-table-column label="参与成员" align="center" prop="userName" />
@@ -188,8 +190,6 @@
                       </template>
                     </el-table-column>
                   </el-table>
-                  <el-button style="margin-top: 10px;" @click="handleAddMember(props.row.id)">添加成员</el-button>
-                  <el-button style="margin-top: 10px;" @click="handleDelMember()">批量删除成员</el-button>
                 </div>
               </template>
             </el-table-column>

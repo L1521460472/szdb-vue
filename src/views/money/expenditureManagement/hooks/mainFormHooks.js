@@ -7,6 +7,8 @@
  * @LastEditTime: 2023-03-08 10:24:34
  */
 import { reactive, onBeforeMount } from "vue";
+import { deptList } from "@/api/money/orderStatistics";
+import { userList } from "@/api/money/performance";
 
 export default function ($vm) {
   /**
@@ -24,7 +26,9 @@ export default function ($vm) {
       { key: "近半年", value: '4' },
       { key: "全年", value: '5' },
       { key: "指定日期", value: '6' },
-    ]
+    ],
+    departmentList:[],
+    userList:[]
   });
 
   const topFormInfo = reactive({
@@ -36,6 +40,24 @@ export default function ($vm) {
     filterConditionList: [
     ],
   });
+
+   /** 查询部门列表 */
+  function getDeptTreeList() {
+    deptList().then(response => {
+      listTypeInfo.departmentList = response.data;
+    });
+  };
+  const getUserList = ()=> {
+    userList().then(response => {
+      listTypeInfo.userList = response.rows;
+    });
+  };
+
+
+  onBeforeMount(()=>{
+    getDeptTreeList()
+    getUserList()
+  })
 
   return {
     topFormInfo,

@@ -23,17 +23,17 @@ export function delExpenditure(id) {
   })
 }
 // 查询财务员工成本管理列表
-export function getPage(data) {
+export function getPage(name,dep,time) {
   return request({
-    url: '/system/cost/list',
+    // url: '/finance/cost/list'+ '?name=' + name + '&department=' + dep + '&wagesTime=' + time,
+    url: '/finance/cost/list',
     method: 'GET',
-    data
   })
 }
 // 新增财务员工成本管理
 export function getAdd(data) {
   return request({
-    url: '/system/cost',
+    url: '/finance/cost',
     method: 'POST',
     data: data
   })
@@ -42,7 +42,7 @@ export function getAdd(data) {
 // 修改财务员工成本管理
 export function getEdit(data) {
   return request({
-    url: '/system/cost',
+    url: '/finance/cost',
     method: 'PUT',
     data: data
   })
@@ -51,7 +51,7 @@ export function getEdit(data) {
 // 删除财务员工成本管理
 export function getDelete(id) {
   return request({
-    url: '/system/cost/' + id,
+    url: '/finance/cost/' + id,
     method: 'DELETE',
   })
 }
@@ -59,7 +59,7 @@ export function getDelete(id) {
 // 财务员工成本管理详情
 export function getDetail(id) {
   return request({
-    url: '/system/cost/' + id,
+    url: '/finance/cost/' + id,
     method: 'GET',
   })
 }
@@ -67,7 +67,7 @@ export function getDetail(id) {
 // 导出员工成本管理
 export function getExport(data) {
   return request({
-    url: '/system/cost/export',
+    url: '/finance/cost/export',
     method: 'POST',
     data: data
   })

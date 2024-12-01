@@ -100,9 +100,9 @@
         <el-table-column :label="item.label" min-width="160" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <div style="display: flex;align-items: center;width: 100%;margin-bottom: 5px;" v-for="v in scope.row.artsProjectRateDataListResponses[index].artsProjectRates">
-              <div style="width: 50px;">{{ v.projectStageName }}</div>
-              <div style="width: 50px;">{{ v.timeConsuming }}</div>
-              <el-image style="width: 100px; height: 50px" :src="v.rateFile" :preview-src-list="[v.rateFile]" :z-index="9999" preview-teleported/>
+              <!-- <div style="width: 50px;">{{ v.projectStageName }}</div> -->
+              <div>{{ v.timeConsuming }}</div>
+              <!-- <el-image style="width: 100px; height: 50px" :src="v.rateFile" :preview-src-list="[v.rateFile]" :z-index="9999" preview-teleported/> -->
             </div>
            </template>
         </el-table-column>

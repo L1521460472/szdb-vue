@@ -28,6 +28,7 @@
                 v-model="queryParams.deptId"
                 :options="departmentList"
                 :props="props"
+                filterable
                 :show-all-levels="false"
                 @change="handleChangeDept"
                 />
