@@ -472,7 +472,7 @@
                   </template>
                 </el-result> -->
                 <div v-if="form.projectResponsibilityUserId">
-                  <div>负责人  {{ form.responsibleUserName }}</div>
+                  <div v-for="item in userNameListLeader" key="item">负责人：{{ item }}</div>
                 </div>
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
                   <div class="title-circle title-circle-leader" @click="handleAddMember">
@@ -500,19 +500,21 @@
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 26px;">项目制作人</div>
                 <div class="member-box-list">
                   <div class="member-list el-result" v-if="form?.artsProjectMemberVos.length > 0" v-for="(item,index) in form.artsProjectMemberVos" :key="item.userId">
-                    <div class="el-result__icon" style="width:100%;height: 64px;display: flex;justify-content: center;">
-                      <div class="title-circle">{{ getTwo(userNameList[index]) }}</div>
-                    </div>
-                    <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;align-items: center;font-size: 16px;">
-                      {{ userNameList[index] }}
-                    </div>
-                    <div style="width:100%;height: 24px;display: flex;flex-wrap: wrap;align-items: center;margin-top: 2px;">
-                      <span v-for="(v,indexs) in item.stageNames" :key="indexs">
-                        <span>{{ v.stageName }}<span v-if="v.stageName && indexs != (item.stageNames.length - 1)"><el-divider direction="vertical" /></span></span>
-                      </span>
-                    </div>
-                    <div class="el-result__extra">
-                      <el-button :icon="Setting" @click="handleSetMember2(index)" circle />
+                    <div v-if="item.projectRole == 2">
+                      <div class="el-result__icon" style="width:100%;height: 64px;display: flex;justify-content: center;">
+                        <div class="title-circle">{{ getTwo(userNameList[index]) }}</div>
+                      </div>
+                      <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;align-items: center;font-size: 16px;">
+                        {{ userNameList[index] }}
+                      </div>
+                      <div style="width:100%;height: 24px;display: flex;flex-wrap: wrap;align-items: center;margin-top: 2px;">
+                        <span v-for="(v,indexs) in item.stageNames" :key="indexs">
+                          <span>{{ v.stageName }}<span v-if="v.stageName && indexs != (item.stageNames.length - 1)"><el-divider direction="vertical" /></span></span>
+                        </span>
+                      </div>
+                      <div class="el-result__extra">
+                        <el-button :icon="Setting" @click="handleSetMember2(index)" circle />
+                      </div>
                     </div>
                   </div>
                   <div style="height: 100%;display: flex;margin-left: 30px;" v-else>
@@ -1337,7 +1339,7 @@ const handleChangeUser = (value) => {
     value.map((v)=>{
       if(item.userId == v){
         addMemberform.userNameList.push(item.userName)
-        if(addMemberform.type == 1){
+        if(addMemberform.type == 1 && !userNameListLeader.value.includes(item.userName)){
           userNameListLeader.value.push(item.userName)
         }else{
           userNameList.value.push(item.userName)
@@ -1794,6 +1796,10 @@ function handleUpdate(row) {
  }else{
   form.value.artsProjectFlowPathName = row.artsProjectFlowPathName.split(',')
  }
+//  负责人
+ if(row.responsibleUserName){
+  userNameListLeader.value = row.responsibleUserName.split(',')
+ }
  form.value.artsProjectFlowPathIdList = []
  form.value.commerceDay = row.artsProjectFinance.commerceDay
  form.value.unitPrice = row.artsProjectFinance.unitPrice
@@ -1930,9 +1936,8 @@ function submitAddMemberForm() {
  proxy.$refs["addMemberRef"].validate(valid => {
    if (valid) {
     if(addMemberform.type == 1){
-      form.value.projectResponsibilityUserId = addMemberform.userIdList[0]
-      console.log(userNameListLeader.value)
-      form.value.responsibleUserName = userNameListLeader.value[0]
+      form.value.projectResponsibilityUserId = addMemberform.userIdList.join(',')
+      form.value.responsibleUserName = userNameListLeader.value.join(',')
     }else{
       addMemberform.userIdList.map((v,index)=>{
         addMemberform.stageNames = []
