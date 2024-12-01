@@ -482,9 +482,9 @@
               </div>
               <div class="dialog-member-box-left">
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 24px;">PM跟进人</div>
-                <el-result v-if="form.projectResponsibilityUserId" :title="form.responsibleUserName" sub-title="">
+                <el-result v-if="pmObj.userId" :title="pmObj.userName" sub-title="">
                   <template #icon>
-                    <div class="title-circle title-circle-leader">{{ getTwo(form.responsibleUserName) }}</div>
+                    <div class="title-circle title-circle-leader">{{ getTwo(pmObj.userName) }}</div>
                   </template>
                   <template #extra>
                     <el-button :icon="Setting" @click="handleSetMember1" circle />
@@ -611,6 +611,7 @@
         ">
           <el-radio-group v-model="addMemberform.type" @change="handleChangeMember">
             <el-radio label="1">项目负责人</el-radio>
+            <el-radio label="3">PM跟进人</el-radio>
             <el-radio label="2">项目制作人</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -980,6 +981,18 @@ const uploadRef2 = ref(null)
 const restaurantOne = ref([])
 const restaurantTow = ref([])
 const restaurantThree = ref([])
+
+// PM
+const pmObj = ref({
+  userId: null,
+  userName: null,
+  projectRole: null,
+  stageNames: []
+})
+// const pmUserId = ref('')
+// const pmUserName = ref('')
+
+// 
 const batchList = ref([])
 const activeNames = ref(['1','2','3'])
 const props = {
@@ -1329,7 +1342,7 @@ const handleChangeDept = (value) => {
 }
 //成员下拉选择
 const handleChangeUser = (value) => {
-  // console.log(value)
+  console.log(value)
   addMemberform.userNameList = []
   addMemberform.userNameListLeader = []
   userOptions.value.map((item)=>{
@@ -1341,12 +1354,16 @@ const handleChangeUser = (value) => {
         addMemberform.userNameList.push(item.userName)
         if(addMemberform.type == 1 && !userNameListLeader.value.includes(item.userName)){
           userNameListLeader.value.push(item.userName)
-        }else{
+        }else if(addMemberform.type == 2){
           userNameList.value.push(item.userName)
           userData.value.push({
             userId: item.userId,
             userName: item.userName
           })
+        }else{
+          pmObj.value.userId = item.userId
+          pmObj.value.userName = item.userName
+          pmObj.value.projectRole = '3'
         }
       }
     })
@@ -1835,6 +1852,7 @@ function submitForm() {
         }
         const params = {
           ...form.value,
+          artsProjectMemberVos: [pmObj.value,...form.value.artsProjectMemberVos],
           artsProjectFinance:{
             id: form.value.artsProjectFinance?.id || null,
             commerceDay: form.value.commerceDay,
@@ -1935,13 +1953,15 @@ function submitSetMemberForm2() {
 function submitAddMemberForm() {
  proxy.$refs["addMemberRef"].validate(valid => {
    if (valid) {
+    console.log(addMemberform.userIdList,addMemberform.type,userNameListLeader.value,2121)
     if(addMemberform.type == 1){
       form.value.projectResponsibilityUserId = addMemberform.userIdList.join(',')
       form.value.responsibleUserName = userNameListLeader.value.join(',')
-    }else{
+    }else if(addMemberform.type == 2){
       addMemberform.userIdList.map((v,index)=>{
         addMemberform.stageNames = []
         addMemberform.userId = v
+        addMemberform.projectRole = '2'
         userData.value.map(items=>{
           if(items.userId == v){
             addMemberform.userName = items.userName
@@ -1953,6 +1973,11 @@ function submitAddMemberForm() {
         form.value?.artsProjectMemberVos.push(cloneDeep(addMemberform))
       })
       // console.log(form.value?.artsProjectMemberVos,1111)
+    }else{
+      console.log(pmObj.value)
+      // pmObj.value.pmUserId = pmObj.value.pmUserId
+      // pmObj.value.pmUserName = pmObj.value.pmUserName
+      // pmObj.value.projectRole = '3'
     }
       addMemberOpen.value = false;
       addMemberform.type = '1'
