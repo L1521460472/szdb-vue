@@ -95,6 +95,38 @@
         </span>
       </template>
     </el-dialog>
+    <el-dialog v-model="centerDialogVisible1" title="工资确认提醒" width="95%" center>
+      <p
+        >亲爱的同学，您好！这是 2024 年 8 月 份的考勤确认提醒，此数据尤为重要，如有错误，将影响您的工资核算，请认真核对。如无异议，请点击确认，如有异常，请拒绝签收并联系人事部处理。谢谢！</p
+      >
+      <el-table :data="tableData" border style="width: 100%">
+        <el-table-column label="姓名" align="center" prop="name" />
+        <el-table-column label="部门" align="center" prop="department" />
+        <el-table-column label="职位" align="center" prop="position" />
+        <el-table-column label="入职时间" align="center" prop="entryTime" />
+        <el-table-column label="应发工资" align="center" prop="salary" />
+        <el-table-column label="当月均摊" align="center" prop="monthlySpread" />
+        <el-table-column label="法定天数" align="center" prop="legalDays" />
+        <el-table-column label="税成本" align="center" prop="taxCost" />
+        <el-table-column label="日成本" align="center" prop="dailyCost" />
+        <el-table-column label="备注" align="center" prop="remarks" />
+        <el-table-column label="考勤状态" prop="status">
+          <template #default="scope">
+            <span v-if="scope.row.status == 1">已确认</span>
+            <span v-if="scope.row.status == 0">未确认</span>
+            <span v-if="scope.row.status == 2">异常</span>
+          </template>
+        </el-table-column>
+      </el-table>
+      <template #footer>
+        <span class="dialog-footer">
+          <el-button @click="handleClickGZ(0)">拒 绝</el-button>
+          <el-button type="primary" @click="handleClickGZ(1)"
+            >确 认</el-button
+          >
+        </span>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -113,6 +145,7 @@ import useUserStore from '@/store/modules/user'
 import useSettingsStore from '@/store/modules/settings'
 import { setWatermark } from "@/api/login";
 import { getUnconfirmed,getConfirmed } from "@/api/personnel/attendanceReport";
+import { getNotice,confirmNotice } from "@/api/money/expenditureManagement";
 
 const instance = getCurrentInstance().proxy
 const appStore = useAppStore()
@@ -122,9 +155,11 @@ const settingsStore = useSettingsStore()
 const watermarkValue = ref('')
 const number = ref(0)
 const flag = ref(true)
-const centerDialogVisible = ref(true)
+const centerDialogVisible = ref(false)//考勤
+const centerDialogVisible1 = ref(false)//工资
 
-const tableData = ref([])
+const tableData = ref([])//考勤
+const tableData1 = ref([])//工资
 
 function toggleSideBar() {
   appStore.toggleSideBar()
@@ -205,6 +240,20 @@ function handleClickKQ(val) {
     centerDialogVisible.value = false
   }
 }
+function handleClickGZ(val) {
+  // console.log(val)
+  if(val == 1){
+    confirmNotice().then((res)=>{
+      // console.log(res)
+      instance.$modal.msgSuccess("工资已确认");
+      centerDialogVisible1.value = false
+    })
+  }else{
+    console.log(res)
+    instance.$modal.msgError("工资已拒绝，待重新确认");
+    centerDialogVisible1.value = false
+  }
+}
 
 const emits = defineEmits(['setLayout'])
 function setLayout() {
@@ -228,6 +277,15 @@ onMounted(() => {
       tableData.value = [res.data]
     }else{
       centerDialogVisible.value = false
+    }
+  })
+  getNotice().then((res)=>{
+    console.log(res)
+    if(res.data){
+      centerDialogVisible1.value = true
+      tableData1.value = [res.data]
+    }else{
+      centerDialogVisible1.value = false
     }
   })
 })

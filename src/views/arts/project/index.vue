@@ -400,6 +400,28 @@
                   </el-form-item>
               </el-col>
             </el-row>
+            <el-row>
+              <el-col :span="24">
+                  <el-form-item label="原画参考" prop="projectRemarks">
+                    <el-upload
+                      ref="uploadRef3"
+                      class="avatar-uploader"
+                      :limit="1"
+                      accept=".jpg,.png,.svg,.gif,.webp,.jpeg"
+                      :show-file-list="false"
+                      :headers="upload3.headers"
+                      :action="upload3.url"
+                      :disabled="upload3.isUploading"
+                      :auto-upload="true"
+                      :on-progress="handleFileUploadProgress3"
+                      :on-success="handleFileSuccess3"
+                    >
+                      <img v-if="form.projectPaintingUrl" :src="form.projectPaintingUrl" class="avatar" />
+                      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                    </el-upload>
+                  </el-form-item>
+              </el-col>
+            </el-row>
           </el-form>
         </el-collapse-item>
         <el-collapse-item title="财务信息" name="2">
@@ -457,25 +479,18 @@
         </el-collapse-item>
         <el-collapse-item title="项目成员" name="3" disabled>
           <div class="dialog-member-title">
-              <div>成员 {{ form?.artsProjectMemberVos.length + (form?.projectResponsibilityUserId? 1: 0) }}</div>
+              <div>负责人：<span style="margin-right: 20px;color: #00a660;"> {{ fzUserData.length }}</span>PM： <span style="margin-right: 20px;color: #67C23A">{{ 1 }}</span>制作人： <span style="margin-right: 20px;color: #409eff;">{{ zzUserData.length }}</span></div>
               <div><el-button :icon="Plus" @click="handleAddMember">添加成员</el-button></div>
             </div>
             <div class="dialog-member-box">
               <div class="dialog-member-box-left">
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 8px;">项目负责人</div>
-                <!-- <el-result v-if="form.projectResponsibilityUserId" :title="form.responsibleUserName" sub-title="">
-                  <template #icon>
-                    <div class="title-circle title-circle-leader">{{ getTwo(form.responsibleUserName) }}</div>
-                  </template>
-                  <template #extra>
-                    <el-button :icon="Setting" @click="handleSetMember1" circle />
-                  </template>
-                </el-result> -->
-                <div v-if="form.projectResponsibilityUserId">
-                  <div v-for="item in userNameListLeader" key="item">负责人：{{ item }}</div>
+                <div v-if="fzUserData.length > 0">
+                  <div style="border: 1px solid #00a660;border-radius: 16px;width: 90%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="item in fzUserData" key="item">负责人：{{ item.userName }}</div>
                 </div>
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
-                  <div class="title-circle title-circle-leader" @click="handleAddMember">
+                  <!-- <div class="title-circle title-circle-leader" @click="handleAddMember"> -->
+                  <div class="title-circle title-circle-leader">
                     <el-icon style="color: #fff;"><Plus /></el-icon>
                   </div>
                 </div>
@@ -491,7 +506,8 @@
                   </template>
                 </el-result>
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
-                  <div class="title-circle title-circle-leader" @click="handleAddMember">
+                  <!-- <div class="title-circle title-circle-leader" @click="handleAddMember"> -->
+                  <div class="title-circle title-circle-leader">
                     <el-icon style="color: #fff;"><Plus /></el-icon>
                   </div>
                 </div>
@@ -499,13 +515,13 @@
               <div class="dialog-member-box-right">
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 26px;">项目制作人</div>
                 <div class="member-box-list">
-                  <div class="member-list el-result" v-if="form?.artsProjectMemberVos.length > 0" v-for="(item,index) in form.artsProjectMemberVos" :key="item.userId">
-                    <div v-if="item.projectRole == 2">
+                  <div class="member-list el-result" v-if="zzUserData.length > 0" v-for="(item,index) in zzUserData" :key="item.userId">
+                    <div>
                       <div class="el-result__icon" style="width:100%;height: 64px;display: flex;justify-content: center;">
-                        <div class="title-circle">{{ getTwo(userNameList[index]) }}</div>
+                        <div class="title-circle">{{ getTwo(item.userName) }}</div>
                       </div>
                       <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;align-items: center;font-size: 16px;">
-                        {{ userNameList[index] }}
+                        {{ item.userName }}
                       </div>
                       <div style="width:100%;height: 24px;display: flex;flex-wrap: wrap;align-items: center;margin-top: 2px;">
                         <span v-for="(v,indexs) in item.stageNames" :key="indexs">
@@ -518,7 +534,8 @@
                     </div>
                   </div>
                   <div style="height: 100%;display: flex;margin-left: 30px;" v-else>
-                    <div class="title-circle" @click="handleAddMember(2)">
+                    <!-- <div class="title-circle" @click="handleAddMember(2)"> -->
+                    <div class="title-circle">
                       <el-icon style="color: #fff;"><Plus /></el-icon>
                     </div>
                   </div>
@@ -633,7 +650,7 @@
             trigger: 'blur',
           }
          ">
-          <el-select v-model="addMemberform.userIdList" filterable placeholder="请选择" multiple @change="handleChangeUser">
+          <el-select v-model="addMemberform.userIdList" filterable placeholder="请选择" :multiple="multiple" @change="handleChangeUser">
             <el-option
               v-for="item in userOptions"
               :key="item.userId"
@@ -978,19 +995,10 @@ const imgUrl = ref(null)
 const dropdown1 = ref(null)
 const uploadRef1 = ref(null)
 const uploadRef2 = ref(null)
+const uploadRef3 = ref(null)
 const restaurantOne = ref([])
 const restaurantTow = ref([])
 const restaurantThree = ref([])
-
-// PM
-const pmObj = ref({
-  userId: null,
-  userName: null,
-  projectRole: null,
-  stageNames: []
-})
-// const pmUserId = ref('')
-// const pmUserName = ref('')
 
 // 
 const batchList = ref([])
@@ -1051,6 +1059,21 @@ const upload2 = reactive({
   // 上传的地址
   url: import.meta.env.VITE_APP_BASE_API + "/arts/project/import"
 });
+/*** 原话 */
+const upload3 = reactive({
+  // 是否显示弹出层（批量导入）
+  open: false,
+  // 弹出层标题（批量导入）
+  title: "",
+  // 是否禁用上传
+  isUploading: false,
+  // 是否更新已经存在的批量数据
+  updateSupport: 0,
+  // 设置上传的请求头部
+  headers: { Authorization: "Bearer " + getToken() },
+  // 上传的地址
+  url: import.meta.env.VITE_APP_BASE_API + "/common/upload"
+});
 const options = ref([{
           value: 1,
           label: '正常',
@@ -1104,18 +1127,33 @@ const setMemberform = reactive({
   userName: '',
   userIdList: [],
   userNameList: [],
-  isShow: 1,//1 负责人， 2 制作人
+  isShow: 1,//1 负责人， 2 制作人， 3 PM
   index: 0,//
 })
 const userNameList = ref([])
-const userNameListLeader = ref([])
-const userData = ref([])
+const userNameListLeader = ref([])//负责人名称，如果有则过滤
+const userNameListLeader1 = ref([])//制作人名称，如果有则过滤
+const userData = ref([]) // 项目成员   1 负责人， 2 制作人， 3 PM
+
+// 负责人
+const fzUserData = ref([])
+
+// PM跟进人
+const pmObj = ref({
+  userId: null,
+  userName: null,
+  projectRole: null,
+})
+// 制作人
+const zzUserData = ref([])
+
+const artsProjectMemberList = ref([])
 //新增成员
 const addMemberform = reactive({
   type: '1',
   stage: [],
   stageNames:[],
-  userIdList: [],
+  userIdList: null,
   userNameList: [],
   userIdListLeader: [],
   userNameListLeader: [],
@@ -1142,6 +1180,8 @@ const data = reactive({
   projectBatchName: '',
   projectCategoryOneName: '',
   projectCategoryTwoName: '',
+  projectPaintingUrl: '',
+  projectPaintingUrlName: '',
   commerceDay: null,
   unitPrice: null,
   fabrication: null,
@@ -1260,6 +1300,7 @@ const submitremoveMemberForm = ()=>{
 const handleAddMember = (val)=>{
   addMemberform.userId = ''
   addMemberform.userName = ''
+  addMemberform.userIdList = []
   if(val == 2){
     addMemberform.type = '2'
   }else{
@@ -1346,29 +1387,53 @@ const handleChangeUser = (value) => {
   addMemberform.userNameList = []
   addMemberform.userNameListLeader = []
   userOptions.value.map((item)=>{
-    if(item.userId == value){
-      addMemberform.userName = item.userName
-    }
-    value.map((v)=>{
-      if(item.userId == v){
-        addMemberform.userNameList.push(item.userName)
-        if(addMemberform.type == 1 && !userNameListLeader.value.includes(item.userName)){
-          userNameListLeader.value.push(item.userName)
-        }else if(addMemberform.type == 2){
-          userNameList.value.push(item.userName)
-          userData.value.push({
-            userId: item.userId,
-            userName: item.userName
-          })
-        }else{
-          pmObj.value.userId = item.userId
-          pmObj.value.userName = item.userName
-          pmObj.value.projectRole = '3'
+    if(multiple.value){
+      value.map((v)=>{
+        if(item.userId == v){
+          if(addMemberform.type == 1 && !userNameListLeader.value.includes(item.userName)){
+            userNameListLeader.value.push(item.userName)
+            userData.value.push({
+              projectRole: '1',
+              userId: item.userId,
+              userName: item.userName
+            })
+            fzUserData.value.push({
+              projectRole: '1',
+              userId: item.userId,
+              userName: item.userName
+            })
+          }else if(addMemberform.type == 2 && !userNameListLeader1.value.includes(item.userName)){
+            userNameListLeader1.value.push(item.userName)
+            userData.value.push({
+              projectRole: '2',
+              userId: item.userId,
+              userName: item.userName,
+              stageNames: []
+            })
+            zzUserData.value.push({
+              projectRole: '2',
+              userId: item.userId,
+              userName: item.userName,
+              stageNames: []
+            })
+          }
         }
+      })
+    }else{
+      if(item.userId == value){
+        userData.value.push({
+          projectRole: '3',
+          userId: item.userId,
+          userName: item.userName
+        })
+        pmObj.value.userId = item.userId
+        pmObj.value.userName = item.userName
+        pmObj.value.projectRole = '3'
       }
-    })
-    userNameList.value = [...new Set(userNameList.value)]
+    }
+    // userNameList.value = [...new Set(userNameList.value)]
   })
+  // console.log(userData.value)
 }
 /** 添加成员节点单击事件 */
 function handleMemberNodeClick(data) {
@@ -1743,6 +1808,19 @@ const handleFileSuccess2 = (response, file, fileList) => {
     proxy.$refs["uploadRef2"].handleRemove(file);
  console.log(response, file, fileList)
 };
+/**文件上传中处理 */
+const handleFileUploadProgress3 = (event, file, fileList) => {
+ upload3.isUploading = true;
+};
+/** 文件上传成功处理 */
+const handleFileSuccess3 = (response, file, fileList) => {
+    form.value.projectPaintingUrl = response.url
+    form.value.projectPaintingUrlName = response.originalFilename
+    // upload1.open = false;
+    upload3.isUploading = false;
+    // proxy.$refs["uploadRef1"].handleRemove(file);
+//  console.log(response, file, fileList)
+};
 /** 提交上传文件 */
 function submitFileForm() {
  proxy.$refs["uploadRef"].submit();
@@ -1784,6 +1862,9 @@ function reset() {
 };
 userNameList.value = []
 userNameListLeader.value = []
+userNameListLeader1.value = []
+fzUserData.value = []
+zzUserData.value = []
  proxy.resetForm("projectRef");
 };
 /** 取消按钮 */
@@ -1813,10 +1894,6 @@ function handleUpdate(row) {
  }else{
   form.value.artsProjectFlowPathName = row.artsProjectFlowPathName.split(',')
  }
-//  负责人
- if(row.responsibleUserName){
-  userNameListLeader.value = row.responsibleUserName.split(',')
- }
  form.value.artsProjectFlowPathIdList = []
  form.value.commerceDay = row.artsProjectFinance.commerceDay
  form.value.unitPrice = row.artsProjectFinance.unitPrice
@@ -1826,15 +1903,34 @@ function handleUpdate(row) {
  form.value.remarks = row.artsProjectFinance.remarks
  form.value.isContractor = row.artsProjectFinance.isContractor
  form.value.projectId = row.artsProjectFinance.projectId
- userNameList.value = row.artsProjectMemberVos.map(item=>item.userName)
+ userData.value = cloneDeep(row.artsProjectMemberVos)
+ row.artsProjectMemberVos.map(item=>{
+  if(item.projectRole == '1'){
+    userNameListLeader.value.push(item.userName)
+    fzUserData.value.push(item)
+  }else if(item.projectRole == '2'){
+    userNameListLeader1.value.push(item.userName)
+    zzUserData.value.push(item)
+  }else{
+    pmObj.value = item
+  }
+ })
  open.value = true;
  title.value = "修改项目订单";
 };
 /** 提交按钮 */
 function submitForm() {
   // console.log(form.value)
-  if(!form.value.projectResponsibilityUserId){
-    proxy.$modal.msgSuccess("请添加成员");
+  if(fzUserData.value.length == 0){
+    proxy.$modal.msgSuccess("请添加负责人");
+    return
+  }
+  if(!pmObj.value.userId){
+    proxy.$modal.msgSuccess("请添加PM跟进人");
+    return
+  }
+  if(zzUserData.value.length == 0){
+    proxy.$modal.msgSuccess("请添加制作人");
     return
   }
  proxy.$refs["projectRef"].validate(valid => {
@@ -1852,7 +1948,7 @@ function submitForm() {
         }
         const params = {
           ...form.value,
-          artsProjectMemberVos: [pmObj.value,...form.value.artsProjectMemberVos],
+          artsProjectMemberVos: userData.value,
           artsProjectFinance:{
             id: form.value.artsProjectFinance?.id || null,
             commerceDay: form.value.commerceDay,
@@ -1892,22 +1988,6 @@ function submitForm() {
         }
       }
     });
-    // if(Array.isArray(form.value.productionDepartmentId)){
-    //   form.value.productionDepartmentId = form.value.productionDepartmentId.slice(-1)[0]
-    // }
-    //  if (form.value.id != undefined) {
-    //   editProject(form.value).then(response => {
-    //      proxy.$modal.msgSuccess("修改成功");
-    //      open.value = false;
-    //      getList();
-    //    });
-    //  } else {
-    //   addProject(form.value).then(response => {
-    //      proxy.$modal.msgSuccess("新增成功");
-    //      open.value = false;
-    //      getList();
-    //    });
-    //  }
    }
  });
 };
@@ -1953,38 +2033,29 @@ function submitSetMemberForm2() {
 function submitAddMemberForm() {
  proxy.$refs["addMemberRef"].validate(valid => {
    if (valid) {
-    console.log(addMemberform.userIdList,addMemberform.type,userNameListLeader.value,2121)
-    if(addMemberform.type == 1){
-      form.value.projectResponsibilityUserId = addMemberform.userIdList.join(',')
-      form.value.responsibleUserName = userNameListLeader.value.join(',')
-    }else if(addMemberform.type == 2){
-      addMemberform.userIdList.map((v,index)=>{
-        addMemberform.stageNames = []
-        addMemberform.userId = v
-        addMemberform.projectRole = '2'
-        userData.value.map(items=>{
-          if(items.userId == v){
-            addMemberform.userName = items.userName
-          }
+    if(addMemberform.type == 2){
+      zzUserData.value = zzUserData.value.map(item=>{
+        item.stageNames = addMemberform.stage.map((v)=>{
+          return {stageName : v}
         })
-        addMemberform.stage.map((item)=>{
-          addMemberform.stageNames.push({stageName:item})
-        })
-        form.value?.artsProjectMemberVos.push(cloneDeep(addMemberform))
+        return item
       })
-      // console.log(form.value?.artsProjectMemberVos,1111)
-    }else{
-      console.log(pmObj.value)
-      // pmObj.value.pmUserId = pmObj.value.pmUserId
-      // pmObj.value.pmUserName = pmObj.value.pmUserName
-      // pmObj.value.projectRole = '3'
+      userData.value = userData.value.map(items=>{
+        if(items.projectRole == '2'){
+          items.stageNames = addMemberform.stage.map((v)=>{
+            return {stageName : v}
+          })
+        }
+        return items
+      })
+      console.log(zzUserData.value,userData.value)
     }
-      addMemberOpen.value = false;
-      addMemberform.type = '1'
-      addMemberform.stage = []
-      addMemberform.stageNames = []
-      addMemberform.userIdList = []
-      // addMemberform.userNameList = []
+    addMemberOpen.value = false;
+    addMemberform.type = '1'
+    addMemberform.stage = []
+    addMemberform.stageNames = []
+    addMemberform.userIdList = []
+    // addMemberform.userNameList = []
    }
  });
 };
@@ -2000,7 +2071,12 @@ function addMembercCncel() {
   addMemberform.userNameListLeader = []
 };
 /** */
-function handleChangeMember() {
+function handleChangeMember(val) {
+  if(val == 3){
+    multiple.value = false
+  }else{
+    multiple.value = true
+  }
   addMemberform.stage = []
   addMemberform.stageNames = []
   addMemberform.userIdList = []
@@ -2779,5 +2855,30 @@ onMounted(() => {
 .el-tree{
   height: 86vh;
   overflow-y: auto;
+}
+.avatar-uploader .avatar {
+  width: 178px;
+  height: 108px;
+  display: block;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 108px;
+  text-align: center;
 }
 </style>

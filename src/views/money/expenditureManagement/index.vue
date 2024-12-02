@@ -80,6 +80,7 @@
           <el-table-column label="姓名" align="center" prop="name" />
           <el-table-column label="部门" align="center" prop="department" />
           <el-table-column label="职位" align="center" prop="position" />
+          <el-table-column label="工资月份" align="center" prop="wagesTime" />
           <el-table-column label="入职时间" align="center" prop="entryTime" />
           <el-table-column label="应发工资" align="center" prop="salary" />
           <el-table-column label="当月均摊" align="center" prop="monthlySpread" />
@@ -151,15 +152,15 @@
               </el-form-item>
           </el-col>
           <el-col :span="12">
-              <el-form-item label="入职时间:" prop="entryTime">
-                <el-date-picker
-                  v-model="formInfo.data.entryTime"
-                  type="date"
-                  placeholder="入职时间"
-                  format="YYYY-MM-DD"
-                  value-format="YYYY-MM-DD"
-                />
-              </el-form-item>
+            <el-form-item label="入职时间:" prop="entryTime">
+              <el-date-picker
+                v-model="formInfo.data.entryTime"
+                type="date"
+                placeholder="入职时间"
+                format="YYYY-MM-DD"
+                value-format="YYYY-MM-DD"
+              />
+            </el-form-item>
           </el-col>
         </el-row>
         <el-row>
@@ -193,9 +194,22 @@
               </el-form-item>
           </el-col>
           <el-col :span="12">
-              <el-form-item label="备注:" prop="remarks">
-                <el-input v-model="formInfo.data.remarks" placeholder="请输入备注" maxlength="200" />
+              <el-form-item label="工资月份:" prop="wagesTime">
+                <el-date-picker
+                  v-model="formInfo.data.wagesTime"
+                  type="month"
+                  placeholder="工资月份"
+                  format="YYYY-MM"
+                  value-format="YYYY-MM"
+                />
               </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <el-form-item label="备注:" prop="entryTime">
+              <el-input v-model="formInfo.data.remarks" placeholder="请输入备注" maxlength="200" />
+            </el-form-item>
           </el-col>
         </el-row>
       </el-form>

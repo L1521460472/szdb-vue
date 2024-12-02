@@ -52,6 +52,9 @@ export default function ($vm) {
       legalDays: [
         { required: true, message: '必填', trigger: 'blur' }
       ],
+      wagesTime: [
+        { required: true, message: '必填', trigger: 'blur' }
+      ],
       taxCost: [
         { required: true, message: '必填', trigger: 'blur' }
       ],

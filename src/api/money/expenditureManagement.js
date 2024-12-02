@@ -72,3 +72,18 @@ export function getExport(data) {
     data: data
   })
 }
+
+// 获取未确认的考勤报表
+export function getNotice() {
+  return request({
+    url: '/finance/cost/notice',
+    method: 'GET',
+  })
+}
+// 确认考勤报表
+export function confirmNotice() {
+  return request({
+    url: '/finance/cost/confirmNotice',
+    method: 'GET',
+  })
+}
