@@ -28,6 +28,20 @@ export default function ($vm) {
     ],
     depList:[],
     userList:[],
+    stateList:[{
+      value: 1,
+      label: '正常',
+      disabled: true,
+    }, {
+      value: 2,
+      label: '紧张'
+    }, {
+      value: 3,
+      label: '延期'
+    }, {
+      value: 4,
+      label: '已完成'
+    }]
   });
 
   const topFormInfo = reactive({

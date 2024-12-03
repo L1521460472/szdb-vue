@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2023-03-25 10:17:48
+ * @LastEditTime: 2024-12-03 14:38:24
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { listAchievements } from "@/api/project/monthlyPerformance";
+import { listAchievements,listAchievements2 } from "@/api/project/monthlyPerformance";
 
 export default function ($vm) {
 
@@ -22,6 +22,10 @@ export default function ($vm) {
     pageSize: 50,
     deptId: undefined,
     producerId: undefined,
+    beginTime: undefined,
+    endTime: undefined,
+    projectState: undefined,
+    projectName: undefined,
   })
 
   /**
@@ -31,7 +35,7 @@ export default function ($vm) {
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
-    listAchievements(queryParams.value).then(response => {
+    listAchievements2(queryParams.value).then(response => {
       tableData.value = response.rows;
       if(response.rows.length > 0){
         columnList.value = response.rows[0].achievementList.map((item)=>{
@@ -53,9 +57,15 @@ export default function ($vm) {
   }
   //部门下拉选择
   const handleChangeDept = (value) => {
-    //   console.log(value)
-      queryParams.value.deptId = value.slice(-1)[0]
-    }
+  //   console.log(value)
+    queryParams.value.deptId = value.slice(-1)[0]
+  }
+  /** 时间查询 */
+  function handleChangeTime(val) {
+    // val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+    queryParams.value.beginTime = val[0];
+    queryParams.value.endTime = val[1];
+  };
 
   onMounted(() => {
     getList()
@@ -72,6 +82,7 @@ export default function ($vm) {
     getList,
     handleToDoOpen,
     handleDelete,
-    handleChangeDept
+    handleChangeDept,
+    handleChangeTime
   };
 }

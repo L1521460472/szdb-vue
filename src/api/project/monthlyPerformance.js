@@ -16,3 +16,11 @@ export function listAchievements(data) {
     data: data
   })
 }
+// 月绩效列表
+export function listAchievements2(data) {
+  return request({
+    url: '/arts/rate/achievements2/list',
+    method: 'post',
+    data: data
+  })
+}

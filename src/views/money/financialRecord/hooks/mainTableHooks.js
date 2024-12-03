@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-18 14:02:12
+ * @LastEditTime: 2024-12-03 18:34:04
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -18,6 +18,7 @@ export default function ($vm) {
   const router = useRouter();
   const loading = ref(true);
   const showSearch = ref(true);
+  const radioValue = ref('近三季度');
   const total = ref(0);
   const spanLeft = ref(16);
   const spanRight = ref(8);
@@ -112,7 +113,7 @@ const upload = reactive({
   });
   const option2 = ref({
     title: {
-      text: '近3个季度支出与收入详细数据(万元)',
+      text: '收支趋势分析(万元)',
       top: '10px',
       left: '20px',
       textStyle:{
@@ -177,7 +178,7 @@ const upload = reactive({
 
   const option3 = ref({
     title: {
-      text: '近2个年度支出与收入详细数据(万元)',
+      text: '收支趋势分析(万元)',
       top: '10px',
       left: '20px',
       textStyle:{
@@ -241,7 +242,7 @@ const upload = reactive({
   });
   const option4 = ref({
     title: {
-      text: '近12个月支出与收入详细数据(万元)',
+      text: '收支趋势分析(万元)',
       top: '10px',
       left: '20px',
       textStyle:{
@@ -304,6 +305,88 @@ const upload = reactive({
     ]
   });
 
+  const option5 = ref({
+    title: {
+      text: '团队回款',
+      top: '10px',
+      left: '20px',
+      textStyle:{
+        fontSize: '14px',
+        color: '#0d06db',
+      }
+    },
+    tooltip: {
+      trigger: 'item',
+      formatter: '{a} <br/>{b} : {c} ({d}%)'
+    },
+    legend: {
+      orient: 'vertical',
+      right: 10,
+      top: 20,
+      bottom: 20,
+    },
+    graphic: [
+      {
+        type: "text",
+        left: "29%",
+        top: "38%",
+        style: {
+          text: '销售总额',
+          textAlign: "center",
+          fill: "销售总额",
+          width: 30,
+          height: 30,
+          fontSize: 12,
+        },
+      },
+        {
+        type: "text",
+        left: "29%",
+        top: "50%",
+        style: {
+          text: '0',
+          textAlign: "center",
+          fill: "#1D2129",
+          width: 30,
+          height: 30,
+          fontSize: 24,
+        },
+      },
+    ],
+    series: [
+      {
+        name: '部门',
+        type: 'pie',
+        radius: ['40%', '70%'],
+        center: ['35%', '50%'],
+        avoidLabelOverlap: false,
+        label: {
+          show: false,
+          position: 'center'
+        },
+        // emphasis: {
+        //   label: {
+        //     show: true,
+        //     fontSize: 40,
+        //     fontWeight: 'bold'
+        //   }
+        // },
+        labelLine: {
+          show: false
+        },
+        data: 
+        financialObj.value.financeReportCostFormsOne
+        // [
+        //   { value: 1048, name: '角色组' },
+        //   { value: 735, name: '原画组' },
+        //   { value: 580, name: '特效组' },
+        //   { value: 484, name: '动作组' },
+        //   { value: 300, name: '场景组' }
+        // ]
+      }
+    ]
+  });
+
   /**
    * @description: 表格数据
    */
@@ -324,6 +407,13 @@ const upload = reactive({
       financeData(queryParams.value).then(response => {
         // console.log(response.data)
         financialObj.value = cloneDeep(response.data)
+        // 各团队收支
+        if(response.data.financeReportCostFormsOne){
+          financialObj.value.financeReportCostFormsOne = response.data.financeReportCostFormsOne.map(item=>{
+            item.value = item.expenditureThisMonth
+            return item
+          })
+        }
   
         
         if(response.data.financeReportDateFormsOne){
@@ -410,17 +500,27 @@ const upload = reactive({
     }
     const myChart30 = document.getElementById("myChart3");
     myChart3 = echarts.init(myChart30);
-    option3.value && myChart3.setOption(option3.value);
+    option5.value && myChart3.setOption(option5.value);
   }
   /** MyChart4 */
-  const initMyChart4 = () => {
-    // console.log(myChart4,option4)
+  const initMyChart4 = (val) => {
+    console.log(val)
     if(myChart4){
       myChart4.dispose()
     }
     const myChart40 = document.getElementById("myChart4");
     myChart4 = echarts.init(myChart40);
-    option4.value && myChart4.setOption(option4.value);
+    if(val == '近三季度'){
+      // 按季度查询
+      option2.value && myChart4.setOption(option2.value);
+    }else if(val == '近一年度') {
+      // 按年查询
+      option4.value && myChart4.setOption(option4.value);
+    }else{
+      // 按两年查询
+      option3.value && myChart4.setOption(option3.value);
+    }
+    
   }
 
   /** 导入工资按钮操作 */
@@ -454,6 +554,10 @@ const upload = reactive({
       }
     });
   };
+  const handleChangeRadio = (val) => {
+    // console.log(val)
+    initMyChart4(val)
+  }
   onBeforeMount(() => {
     getList()
   }),
@@ -464,13 +568,14 @@ const upload = reactive({
       // console.log(xAxisDataOne.value)
       initMyChart2()
       initMyChart3()
-      initMyChart4()
-    }, 500);
+      initMyChart4('近三季度')
+    }, 1000);
   });
 
 
   return {
     tableData,
+    radioValue,
     total,
     showSearch,
     loading,
@@ -490,6 +595,7 @@ const upload = reactive({
     option2,
     option3,
     option4,
+    option5,
     getList,
     handleToDoOpen,
     handleDelete,
@@ -502,5 +608,6 @@ const upload = reactive({
     initMyChart3,
     initMyChart4,
     getDataCharts,
+    handleChangeRadio,
   };
 }

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-14 10:55:19
+ * @LastEditTime: 2024-12-03 14:47:21
 -->
 <template>
   <div class="app-container">
@@ -24,6 +24,7 @@
           />
           </el-select> -->
           <el-cascader
+            style="width: 220px"
             v-model="queryParams.deptId"
             :options="listTypeInfo.depList"
             :props="props"
@@ -37,7 +38,7 @@
             placeholder="制作人"
             filterable
             clearable
-            style="width: 240px"
+            style="width: 220px"
           >
           <el-option
             v-for="item in listTypeInfo.userList"
@@ -45,6 +46,42 @@
             :label="item.userName"
             :value="item.userId"
           />
+          </el-select>
+      </el-form-item>
+      <el-form-item label="项目名称" prop="projectName">
+        <el-input
+          v-model="queryParams.projectName"
+          placeholder="请输入名称"
+          clearable
+          style="width: 220px"
+        />
+      </el-form-item>
+      <el-form-item label="日期" prop="month">
+          <el-date-picker
+              style="width: 280px"
+              v-model="queryParams.month"
+              type="daterange"
+              range-separator="~"
+              start-placeholder="计划开始日期"
+              end-placeholder="计划结束日期"
+              format="YYYY-MM-DD"
+              value-format="YYYY-MM-DD"
+              @change="handleChangeTime"
+            />
+      </el-form-item>
+      <el-form-item label="项目状态" prop="projectState">
+          <el-select
+            v-model="queryParams.projectState"
+            placeholder="项目状态"
+            clearable
+            style="width: 220px"
+          >
+            <el-option
+                v-for="dict in listTypeInfo.stateList"
+                :key="dict.value"
+                :label="dict.label"
+                :value="dict.value"
+            />
           </el-select>
       </el-form-item>
       <el-form-item>
@@ -67,21 +104,58 @@
 
     <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
-      <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
-      <el-table-column label="制作人" align="center" prop="producerName" fixed="left">
+      <el-table-column type="expand">
+        <template #default="props">
+          <div style="margin-left: 183px;">
+            <el-table :data="props.row.achievementList" :show-header="false">
+              <el-table-column label="名称" align="center" prop="name" />
+              <el-table-column label="状态" align="center" prop="projectState">
+                <template #default="scope">
+                  <span style="color: #42ec18;" v-if="scope.row.projectState == '1'">正常</span>
+                  <span style="color: #ff9725;" v-else-if="scope.row.projectState == '2'">紧张</span>
+                  <span style="color: #f71702;" v-else-if="scope.row.projectState == '3'">延期</span>
+                  <span style="color: #0d06db;" v-else>已完成</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="流程" align="center" prop="flowName" />
+              <el-table-column label="进度" align="center" prop="progress">
+                <template #default="scope">
+                  <span>{{ scope.row.progress + '%' }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="项目组" align="center" prop="deptName" />
+              <el-table-column label="制作人天" align="center" prop="producerDay" />
+              <el-table-column label="绩效人天" align="center" prop="performanceDay" />
+              <el-table-column label="计划开始日期" align="center" prop="plannedStartTime" />
+              <el-table-column label="计划结束日期" align="center" prop="plannedEndTime" />
+            </el-table>
+            <!-- <div class="totle">
+              <div style="margin-right: 20px;color: #606266;word-break: break-word;font-weight: 600;">总实际人天：{{ props.row.workDay }}</div>
+              <div style="margin-right: 20px;color: #606266;word-break: break-word;font-weight: 600;">总制作人天：{{ props.row.estimateDay }}</div>
+            </div> -->
+          </div>
+        </template>
+      </el-table-column>
+      <el-table-column label="序号" width="55" align="center" type="index" />
+      <el-table-column label="制作人" align="center" width="80" prop="producerName" />
+      <el-table-column label="名称" align="center" prop="label" />
+      <el-table-column label="订单状态" align="center" prop="label">
         <!-- <template #default="scope">
-          <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
+          <span>{{ scope.row.producerName }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="部门" align="center" min-width="120" prop="deptName" fixed="left" />
-      <!-- <el-table-column label="负责部门" align="center" prop="projectName" />
-      <el-table-column label="负责人" align="center" prop="producerTime" /> -->
-      <el-table-column label="项目备注" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column :label="item.label" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
+      <el-table-column label="流程" align="center" prop="label" />
+      <el-table-column label="进度" align="center" prop="label" />
+      <el-table-column label="项目组" align="center" prop="label" />
+      <el-table-column label="制作人天" align="center" prop="producerDay" />
+      <el-table-column label="绩效人天" align="center" prop="performanceDay" />
+      <el-table-column label="计划开始时间" align="center" prop="startTime" />
+      <el-table-column label="计划结束时间" align="center" prop="endTime" />
+      <!-- <el-table-column :label="item.label" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <span>{{ scope.row.achievementList[index].achievement }}</span>
            </template>
-        </el-table-column>
+        </el-table-column> -->
       <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="删除" placement="top">

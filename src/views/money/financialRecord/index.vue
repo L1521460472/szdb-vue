@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-23 10:50:40
+ * @LastEditTime: 2024-12-03 18:28:06
 -->
 <template>
   <div class="app-container">
@@ -67,73 +67,210 @@
         <div class="container-title"><span style="color: #666;">财务总览</span><el-button type="primary" icon="Upload" @click="handleImport">导入工资</el-button></div>
         <div class="container">
           <el-row :gutter="10">
-            <el-col :span="spanLeft">
+            <el-col :span="24">
               <div class="container-left">
                 <el-row :gutter="10" class="el-row-bom">
-                  <el-col :span="15">
+                  <el-col :span="24">
                     <div class="boxs-left">
-                      <el-row :gutter="10" class="el-row-bom">
-                        <el-col :span="12">
+                      <el-row :gutter="60" class="el-row-bom">
+                        <el-col :span="6">
                           <div class="box">
-                            <el-descriptions title="总收入" :column="1">
-                              <el-descriptions-item label="本月"><el-statistic title="" :value="financialObj.totalIncomeThisMonth" value-style="color:#f71702" /></el-descriptions-item>
+                            <!-- <el-descriptions title="本月总收入" :column="1">
+                              <el-descriptions-item label=""><el-statistic title="" :value="financialObj.totalIncomeThisMonth" value-style="color:#f71702" /></el-descriptions-item>
                               <el-descriptions-item label="上月"><el-statistic title="" :value="financialObj.totalIncomeLastMonth" value-style="color:#f71702" /></el-descriptions-item>
-                            </el-descriptions>
+                            </el-descriptions> -->
+                            <el-statistic :value="financialObj.totalIncomeThisMonth">
+                              <template #title>
+                                <div style="display: inline-flex; align-items: center">
+                                  本月总收入
+                                </div>
+                              </template>
+                              <template #suffix>
+                                <span style="margin-left: 10px;font-size: 16px;color: #999;">上月 {{ financialObj.totalIncomeLastMonth }}</span>
+                              </template>
+                            </el-statistic>
+                            <div class="statistic-footer">
+                              <div class="footer-item">
+                                <span>同比上月</span>
+                                <span class="green" :class="{red:Number(financialObj.totalIncomeThisMonth) < Number(financialObj.totalIncomeLastMonth)}">
+                                    <span v-if="financialObj.totalIncomeLastMonth == 0">
+                                      {{ (Number(financialObj.totalIncomeThisMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                    <span v-else>
+                                      {{ ((Number(financialObj.totalIncomeThisMonth) - Number(financialObj.totalIncomeLastMonth)) / Number(financialObj.totalIncomeLastMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                  <el-icon v-if="Number(financialObj.totalIncomeThisMonth) >= Number(financialObj.totalIncomeLastMonth)">
+                                    <CaretTop />
+                                  </el-icon>
+                                  <el-icon v-else>
+                                    <CaretBottom />
+                                  </el-icon>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </el-col>
-                        <el-col :span="12">
+                        <el-col :span="6">
                           <div class="box">
-                            <el-descriptions title="总支出" :column="1">
+                            <!-- <el-descriptions title="总支出" :column="1">
                               <el-descriptions-item label="本月"><el-statistic title="" :value="financialObj.totalExpenditureThisMonth" value-style="color:#f71702" /></el-descriptions-item>
                               <el-descriptions-item label="上月"><el-statistic title="" :value="financialObj.totalExpenditureLastMonth" value-style="color:#f71702" /></el-descriptions-item>
-                            </el-descriptions>
+                            </el-descriptions> -->
+                            <el-statistic :value="financialObj.totalExpenditureThisMonth">
+                              <template #title>
+                                <div style="display: inline-flex; align-items: center">
+                                  本月总收入
+                                </div>
+                              </template>
+                              <template #suffix>
+                                <span style="margin-left: 10px;font-size: 16px;color: #999;">上月 {{ financialObj.totalExpenditureLastMonth }}</span>
+                              </template>
+                            </el-statistic>
+                            <div class="statistic-footer">
+                              <div class="footer-item">
+                                <span>同比上月</span>
+                                <span class="green" :class="{red:Number(financialObj.totalExpenditureThisMonth) < Number(financialObj.totalExpenditureLastMonth)}">
+                                    <span v-if="financialObj.totalExpenditureLastMonth == 0">
+                                      {{ (Number(financialObj.totalExpenditureThisMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                    <span v-else>
+                                      {{ ((Number(financialObj.totalExpenditureThisMonth) - Number(financialObj.totalExpenditureLastMonth)) / Number(financialObj.totalExpenditureLastMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                  <el-icon v-if="Number(financialObj.totalExpenditureThisMonth) >= Number(financialObj.totalExpenditureLastMonth)">
+                                    <CaretTop />
+                                  </el-icon>
+                                  <el-icon v-else>
+                                    <CaretBottom />
+                                  </el-icon>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </el-col>
-                      </el-row>
-                      <el-row :gutter="10">
-                        <el-col :span="12">
+                        <el-col :span="6">
                           <div class="box">
-                            <el-descriptions title="净利润" :column="1">
+                            <!-- <el-descriptions title="净利润" :column="1">
                               <el-descriptions-item label="本月"><el-statistic title="" :value="financialObj.netProfitThisMonth" value-style="color:#f71702" /></el-descriptions-item>
                               <el-descriptions-item label="上月"><el-statistic title="" :value="financialObj.netProfitLastMonth" value-style="color:#f71702" /></el-descriptions-item>
-                            </el-descriptions>
+                            </el-descriptions> -->
+                            <el-statistic :value="financialObj.netProfitThisMonth">
+                              <template #title>
+                                <div style="display: inline-flex; align-items: center">
+                                  本月总收入
+                                </div>
+                              </template>
+                              <template #suffix>
+                                <span style="margin-left: 10px;font-size: 16px;color: #999;">上月 {{ financialObj.netProfitLastMonth }}</span>
+                              </template>
+                            </el-statistic>
+                            <div class="statistic-footer">
+                              <div class="footer-item">
+                                <span>同比上月</span>
+                                <span class="green" :class="{red:Number(financialObj.netProfitThisMonth) < Number(financialObj.netProfitLastMonth)}">
+                                    <span v-if="financialObj.netProfitLastMonth == 0">
+                                      {{ (Number(financialObj.netProfitThisMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                    <span v-else>
+                                      {{ ((Number(financialObj.netProfitThisMonth) - Number(financialObj.netProfitLastMonth)) / Number(financialObj.netProfitLastMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                  <el-icon v-if="Number(financialObj.netProfitThisMonth) >= Number(financialObj.netProfitLastMonth)">
+                                    <CaretTop />
+                                  </el-icon>
+                                  <el-icon v-else>
+                                    <CaretBottom />
+                                  </el-icon>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </el-col>
-                        <el-col :span="12">
+                        <el-col :span="6">
                           <div class="box">
-                            <el-descriptions title="人员总成本(万元)" :column="1">
+                            <!-- <el-descriptions title="人员总成本(万元)" :column="1">
                               <el-descriptions-item label="本月"><el-statistic title="" :value="financialObj.personnelTotalExpenditureThisMonth" value-style="color:#f71702" /></el-descriptions-item>
                               <el-descriptions-item label="上月"><el-statistic title="" :value="financialObj.personnelTotalExpenditureLastMonth" value-style="color:#f71702" /></el-descriptions-item>
-                            </el-descriptions>
+                            </el-descriptions> -->
+                            <el-statistic :value="financialObj.personnelTotalExpenditureThisMonth">
+                              <template #title>
+                                <div style="display: inline-flex; align-items: center">
+                                  本月总收入
+                                </div>
+                              </template>
+                              <template #suffix>
+                                <span style="margin-left: 10px;font-size: 16px;color: #999;">上月 {{ financialObj.personnelTotalExpenditureLastMonth }}</span>
+                              </template>
+                            </el-statistic>
+                            <div class="statistic-footer">
+                              <div class="footer-item">
+                                <span>同比上月</span>
+                                <span class="green" :class="{red:Number(financialObj.personnelTotalExpenditureThisMonth) < Number(financialObj.personnelTotalExpenditureLastMonth)}">
+                                    <span v-if="financialObj.personnelTotalExpenditureLastMonth == 0">
+                                      {{ (Number(financialObj.personnelTotalExpenditureThisMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                    <span v-else>
+                                      {{ ((Number(financialObj.personnelTotalExpenditureThisMonth) - Number(financialObj.personnelTotalExpenditureLastMonth)) / Number(financialObj.personnelTotalExpenditureLastMonth) * 100).toFixed(1) }}%
+                                    </span>
+                                  <el-icon v-if="Number(financialObj.personnelTotalExpenditureThisMonth) >= Number(financialObj.personnelTotalExpenditureLastMonth)">
+                                    <CaretTop />
+                                  </el-icon>
+                                  <el-icon v-else>
+                                    <CaretBottom />
+                                  </el-icon>
+                                </span>
+                              </div>
+                            </div>
                           </div>
                         </el-col>
                       </el-row>
                     </div>
                   </el-col>
-                  <el-col :span="9">
+                  <!-- <el-col :span="9">
+                    <div class="box1">
+                      <div style="width: 100%;display: flex;align-items: flex-start;margin-left: 20px;color: #0d06db;font-weight: bold;">净利润率</div>
+                      <el-progress type="circle" color="#24b6c4" stroke-width="10" :percentage="financialObj.netProfitMargin" />
+                      <div style="color: #f71702;display: flex;align-items: center;height: 26px;line-height: 26px;"><span style="color:#24b6c4;font-size: 12px;margin-right: 10px;">目标</span> 0%</div>
+                    </div>
+                  </el-col> -->
+                </el-row>
+                <!-- <el-row :gutter="10" class="el-row-bom">
+                  <el-col :span="12">
                     <div class="box1">
                       <div style="width: 100%;display: flex;align-items: flex-start;margin-left: 20px;color: #0d06db;font-weight: bold;">净利润率</div>
                       <el-progress type="circle" color="#24b6c4" stroke-width="10" :percentage="financialObj.netProfitMargin" />
                       <div style="color: #f71702;display: flex;align-items: center;height: 26px;line-height: 26px;"><span style="color:#24b6c4;font-size: 12px;margin-right: 10px;">目标</span> 0%</div>
                     </div>
                   </el-col>
-                </el-row>
+                </el-row> -->
                 <el-row :gutter="10" class="el-row-bom">
-                  <el-col :span="12">
-                    <div id="myChart2" class="box2"></div>
+                  <el-col :span="7">
+                    <div class="box1">
+                      <div style="width: 100%;display: flex;align-items: flex-start;margin-left: 20px;color: #0d06db;font-weight: bold;">净利润率</div>
+                      <el-progress type="circle" color="#24b6c4" stroke-width="10" :percentage="financialObj.netProfitMargin" />
+                      <div style="color: #f71702;display: flex;align-items: center;height: 26px;line-height: 26px;"><span style="color:#24b6c4;font-size: 12px;margin-right: 10px;">目标</span> 0%</div>
+                    </div>
                   </el-col>
-                  <el-col :span="12">
-                    <div id="myChart3" class="box2"></div>
+                  <el-col :span="7">
+                    <div id="myChart2" class="box1"></div>
+                  </el-col>
+                  <el-col :span="10">
+                    <div id="myChart3" class="box1"></div>
                   </el-col>
                 </el-row>
-                <el-row :gutter="10" class="el-row-bom">
+                <el-row :gutter="10" class="el-row-bom el-row-boms">
                   <el-col :span="24">
+                    <div style="position: absolute;top: 0;right: 5px;z-index: 9999;">
+                      <el-radio-group v-model="radioValue" @change="handleChangeRadio">
+                        <el-radio-button label="近三季度" value="近三季度" />
+                        <el-radio-button label="近一年度" value="近一年度" />
+                        <el-radio-button label="近两年度" value="近两年度" />
+                      </el-radio-group>
+                    </div>
                     <div id="myChart4" class="box3"></div>
                   </el-col>
                 </el-row>
               </div>
             </el-col>
-            <el-col :span="spanRight">
+            <!-- <el-col :span="spanRight">
               <div class="container-right">
                 <el-row :gutter="10" class="el-row-bom">
                   <el-col :span="24">
@@ -141,11 +278,6 @@
                       <div class="box-title">
                         公司基础费用
                       </div>
-                      <!-- <div class="box-list-xs">
-                        <div style="width: 20%;box-sizing: border-box;"></div>
-                        <div style="width: 40%;box-sizing: border-box;color:#f71702;text-align: center;font-weight: bold;">深圳</div>
-                        <div style="width: 40%;box-sizing: border-box;color:#f71702;text-align: center;font-weight: bold;">成都</div>
-                      </div> -->
                       <div class="box-list" v-for="(item,index) in financialObj.financeReportCostFormsTwo" :key="index">
                         <div style="font-size: 14px;color: #0d06db;font-weight: bold;width: 26%;">{{ item.name }}</div>
                         <div class="box-list-xx">
@@ -161,21 +293,6 @@
                           </div>
                         </div>
                       </div>
-                      <!-- <div class="box-list">
-                        <div style="color: #fff;font-weight: bold;margin-right: 6px;">水电租金</div>
-                        <div class="box-list-xx">
-                          <div class="box-list-xs">
-                            <div style="color:#f71702;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">本月</div>
-                            <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div>
-                        </div>
-                        <div class="box-list-xx">
-                          <div class="box-list-xs">
-                            <div style="color:#f71702;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">上月</div>
-                            <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div>
-                        </div>
-                      </div> -->
                     </div>
                   </el-col>
                 </el-row>
@@ -190,54 +307,21 @@
                         <div class="box-list-xx">
                           <div class="box-list-xs">
                             <div style="color:#42ec18;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">本月</div>
-                            <!-- <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic> -->
                             <el-statistic title="" :value="item.expenditureThisMonth" value-style="color:#f71702;font-size:14px;"></el-statistic>
                           </div>
                           <div class="box-list-xs">
                             <div style="color:#42ec18;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">上月</div>
-                            <!-- <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic> -->
                             <el-statistic title="" :value="item.expenditureLastMonth" value-style="color:#f71702;font-size:14px;"></el-statistic>
                           </div>
                         </div>
                         <div class="box-list-xx">
-                          <!-- <div class="box-list-xl">
-                            <div style="color:#42ec18;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">盈利</div>
-                            <el-statistic title="" :value="item.profit" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div>
-                          <div class="box-list-xl">
-                            <div style="color:#42ec18;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">盈利</div>
-                            <el-statistic title="" :value="item.profit" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div> -->
                         </div>
                       </div>
-                      <!-- <div class="box-lists">
-                        <div style="color: #fff;font-weight: bold;margin-right: 6px;">深圳场景</div>
-                        <div class="box-list-xx">
-                          <div class="box-list-xs">
-                            <div style="color:#f71702;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">本月</div>
-                            <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div>
-                          <div class="box-list-xs">
-                            <div style="color:#f71702;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">上月</div>
-                            <el-statistic title="" :value="621500" value-style="color:#f71702;font-size:14px;"></el-statistic>
-                          </div>
-                        </div>
-                        <div class="box-list-xx">
-                          <div class="box-list-xl">
-                            <div style="color:#f71702;font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">盈利</div>
-                            <el-statistic title="" :value="621500" value-style="color:#e7c03b;font-size:14px;"></el-statistic>
-                          </div>
-                          <div class="box-list-xl">
-                            <div style="color:rgba(251, 251, 251, .5);font-size:12px;padding: 0px 4px 0 4px;box-sizing: border-box;">盈利</div>
-                            <el-statistic title="" :value="621500" value-style="color:#e7c03b;font-size:14px;"></el-statistic>
-                          </div>
-                        </div>
-                      </div> -->
                     </div>
                   </el-col>
                 </el-row>
               </div>
-            </el-col>
+            </el-col> -->
           </el-row>
         </div>
       </el-col>
@@ -301,7 +385,6 @@ export default defineComponent({
   setup() {
     const instance = getCurrentInstance()?.proxy;
     const customNodeClass= (data,node)=>{
-      console.log(data)
       if(data.isFontWeight){
         return 'is-font-weight'
       }
@@ -353,6 +436,12 @@ export default defineComponent({
 .el-row-bom {
   margin-bottom: 10px;
 }
+.el-row-boms {
+  height: calc(100vh - 600px);
+  .el-col{
+    height: 100%;
+  }
+}
 .container{
   width: 100%;
   flex: 1;
@@ -368,15 +457,19 @@ export default defineComponent({
   height: 100px;
   background-color: #fff;
   border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  padding: 10px 20px;
+  box-sizing: border-box;
 }
 .box1{
   display: flex;
   flex-direction: column;
   justify-content: space-around;
   align-items: center;
-  height: 210px;
+  height: 250px;
   background-color: #fff;
   border: 1px solid #e5e5e5;
+  border-radius: 12px;
 }
 .box2{
   height: 200px;
@@ -384,9 +477,11 @@ export default defineComponent({
   border: 1px solid #e5e5e5;
 }
 .box3{
-  height: 200px;
+  position: relative;
+  height: 100%;
   background-color: #fff;
   border: 1px solid #e5e5e5;
+  border-radius: 12px;
 }
 .box4{
   height: 200px;
@@ -406,7 +501,8 @@ export default defineComponent({
     margin-bottom: 8px;
   }
   :deep(.el-descriptions__title){
-    color: #0d06db;
+    color: #333;
+    font-weight: normal;
   }
   :deep(.el-descriptions__table){
     .el-descriptions__cell{
@@ -482,6 +578,40 @@ export default defineComponent({
 }
 .el-tree :deep(.is-font-weight > .el-tree-node__content){
   font-weight: 600;
+}
+.el-statistic{
+  :deep(.el-statistic__content){
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.statistic-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 12px;
+  color: var(--el-text-color-regular);
+  margin-top: 10px;
+}
+
+.statistic-footer .footer-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.statistic-footer .footer-item span:last-child {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+.green {
+  color: var(--el-color-success);
+}
+.red {
+  color: var(--el-color-error);
 }
 </style>
 
