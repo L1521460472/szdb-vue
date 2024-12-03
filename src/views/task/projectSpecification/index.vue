@@ -102,8 +102,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="80px">
-        <el-form :model="formInfo.data" ref="tabsRef" label-width="80px">
+      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="120px">
             <el-form-item label="制作规范名称" prop="standardName" :rules="
               {
                 required: true,
@@ -143,7 +142,6 @@
                 />
               </div>
             </el-form-item>
-          </el-form>
           <div class="dialog-box-banner">
             
           </div>

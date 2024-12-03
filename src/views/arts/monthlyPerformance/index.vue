@@ -102,12 +102,12 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData" border>
+    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column type="expand">
         <template #default="props">
           <div style="margin-left: 183px;">
-            <el-table :data="props.row.achievementList" :show-header="false">
+            <el-table :data="props.row.achievementList" :show-header="false" border>
               <el-table-column label="名称" align="center" prop="name" />
               <el-table-column label="状态" align="center" prop="projectState">
                 <template #default="scope">

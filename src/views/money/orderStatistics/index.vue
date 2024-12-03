@@ -83,6 +83,21 @@
                 />
               </el-select>
           </el-form-item>
+          <el-form-item label="订单类型" label-width="80px" prop="fabrication">
+              <el-select
+                v-model="queryParams.fabrication"
+                placeholder="订单类型"
+                clearable
+                style="width: 200px"
+              >
+                <el-option
+                    v-for="dict in options3"
+                    :key="dict.value"
+                    :label="dict.label"
+                    :value="dict.value"
+                />
+              </el-select>
+          </el-form-item>
           <el-form-item label="日期" label-width="80px" prop="month">
             <!-- <el-date-picker
               v-model="dateRange"
@@ -116,12 +131,16 @@
           <el-table-column label="序号" width="55" align="center" type="index" />
           <el-table-column label="客户名称" align="center" min-width="110" prop="projectEnterpriseName" />
           <el-table-column label="项目代码" align="center" min-width="110" prop="projectCode" />
-          <el-table-column label="项目状态" align="center" prop="projectState">
+          <el-table-column label="项目状态" align="center" prop="projectState" min-width="90">
              <template #default="scope">
-                <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-if="scope.row.projectState == '1'">进度正常</span>
+                <!-- <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-if="scope.row.projectState == '1'">进度正常</span>
                 <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '2'">存在风险</span>
                 <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else-if="scope.row.projectState == '3'">进度失控</span>
-                <span v-else-if="scope.row.projectState == '4'">已完成</span>
+                <span v-else-if="scope.row.projectState == '4'">已完成</span> -->
+                <span style="color: #42ec18;" v-if="scope.row.projectState == '1'">进度正常</span>
+                <span style="color: #ff9725;" v-else-if="scope.row.projectState == '2'">存在风险</span>
+                <span style="color: #f71702;" v-else-if="scope.row.projectState == '3'">进度失控</span>
+                <span style="color: #0d06db;" v-else>已完成</span>
                 <!-- <span style="display: block;width: 100%;height: 100%;text-align: center;background-color: red;color: #fff;" v-else>未完成</span> -->
              </template>
           </el-table-column>
@@ -150,16 +169,10 @@
                 <span>{{ scope.row.artsProjectFinance ? scope.row.artsProjectFinance.orderAmount : '' }}</span>
              </template>
           </el-table-column>
-          <el-table-column label="公司制作" align="center" prop="fabrication">
+          <el-table-column label="订单类型" align="center" prop="fabrication">
              <template #default="scope">
-                <span v-if="scope.row.artsProjectFinance && scope.row.artsProjectFinance.fabrication == '1'">是</span>
-                <span v-else>否</span>
-             </template>
-          </el-table-column>
-          <el-table-column label="外包制作" align="center" prop="fabrication">
-             <template #default="scope">
-                <span v-if="scope.row.artsProjectFinance && scope.row.artsProjectFinance.fabrication == '2'">是</span>
-                <span v-else>否</span>
+                <span v-if="scope.row.artsProjectFinance && scope.row.artsProjectFinance.fabrication == '1'">内部</span>
+                <span v-else>外包</span>
              </template>
           </el-table-column>
           <el-table-column label="外包金额" align="center" prop="outsourcingAmount">
@@ -178,6 +191,11 @@
                 <span v-if="scope.row.artsProjectFinance.isCollection == '1'">是</span>
                 <span v-else>否</span>
              </template> -->
+          </el-table-column>
+          <el-table-column label="利润解析" align="center" prop="collectionAmount">
+             <template #default="scope">
+              <span @click="handleProjectOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.collectionAmount }}</span>
+             </template>
           </el-table-column>
           <!-- <el-table-column label="是否包人" align="center" prop="postSort" /> -->
           <el-table-column label="内部全职" align="center" prop="isContractor">
@@ -692,6 +710,13 @@ const options2 = ref([{
     value: 2,
     label: '美术'
   }]);
+const options3 = ref([{
+    value: 1,
+    label: '内部',
+  }, {
+    value: 2,
+    label: '外包'
+  }]);
 
 const shortcuts = [
   {
@@ -1000,6 +1025,10 @@ const handleChangeDept = (value) => {
    ids.value = selection.map(item => item.postId);
    single.value = selection.length != 1;
    multiple.value = !selection.length;
+ }
+ /** 利润解析 */
+ function handleProjectOpen(row) {
+   console.log(row)
  }
  /** 合同 */
  function handleContract(row) { 

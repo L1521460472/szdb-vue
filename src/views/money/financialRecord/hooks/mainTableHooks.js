@@ -328,7 +328,7 @@ const upload = reactive({
     graphic: [
       {
         type: "text",
-        left: "29%",
+        left: "30%",
         top: "38%",
         style: {
           text: '销售总额',
@@ -341,7 +341,7 @@ const upload = reactive({
       },
         {
         type: "text",
-        left: "29%",
+        left: "30%",
         top: "50%",
         style: {
           text: '0',

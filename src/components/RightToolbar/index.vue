@@ -10,6 +10,18 @@
       <el-tooltip class="item" effect="dark" content="显隐列" placement="top" v-if="columns">
         <el-button circle icon="Menu" @click="showColumn()" />
       </el-tooltip>
+      <el-tooltip class="item" effect="dark" content="推送列" placement="top" v-if="columnsTs">
+        <!-- <el-button circle icon="Menu" @click="showColumn1()" /> -->
+        <el-popover placement="right" :width="200" trigger="click">
+          <template #reference>
+            <el-button circle icon="Menu" />
+          </template>
+          <span>推送字段</span>
+          <div style="display: flex;flex-direction: column;">
+            <el-checkbox v-model="item.visible" :label="item.label" v-for="(item,index) in columnsTs" :key="index" @change="handleChangeColumn(item.visible,item.key)" />
+          </div>
+        </el-popover>
+      </el-tooltip>
       <el-tooltip class="item" effect="dark" content="平铺" placement="top" v-if="grid">
         <el-button circle icon="Grid" @click="showType('grid')" />
       </el-tooltip>
@@ -25,16 +37,26 @@
         @change="dataChange"
       ></el-transfer>
     </el-dialog>
+    <el-dialog :title="title1" v-model="open1" append-to-body width="200">
+      <div style="display: flex;flex-direction: column;">
+        <el-checkbox :model="item.key" :label="item.label" v-for="(item,index) in columnsTs" :key="index" />
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script setup>
+import { ref,  getCurrentInstance, defineProps} from "vue";
+import { getAddColumn,getDeleteColumn } from "@/api/personnel/attendanceReport";
 const props = defineProps({
   showSearch: {
     type: Boolean,
     default: true,
   },
   columns: {
+    type: Array,
+  },
+  columnsTs: {
     type: Array,
   },
   search: {
@@ -50,15 +72,17 @@ const props = defineProps({
     default: 10,
   },
 })
-
+const instance = getCurrentInstance()?.proxy;
 const emits = defineEmits(['update:showSearch', 'queryTable','showType']);
 
 // 显隐数据
 const value = ref([]);
 // 弹出层标题
 const title = ref("显示/隐藏");
+const title1 = ref("推送");
 // 是否显示弹出层
 const open = ref(false);
+const open1 = ref(false);
 
 const style = computed(() => {
   const ret = {};
@@ -93,6 +117,24 @@ function dataChange(data) {
 // 打开显隐列dialog
 function showColumn() {
   open.value = true;
+}
+// 打开显隐列dialog
+function showColumn1() {
+  open1.value = true;
+}
+// 推送
+function handleChangeColumn(val,val1) {
+  if(val){
+    getAddColumn(val1).then(res=>{
+      console.log(res)
+      instance.$modal.msgSuccess("添加成功");
+    })
+  }else{
+    getDeleteColumn(val1).then(res=>{
+      console.log(res)
+      instance.$modal.msgSuccess("删除成功");
+    })
+  }
 }
 
 // 显隐列初始默认隐藏列

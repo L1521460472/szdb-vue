@@ -8,7 +8,7 @@
  */
 import { onMounted,onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail,getImport } from "@/api/personnel/attendanceReport";
+import { getPage,deptList,getDelete,getDetail,getImport,getColumn } from "@/api/personnel/attendanceReport";
 import { formatDate } from "@/utils/index";
 
 export default function ($vm) {
@@ -28,6 +28,17 @@ export default function ($vm) {
     attendanceMonth: undefined,
   })
 
+  // 列显隐信息
+  const columns = ref([
+    { key: 'code', label: `用户编号`, visible: true },
+    { key: 1, label: `用户名称`, visible: true },
+    { key: 2, label: `用户昵称`, visible: true },
+    { key: 3, label: `部门`, visible: true },
+    { key: 4, label: `手机号码`, visible: true },
+    { key: 5, label: `状态`, visible: true },
+    { key: 6, label: `创建时间`, visible: true }
+  ]);
+
   /**
    * @description: 表格数据
    */
@@ -39,6 +50,12 @@ export default function ($vm) {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
+    });
+  }
+  /** 查询推送字段 */
+  const getColumnList =  () => {
+    getColumn().then((response) => {
+      console.log(response)
     });
   }
 
@@ -83,6 +100,7 @@ export default function ($vm) {
   }
   onBeforeMount(() => {
     getList()
+    getColumnList()
   }),
 
   onMounted(() => {
@@ -93,6 +111,7 @@ export default function ($vm) {
   return {
     tableData,
     total,
+    columns,
     showSearch,
     loading,
     queryParams,

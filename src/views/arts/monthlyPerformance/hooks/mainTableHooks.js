@@ -32,11 +32,17 @@ export default function ($vm) {
    * @description: 表格数据
    */
   const tableData = ref([]);
+  const expands = ref([]);
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
     listAchievements2(queryParams.value).then(response => {
-      tableData.value = response.rows;
+      tableData.value = response.rows
+      ?.map((item,index)=>{
+        item.id = index
+        item.isExpandeds = false
+        return item
+      });;
       if(response.rows.length > 0){
         columnList.value = response.rows[0].achievementList.map((item)=>{
           item.label = item.time
@@ -46,6 +52,18 @@ export default function ($vm) {
       total.value = response.total;
       loading.value = false;
     });
+  }
+  /** 展开 */
+  const expandChange = (row, expandedRows) => {
+    // console.log(row,expandedRows,'expandChange')
+    expands.value = []
+    if(expandedRows.length){
+      row.isExpandeds = true                      
+      expands.value.push(row.id)
+    }else{
+      row.isExpandeds = false
+    }
+    
   }
   /** 跳转 */
   const handleToDoOpen = (row) => {
@@ -78,11 +96,13 @@ export default function ($vm) {
     showSearch,
     loading,
     queryParams,
+    expands,
     columnList,
     getList,
     handleToDoOpen,
     handleDelete,
     handleChangeDept,
-    handleChangeTime
+    handleChangeTime,
+    expandChange
   };
 }

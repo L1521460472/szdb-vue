@@ -119,7 +119,7 @@
                             <el-statistic :value="financialObj.totalExpenditureThisMonth">
                               <template #title>
                                 <div style="display: inline-flex; align-items: center">
-                                  本月总收入
+                                  本月总支出
                                 </div>
                               </template>
                               <template #suffix>
@@ -156,7 +156,7 @@
                             <el-statistic :value="financialObj.netProfitThisMonth">
                               <template #title>
                                 <div style="display: inline-flex; align-items: center">
-                                  本月总收入
+                                  本月净利润
                                 </div>
                               </template>
                               <template #suffix>
@@ -193,7 +193,7 @@
                             <el-statistic :value="financialObj.personnelTotalExpenditureThisMonth">
                               <template #title>
                                 <div style="display: inline-flex; align-items: center">
-                                  本月总收入
+                                  人员总成本
                                 </div>
                               </template>
                               <template #suffix>

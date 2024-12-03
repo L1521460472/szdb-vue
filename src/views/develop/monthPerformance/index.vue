@@ -76,7 +76,7 @@
       <el-table-column type="expand">
         <template #default="props">
           <div style="margin-left: 128px;">
-            <el-table :data="props.row.list" :show-header="false">
+            <el-table :data="props.row.list" :show-header="false" border>
               <el-table-column label="名称" align="center" prop="assignmentName" />
               <el-table-column label="状态" align="center" prop="status">
                 <template #default="scope">

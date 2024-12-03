@@ -8,7 +8,7 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { expenditureList,delExpenditure,getPage,getDelete,getDetail } from "@/api/money/expenditureManagement";
+import { expenditureList,delExpenditure,getPage,getDelete,getDetail,getPush } from "@/api/money/expenditureManagement";
 import { getToken } from "@/utils/auth";
 
 export default function ($vm) {
@@ -105,7 +105,15 @@ export default function ($vm) {
   // }
   /** 一键推送 */
   const handlePush = () => {
-    console.log('handlePush')
+    const taskAllId = taskIds.value;
+    console.log('handlePush',taskAllId)
+    if(taskAllId.length != 1){
+      $vm.$modal.msgSuccess("请选择一个推送人");
+      return
+    }
+    getPush(taskAllId).then(response => {
+      $vm.$modal.msgSuccess("推送成功");
+    });
   }
   /** 导入数据 */
   const handleImport = () => {

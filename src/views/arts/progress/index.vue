@@ -91,7 +91,8 @@
             <el-radio-button label="汇总详情" value="汇总详情" />
           </el-radio-group>
         </el-col>
-        <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar>
+        <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar> -->
+        <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
      </el-row>
      <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
         <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />

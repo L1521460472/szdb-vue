@@ -87,3 +87,10 @@ export function confirmNotice() {
     method: 'GET',
   })
 }
+// 一键推送
+export function getPush(id) {
+  return request({
+    url: '/finance/cost/push/' + id,
+    method: 'GET',
+  })
+}

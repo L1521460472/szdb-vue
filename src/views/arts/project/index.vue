@@ -676,6 +676,7 @@
           <div style="width: 300px;">项目编号：{{projectform.projectCode}}</div>
           <div class="project-box-left-title">
             <div class="project-box-text">创建人：{{ projectform.createBy }}</div>
+            <div class="project-box-text">跟进PM：{{ projectform.pmName }}</div>
             <div class="project-box-text">创建时间：{{ projectform.createTime }}</div>
             <div class="project-box-text">最后更新：{{ projectform.updateTime }}</div>
           </div>

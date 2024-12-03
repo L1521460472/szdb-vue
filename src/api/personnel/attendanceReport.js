@@ -50,6 +50,7 @@ export function getDetail(id) {
   })
 }
 
+
 // 导出人事考勤报表列表
 export function getExport(data) {
   return request({
@@ -78,5 +79,26 @@ export function getConfirmed() {
   return request({
     url: '/system/report/confirmed',
     method: 'GET',
+  })
+}
+// 获取允许推送字段/finance/cost/允许推送字段
+export function getColumn(name) {
+  return request({
+    url: '/finance/cost',
+    method: 'GET',
+  })
+}
+// 添加允许推送字段
+export function getAddColumn(name) {
+  return request({
+    url: '/finance/cost/' + name,
+    method: 'GET',
+  })
+}
+// 删除允许推送字段
+export function getDeleteColumn(name) {
+  return request({
+    url: '/finance/cost/' + name,
+    method: 'DELETE',
   })
 }
