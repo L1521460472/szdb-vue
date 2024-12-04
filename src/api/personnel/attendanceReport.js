@@ -84,21 +84,21 @@ export function getConfirmed() {
 // 获取允许推送字段/finance/cost/允许推送字段
 export function getColumn(name) {
   return request({
-    url: '/finance/cost',
+    url: '/finance/cost/pushField',
     method: 'GET',
   })
 }
 // 添加允许推送字段
 export function getAddColumn(name) {
   return request({
-    url: '/finance/cost/' + name,
+    url: '/finance/cost/addPushField?field=' + name,
     method: 'GET',
   })
 }
 // 删除允许推送字段
 export function getDeleteColumn(name) {
   return request({
-    url: '/finance/cost/' + name,
+    url: '/finance/cost/delPushField?field=' + name,
     method: 'DELETE',
   })
 }

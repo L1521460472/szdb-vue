@@ -479,14 +479,19 @@
         </el-collapse-item>
         <el-collapse-item title="项目成员" name="3" disabled>
           <div class="dialog-member-title">
-              <div>负责人：<span style="margin-right: 20px;color: #00a660;"> {{ fzUserData.length }}</span>PM： <span style="margin-right: 20px;color: #67C23A">{{ 1 }}</span>制作人： <span style="margin-right: 20px;color: #409eff;">{{ zzUserData.length }}</span></div>
+              <div>负责人：<span style="margin-right: 20px;color: #00a660;"> {{ fzUserData.length }}</span>PM： <span style="margin-right: 20px;color: #67C23A">{{ pmObj.userId ? 1 : 0 }}</span>制作人： <span style="margin-right: 20px;color: #409eff;">{{ zzUserData.length }}</span></div>
               <div><el-button :icon="Plus" @click="handleAddMember">添加成员</el-button></div>
             </div>
             <div class="dialog-member-box">
               <div class="dialog-member-box-left">
                 <div style="margin-bottom: 16px;font-size: 16px;margin-left: 8px;">项目负责人</div>
-                <div v-if="fzUserData.length > 0">
-                  <div style="border: 1px solid #00a660;border-radius: 16px;width: 90%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="item in fzUserData" key="item">负责人：{{ item.userName }}</div>
+                <div v-if="fzUserData.length > 0" style="height: calc(100% - 44px);overflow-y: auto;">
+                  <div class="el-result" style="border: 1px solid #00a660;border-radius: 16px;width: 96%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="(item,index) in fzUserData" key="item">
+                    负责人：{{ item.userName }}
+                    <div class="el-result__extra1">
+                      <el-button :icon="Setting" size="small" @click="handleSetMember2(index)" circle />
+                    </div>
+                  </div>
                 </div>
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
                   <!-- <div class="title-circle title-circle-leader" @click="handleAddMember"> -->
@@ -587,6 +592,7 @@
         ">
           <el-radio-group v-model="setMemberform.type">
             <el-radio label="1">项目负责人</el-radio>
+            <el-radio label="3">PM跟进人</el-radio>
             <el-radio label="2">项目制作人</el-radio>
           </el-radio-group>
         </el-form-item>
@@ -1861,6 +1867,9 @@ function reset() {
   remarks: null,
   isContractor: '1',
 };
+pmObj.value.userId = null
+pmObj.value.userName = null
+pmObj.value.projectRole = null
 userNameList.value = []
 userNameListLeader.value = []
 userNameListLeader1.value = []
@@ -2619,6 +2628,7 @@ onMounted(() => {
   box-sizing: border-box;
 }
 .dialog-member-box-left{
+  position: relative;
   width: 130px;
   height: 100%;
   border-right: 1px solid #999;
@@ -2657,8 +2667,18 @@ onMounted(() => {
   right: 10px;
   display: none;
 }
+.el-result :deep(.el-result__extra1){
+  margin: 0 !important;
+  position: absolute;
+  top: -1px;
+  right: 0px;
+  display: none;
+}
 
 .el-result:hover :deep(.el-result__extra){
+  display: block;
+}
+.el-result:hover :deep(.el-result__extra1){
   display: block;
 }
 .dialogTree{

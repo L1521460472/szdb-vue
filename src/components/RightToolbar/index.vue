@@ -127,11 +127,13 @@ function handleChangeColumn(val,val1) {
   if(val){
     getAddColumn(val1).then(res=>{
       console.log(res)
+      emits("getColumnList");
       instance.$modal.msgSuccess("添加成功");
     })
   }else{
     getDeleteColumn(val1).then(res=>{
       console.log(res)
+      emits("getColumnList");
       instance.$modal.msgSuccess("删除成功");
     })
   }
