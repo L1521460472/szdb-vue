@@ -9,7 +9,7 @@
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="文件名称" prop="projectName">
+      <el-form-item label="文件名称" prop="standardName">
         <!-- <el-select
           v-model="queryParams.projectId"
           placeholder="文件名称"
@@ -24,7 +24,7 @@
         />
         </el-select> -->
         <el-input
-               v-model="queryParams.projectName"
+               v-model="queryParams.standardName"
                placeholder="请输入文件名称"
                clearable
                style="width: 240px"
@@ -194,7 +194,7 @@ export default defineComponent({
     const editorRef = shallowRef()
     const editorConfig = { placeholder: "请输入内容...", MENU_CONF: {} };
     // 内容 HTML
-    const valueHtml = ref('<p>hello</p>')
+    const valueHtml = ref('')
     const props = {
       value: 'id',
       // expandTrigger: 'hover',
@@ -215,7 +215,7 @@ export default defineComponent({
     // 模拟 ajax 异步获取内容
     onMounted(() => {
         setTimeout(() => {
-            valueHtml.value = '<p>模拟 Ajax 异步设置内容</p>'
+            valueHtml.value = ''
         }, 1500)
     })
 

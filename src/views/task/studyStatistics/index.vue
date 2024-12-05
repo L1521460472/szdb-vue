@@ -21,9 +21,9 @@
               @change="handleChangeTime"
             />
       </el-form-item>
-      <el-form-item label="姓名" prop="orderName">
+      <el-form-item label="姓名" prop="name">
         <el-input
-            v-model="orderName"
+            v-model="queryParams.name"
             placeholder="请输入姓名"
             clearable
             prefix-icon="Search"

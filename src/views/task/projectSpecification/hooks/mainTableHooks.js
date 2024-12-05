@@ -24,10 +24,7 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    projectId: undefined,
-    projectName: undefined,
-    producerId: undefined,
-    approveStatus: undefined,
+    standardName: '',
   })
 
   /**
@@ -37,7 +34,7 @@ export default function ($vm) {
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
-    getPage(queryParams.value).then(response => {
+    getPage(queryParams.value.standardName).then(response => {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;

@@ -340,7 +340,7 @@
       </el-form>
     </Dialog>
     <el-dialog v-model="dialogVisible">
-      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+      <img class="w-full" :src="dialogImageUrl" alt="Preview Image" />
     </el-dialog>
   </div>
 </template>
@@ -442,6 +442,9 @@ export default defineComponent({
 :deep(.el-upload-list--picture-card .el-upload-list__item){
   width: 100px;
   height: 100px;
+}
+.w-full{
+  width: 100%;
 }
 </style>
 

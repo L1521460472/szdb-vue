@@ -649,6 +649,32 @@
              </div>
           </template>
         </el-dialog>
+        <el-dialog title="利润解析" v-model="open4" width="800" append-to-body :close-on-click-modal="false">
+          <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
+            <!-- <el-table-column type="selection" width="55" align="center" /> -->
+            <el-table-column type="expand">
+              <template #default="props">
+                <div style="margin-left: 128px;">
+                  <el-table :data="props.row.list" :show-header="false" border>
+                    <el-table-column label="姓名" align="center" width="80" prop="userName" />
+                    <el-table-column label="总消耗成本" align="center" prop="total" />
+                    <el-table-column label="阶段" align="center" prop="stateName" />
+                    <el-table-column label="工时（天）" align="center" prop="workDay" />
+                    <el-table-column label="日成本单价" align="center" prop="price" />
+                    <el-table-column label="日成本合计" align="center" prop="totalPrice" />
+                  </el-table>
+                </div>
+              </template>
+            </el-table-column>
+            <el-table-column label="序号" width="55" align="center" type="index" />
+            <el-table-column label="姓名" align="center" width="80" prop="userName" />
+            <el-table-column label="总消耗成本" align="center" prop="total" />
+            <el-table-column label="阶段" align="center" prop="stateName" />
+            <el-table-column label="工时（天）" align="center" prop="workDay" />
+            <el-table-column label="日成本单价" align="center" prop="price" />
+            <el-table-column label="日成本合计" align="center" prop="totalPrice" />
+          </el-table>
+        </el-dialog>
     </div>
  </template>
  
@@ -666,10 +692,14 @@
  const artsProjectList = ref([]);
  const departmentList = ref([]);
  const departmentOptions = ref([]);//部门
+//  利润解析数据
+ const tableData = ref([]);
+ const expands = ref([]);
  const open = ref(false);
  const open1 = ref(false);
  const open2 = ref(false);
  const open3 = ref(false);
+ const open4 = ref(false);
  const loading = ref(true);
  const dateRange = ref([]);
  const total = ref(0);
@@ -941,6 +971,24 @@ watch(
     }
   }
 );
+
+/** 展开 */
+const expandChange = (row, expandedRows) => {
+  // console.log(row,expandedRows,'expandChange')
+  expands.value = []
+  if(expandedRows.length){
+    row.isExpandeds = true                      
+    expands.value.push(row.id)
+  }else{
+    row.isExpandeds = false
+  }
+  //  tableData.value = response.rows
+  //   ?.map((item,index)=>{
+  //     item.id = index
+  //     item.isExpandeds = false
+  //     return item
+  //   });
+}
  
  /** 查询项目列表 */
  function getList() {
@@ -1029,6 +1077,7 @@ const handleChangeDept = (value) => {
  /** 利润解析 */
  function handleProjectOpen(row) {
    console.log(row)
+   open4.value = true
  }
  /** 合同 */
  function handleContract(row) { 
