@@ -192,9 +192,9 @@
                 <span v-else>否</span>
              </template> -->
           </el-table-column>
-          <el-table-column label="利润解析" align="center" prop="collectionAmount">
+          <el-table-column label="利润解析" align="center" prop="profit">
              <template #default="scope">
-              <span @click="handleProjectOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.collectionAmount }}</span>
+              <span @click="handleProjectOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.profit }}</span>
              </template>
           </el-table-column>
           <!-- <el-table-column label="是否包人" align="center" prop="postSort" /> -->

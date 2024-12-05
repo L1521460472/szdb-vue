@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-20 17:31:50
+ * @LastEditTime: 2024-12-05 18:25:24
 -->
 <template>
   <div class="app-container">
@@ -260,16 +260,18 @@
                     <el-upload
                       ref="uploadRef2"
                       class="avatar-uploader"
-                      :show-file-list="false"
+                      :limit="5"
+                      v-model:file-list="imageUrl2"
                       :headers="upload2.headers"
                       :action="upload2.url"
                       :disabled="upload2.isUploading"
+                      list-type="picture-card"
                       :auto-upload="true"
-                      :on-progress="handleFileUploadProgress1"
+                      :on-preview="handlePictureCardPreview"
                       :on-success="handleFileSuccess1"
+                      :on-remove="handleRemove1"
                     >
-                      <img v-if="imageUrl2" :src="imageUrl2" class="avatar" />
-                      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                      <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
                     </el-upload>
                   </el-form-item>
                 </el-col>
@@ -278,16 +280,19 @@
                     <el-upload
                       ref="uploadRef3"
                       class="avatar-uploader"
-                      :show-file-list="false"
+                      :limit="5"
+                      v-model:file-list="imageUrl3"
                       :headers="upload3.headers"
                       :action="upload3.url"
                       :disabled="upload3.isUploading"
+                      list-type="picture-card"
                       :auto-upload="true"
-                      :on-progress="handleFileUploadProgress2"
+                      :on-preview="handlePictureCardPreview"
                       :on-success="handleFileSuccess2"
+                      :on-remove="handleRemove2"
                     >
-                      <img v-if="imageUrl3" :src="imageUrl3" class="avatar" />
-                      <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon>
+                      <!-- <img v-if="imageUrl3" :src="imageUrl3" class="avatar" /> -->
+                      <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
                     </el-upload>
                   </el-form-item>
                 </el-col>
@@ -334,6 +339,9 @@
         </el-collapse>  
       </el-form>
     </Dialog>
+    <el-dialog v-model="dialogVisible">
+      <img w-full :src="dialogImageUrl" alt="Preview Image" />
+    </el-dialog>
   </div>
 </template>
 
@@ -403,8 +411,8 @@ export default defineComponent({
   flex: 1;
 }
 .avatar-uploader .avatar {
-  width: 178px;
-  height: 178px;
+  width: 100px;
+  height: 100px;
   display: block;
 }
 .avatar-uploader .el-upload {
@@ -423,9 +431,17 @@ export default defineComponent({
 .el-icon.avatar-uploader-icon {
   font-size: 28px;
   color: #8c939d;
-  width: 178px;
-  height: 178px;
+  width: 100px;
+  height: 100px;
   text-align: center;
+}
+.avatar-uploader :deep(.el-upload--picture-card){
+  width: 100px;
+  height: 100px;
+}
+:deep(.el-upload-list--picture-card .el-upload-list__item){
+  width: 100px;
+  height: 100px;
 }
 </style>
 

@@ -489,7 +489,7 @@
                   <div class="el-result" style="border: 1px solid #00a660;border-radius: 16px;width: 96%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="(item,index) in fzUserData" key="item">
                     负责人：{{ item.userName }}
                     <div class="el-result__extra1">
-                      <el-button :icon="Setting" size="small" @click="handleSetMember2(index)" circle />
+                      <el-button :icon="Delete" type="primary" size="small" @click="handleSetMember1(index)" circle />
                     </div>
                   </div>
                 </div>
@@ -507,7 +507,7 @@
                     <div class="title-circle title-circle-leader">{{ getTwo(pmObj.userName) }}</div>
                   </template>
                   <template #extra>
-                    <el-button :icon="Setting" @click="handleSetMember1" circle />
+                    <el-button :icon="Delete" type="danger" @click="handleSetMemberPm" circle />
                   </template>
                 </el-result>
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
@@ -534,7 +534,7 @@
                         </span>
                       </div>
                       <div class="el-result__extra">
-                        <el-button :icon="Setting" @click="handleSetMember2(index)" circle />
+                        <el-button :icon="Delete" type="danger" @click="handleSetMember2(index)" circle />
                       </div>
                     </div>
                   </div>
@@ -617,6 +617,7 @@
            <div class="dialog-footer">
               <el-button type="danger" @click="submitremoveMemberForm">移除成员</el-button>
               <el-button v-if="setMemberform.isShow == 1" type="primary" @click="submitSetMemberForm1">确 定</el-button>
+              <el-button v-if="setMemberform.isShow == 3" type="primary" @click="submitSetMemberFormPM">确 定</el-button>
               <el-button v-else type="primary" @click="submitSetMemberForm2">确 定</el-button>
               <el-button @click="setMemberOpen = false">取 消</el-button>
            </div>
@@ -959,7 +960,7 @@
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import { listCategory,listCategoryDetail,listCategoryByType,listProject,deptList,departmentList,userList,dictData,addProject,editProject,delProject,getProject,getDetailsAdd,upProjectThumbnail,upState,flowPathList,setTemplate,projectBatch,delProjectCategory,editProjectCategory,download} from "@/api/project/project";
-import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled} from '@element-plus/icons-vue'
+import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled,Delete} from '@element-plus/icons-vue'
 import { listTemplate } from "@/api/project/projectTemplate";
 import { cloneDeep, set } from 'lodash-es';
 import {HOLIDAY} from './hooks/holiday.js';
@@ -1271,24 +1272,49 @@ function showClick(index) {
   dropdown1.value[index].handleOpen()
 }
 //设置负责人成员弹框
-const handleSetMember1 = ()=>{
-  setMemberform.isShow = 1
-  setMemberform.type = '1'
-  setMemberform.userId = form.value.projectResponsibilityUserId
-  setMemberform.userName = form.value.responsibleUserName
-  setMemberOpen.value = true;
+const handleSetMember1 =async (index)=>{
+  // setMemberform.isShow = 1
+  // setMemberform.type = '1'
+  // setMemberform.userId = fzUserData.value[index].userId
+  // setMemberform.userName = fzUserData.value[index].userName
+  // setMemberOpen.value = true;
+  // 删除
+  await userData.value.map((item,idx)=>{
+    if((item.userId == fzUserData.value[index].userId) && (item.projectRole == '1')){
+      userData.value.splice( idx, 1 );
+    }
+  })
+  fzUserData.value.splice( index, 1 );
+}
+//设置PM弹框
+const handleSetMemberPm = ()=>{
+  // setMemberform.isShow = 3
+  // setMemberform.type = '3'
+  // setMemberform.userId = pmObj.value.userId
+  // setMemberform.userName = pmObj.value.userName
+  // setMemberOpen.value = true;
+  // 删除
+  pmObj.value.userId = null
+  pmObj.value.userName = null
+  pmObj.value.projectRole = null
+  userData.value = userData.value.filter(item => item.projectRole != '3' )
 }
 //设置制作人成员弹框
-const handleSetMember2 = (index)=>{
-  console.log(index)
-  setMemberform.isShow = 2
-  setMemberform.type = '2'
-  setMemberform.index = index
-  setMemberform.userId = form.value.artsProjectMemberVos[index].userId
-  setMemberform.userName = form.value.artsProjectMemberVos[index].userName
-  // setMemberform.stageNames = cloneDeep(form.value.artsProjectMemberVos[index].stageNames)
-  setMemberform.stage = form.value.artsProjectMemberVos[index].stageNames.map((item)=>item.stageName)
-  setMemberOpen.value = true;
+const handleSetMember2 =async (index)=>{
+  // setMemberform.isShow = 2
+  // setMemberform.type = '2'
+  // setMemberform.index = index
+  // setMemberform.userId = zzUserData.value[index].userId
+  // setMemberform.userName = zzUserData.value[index].userName
+  // setMemberform.stage = zzUserData.value[index].stageNames.map((item)=>item.stageName)
+  // setMemberOpen.value = true;
+  // 删除
+  await userData.value.map((item,idx)=>{
+    if((item.userId == zzUserData.value[index].userId) && (item.projectRole == '2')){
+      userData.value.splice( idx, 1 );
+    }
+  })
+  zzUserData.value.splice( index, 1 );
 }
 //移除成员
 const submitremoveMemberForm = ()=>{
@@ -2013,6 +2039,19 @@ function submitSetMemberForm1() {
         setMemberform.stageNames.push({stageName:item})
       })
       form.value?.artsProjectMemberVos.push(cloneDeep(setMemberform))
+    }
+    setMemberOpen.value = false;
+  }
+ });
+};
+/** 设置PM提交按钮 */
+function submitSetMemberFormPM() {
+ proxy.$refs["setMemberRef"].validate(valid => {
+   if (valid) {
+    if(setMemberform.type == 3){
+      // form.value.projectResponsibilityUserId = setMemberform.userId
+      // form.value.responsibleUserName = setMemberform.userName
+      // form.value?.artsProjectMemberVos.splice(setMemberform.index, 1);
     }
     setMemberOpen.value = false;
   }

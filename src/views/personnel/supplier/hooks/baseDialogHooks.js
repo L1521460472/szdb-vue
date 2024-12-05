@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:09:48
+ * @LastEditTime: 2024-12-05 18:23:29
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
@@ -16,8 +16,10 @@ export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
   const refDep = ref(null);//部门
   const imageUrl1 = ref('')
-  const imageUrl2 = ref('')
-  const imageUrl3 = ref('')
+  const imageUrl2 = ref([])
+  const imageUrl3 = ref([])
+  const dialogImageUrl = ref('')
+  const dialogVisible = ref(false)
   const dialogInfo = reactive({
     visible: false,
     type: "",
@@ -188,8 +190,8 @@ export default function ($vm) {
           ...formInfo.data,
           // scopeBusiness:formInfo.data.scopeBusiness.split(','),
           supplierLogo: imageUrl1.value,
-          supplierBusinessLicense: imageUrl2.value,
-          supplierQualificationCertificate: imageUrl3.value,
+          supplierBusinessLicense: JSON.stringify(imageUrl2.value),
+          supplierQualificationCertificate: JSON.stringify(imageUrl3.value),
         }
         if($vm.type === 'add'){
           getAdd(params).then(response => {
@@ -271,13 +273,21 @@ export default function ($vm) {
   const handleFileSuccess1 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
-      imageUrl2.value = response.url
+      // imageUrl2.value = response.url
+      imageUrl2.value.push({name: response.originalFilename,url: response.url})
       upload2.open = false;
       upload2.isUploading = false;
       $vm.$refs["uploadRef2"].handleRemove(file);
       $vm.$modal.msgSuccess(response.msg);
     }
   };
+  const handlePictureCardPreview = (file) => {
+    dialogImageUrl.value = file.url
+    dialogVisible.value = true
+  }
+  const handleRemove1 = (file) => {
+    console.log(file)
+  }
   /**文件上传中处理 */
   const handleFileUploadProgress2 = (event, file, fileList) => {
     upload3.isUploading = true;
@@ -286,17 +296,28 @@ export default function ($vm) {
   const handleFileSuccess2 = (response, file, fileList) => {
     console.log(response, file, fileList)
     if(response.code == 200){
-      imageUrl3.value = response.url
+      // imageUrl3.value = response.url
+      imageUrl3.value.push({name: response.originalFilename,url: response.url})
       upload3.open = false;
       upload3.isUploading = false;
       $vm.$refs["uploadRef3"].handleRemove(file);
       $vm.$modal.msgSuccess(response.msg);
     }
   };
+  const handlePictureCardPreview2 = (file) => {
+    dialogImageUrl.value = file.url
+    dialogVisible.value = true
+  }
+  const handleRemove2 = (file) => {
+    console.log(file)
+  }
+  
 
   return {
     refDep,
     dialogInfo,
+    dialogVisible,
+    dialogImageUrl,
     formInfo,
     imageUrl1,
     imageUrl2,
@@ -314,6 +335,9 @@ export default function ($vm) {
     handleFileSuccess,
     handleFileUploadProgress1,
     handleFileSuccess1,
+    handlePictureCardPreview,
+    handleRemove1,
+    handleRemove2,
     handleFileUploadProgress2,
     handleFileSuccess2,
   };

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:17:54
+ * @LastEditTime: 2024-12-05 18:22:26
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -82,11 +82,12 @@ export default function ($vm) {
     type.value = 'edit'
     getDetail(row.id).then(response => {
       if(response.code == 200){
-        console.log(response.data)
+        // console.log(response.data)
         $vm.formInfo.data = response.data
         $vm.imageUrl1 = response.data.supplierLogo
-        $vm.imageUrl2 = response.data.supplierBusinessLicense
-        $vm.imageUrl3 = response.data.supplierQualificationCertificate
+        // $vm.imageUrl2 = response.data.supplierBusinessLicense
+        $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
+        $vm.imageUrl3 = JSON.parse(response.data.supplierQualificationCertificate)
         $vm.dialogInfo.visible = true;
       }
     });
