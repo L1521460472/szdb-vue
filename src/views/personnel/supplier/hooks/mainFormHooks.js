@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-15 09:50:31
+ * @LastEditTime: 2024-12-06 10:50:52
  */
 import { reactive, onBeforeMount } from "vue";
 import { listProject,artsList } from "@/api/project/project";
@@ -26,14 +26,14 @@ export default function ($vm) {
       { key: "特效", value: '4' },
     ],
     supplierList: [
-      { key: "1-5", value: '1' },
-      { key: "5-10", value: '2' },
-      { key: "10-20", value: '3' },
-      { key: "20-30", value: '4' },
-      { key: "30-50", value: '5' },
-      { key: "50-100", value: '6' },
-      { key: "100-500", value: '7' },
-      { key: "500-1000", value: '8' },
+      { key: "1-5", value: '1-5' },
+      { key: "5-10", value: '5-10' },
+      { key: "10-20", value: '10-20' },
+      { key: "20-30", value: '20-30' },
+      { key: "30-50", value: '30-50' },
+      { key: "50-100", value: '50-100' },
+      { key: "100-500", value: '100-500' },
+      { key: "500-1000", value: '500-1000' },
     ],
     supplierDJList: [
       { key: "优选供应商", value: '优选供应商' },

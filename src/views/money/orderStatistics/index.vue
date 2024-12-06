@@ -720,14 +720,14 @@
       }]);
 const options1 = ref([{
     value: 1,
-    label: '正常',
+    label: '进度正常',
     disabled: true,
   }, {
     value: 2,
-    label: '紧张'
+    label: '存在风险'
   }, {
     value: 3,
-    label: '延期'
+    label: '进度失控'
   }, {
     value: 4,
     label: '已完成'

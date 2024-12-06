@@ -4,14 +4,14 @@
  * @Autor: lijiancong
  * @Date: 2024-11-19 09:19:28
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-20 17:32:52
+ * @LastEditTime: 2024-12-06 10:48:34
  */
 import request from '@/utils/request'
 
 // 查询人事供应商列表
 export function getPage(data) {
     return request({
-      url: '/system/supplier/list',
+      url: '/system/supplier/list?supplierName='+ data.supplierName + '&locationCity=' + data.locationCity + '&supplierLevel=' + data.supplierLevel + '&supplierScale='+ data.supplierScale,
       method: 'GET',
     })
 }

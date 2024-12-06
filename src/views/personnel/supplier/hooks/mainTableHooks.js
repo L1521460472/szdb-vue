@@ -26,10 +26,10 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    name: undefined,
-    post: undefined,
-    status: undefined,
-    time: undefined,
+    supplierName: '',
+    locationCity: '',
+    supplierLevel: '',
+    supplierScale: '',
   })
 
   /**

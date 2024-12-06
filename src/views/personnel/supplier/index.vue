@@ -4,58 +4,48 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-05 18:25:24
+ * @LastEditTime: 2024-12-06 10:40:04
 -->
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="姓名" prop="name">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="90px">
+      <el-form-item label="供应商名称" prop="supplierName">
         <el-input
-               v-model="queryParams.name"
-               placeholder="请输入姓名"
+               v-model="queryParams.supplierName"
+               placeholder="请输入供应商名称"
                clearable
                style="width: 240px"
             />
       </el-form-item>
-      <el-form-item label="岗位" prop="post">
-        <!-- <el-select
-          v-model="queryParams.projectId"
-          placeholder="岗位"
-          clearable
-          style="width: 240px"
-        >
-        <el-option
-          v-for="item in listTypeInfo.projectList"
-          :key="item.projectId"
-          :label="item.projectName"
-          :value="item.projectId"
+      <el-form-item label="归属城市" prop="locationCity">
+        <el-tree-select
+          v-model="queryParams.locationCity"
+          :data="cityCode"
+          :props="{ value: 'name', label: 'name', children: 'city' }"
+          value-key="name"
+          placeholder="请选择所在城市"
+          check-strictly
         />
-        </el-select> -->
-        <el-input
-               v-model="queryParams.post"
-               placeholder="请输入岗位"
-               clearable
-               style="width: 240px"
-            />
       </el-form-item>
-      <el-form-item label="状态" prop="status">
-        <el-select v-model="queryParams.status" placeholder="请选择状态" clearable filterable style="width: 200px">
+      <el-form-item label="供应商等级" prop="supplierLevel">
+        <el-select v-model="queryParams.supplierLevel" placeholder="请选择供应商等级" clearable filterable style="width: 200px">
           <el-option
-              v-for="item in listTypeInfo.statusList"
+              v-for="item in listTypeInfo.supplierDJList"
               :key="item.value"
               :label="item.key"
               :value="item.value"
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="离职时间" prop="time">
-        <el-date-picker
-          v-model="queryParams.time"
-          type="date"
-          placeholder="离职时间"
-          format="YYYY-MM-DD"
-          value-format="YYYY-MM-DD"
-        />
+      <el-form-item label="供应商规模" prop="supplierScale">
+        <el-select v-model="queryParams.supplierScale" placeholder="请选择供应商规模" clearable filterable style="width: 200px">
+          <el-option
+              v-for="item in listTypeInfo.supplierList"
+              :key="item.value"
+              :label="item.key"
+              :value="item.value"
+          />
+        </el-select>
       </el-form-item>
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
