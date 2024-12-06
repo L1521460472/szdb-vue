@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-03 14:47:21
+ * @LastEditTime: 2024-12-06 15:45:56
 -->
 <template>
   <div class="app-container">
@@ -102,7 +102,7 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
+    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" @sort-change="handleSortChange" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column type="expand">
         <template #default="props">

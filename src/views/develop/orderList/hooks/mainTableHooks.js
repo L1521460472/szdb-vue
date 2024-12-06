@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-29 18:18:26
+ * @LastEditTime: 2024-12-06 15:16:13
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -28,8 +28,8 @@ export default function ($vm) {
     pageNum: 1,
     pageSize: 50,
     projectId: undefined,
-    orderByColumn: undefined,
-    isAsc: undefined,
+    orderByColumn: 'plannedStartTime',
+    isAsc: 'desc',
     assignmentName: undefined,
     userId: undefined,
     plannedStartTime: undefined,
@@ -60,7 +60,7 @@ export default function ($vm) {
       plannedEndTime: queryParams.value.plannedEndTime,
       pageNum: queryParams.value.pageNum,
       pageSize: queryParams.value.pageSize,
-      orderByColumn: orderByColumn,
+      orderByColumn: queryParams.value.orderByColumn,
       isAsc: queryParams.value.isAsc,
     }
     taskList(params).then(response => {
@@ -141,6 +141,7 @@ export default function ($vm) {
   /** sort排序 */
   function handleSortChange({ column, prop, order }) {
     console.log(column, prop, order)
+    queryParams.value.orderByColumn = prop
     if(order == 'descending'){
       queryParams.value.isAsc = 'desc'
     }else if(order == 'ascending'){

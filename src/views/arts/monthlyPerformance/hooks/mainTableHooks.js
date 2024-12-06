@@ -26,6 +26,8 @@ export default function ($vm) {
     endTime: undefined,
     projectState: undefined,
     projectName: undefined,
+    orderByColumn: undefined,
+    isAsc: undefined,
   })
 
   /**
@@ -85,6 +87,20 @@ export default function ($vm) {
     queryParams.value.endTime = val[1];
   };
 
+  /** sort排序 */
+  function handleSortChange({ column, prop, order }) {
+    console.log(column, prop, order)
+    queryParams.value.orderByColumn = prop
+    if(order == 'descending'){
+      queryParams.value.isAsc = 'desc'
+    }else if(order == 'ascending'){
+      queryParams.value.isAsc = 'asc'
+    }else{
+      queryParams.value.isAsc = undefined
+    }
+    getList()
+  }
+
   onMounted(() => {
     getList()
   });
@@ -103,6 +119,7 @@ export default function ($vm) {
     handleDelete,
     handleChangeDept,
     handleChangeTime,
-    expandChange
+    expandChange,
+    handleSortChange
   };
 }
