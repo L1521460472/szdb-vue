@@ -92,6 +92,21 @@ export default function ($vm) {
       }
     });
   }
+  /** 查看 */
+  const handleView = (row) => {
+    type.value = 'view'
+    getDetail(row.id).then(response => {
+      if(response.code == 200){
+        // console.log(response.data)
+        $vm.formInfo.data = response.data
+        $vm.imageUrl1 = response.data.supplierLogo
+        // $vm.imageUrl2 = response.data.supplierBusinessLicense
+        $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
+        $vm.imageUrl3 = JSON.parse(response.data.supplierQualificationCertificate)
+        $vm.dialogInfo.visible = true;
+      }
+    });
+  }
   /** 删除 */
   const handleDelete = (row) => {
     $vm.$modal.confirm('是否确认删除').then(function () {
@@ -126,6 +141,7 @@ export default function ($vm) {
     roleOptions,
     getList,
     handleEdit,
+    handleView,
     handleDelete,
     handleQuery,
     resetQuery,

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-06 10:40:04
+ * @LastEditTime: 2024-12-07 09:29:06
 -->
 <template>
   <div class="app-container">
@@ -89,6 +89,9 @@
       <el-table-column label="备注" align="center" prop="remark" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
+            <el-tooltip content="查看" placement="top">
+                <el-button link type="primary" icon="View" @click="handleView(scope.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -116,7 +119,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-      <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px">
+      <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px" :disabled="type == 'view'">
         <el-collapse v-model="activeNames" @change="handleChange">
           <el-collapse-item title="供应商基础信息" name="1">
               <el-row>
