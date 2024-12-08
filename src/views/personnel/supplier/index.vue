@@ -195,7 +195,7 @@
                 <el-col :span="8">
                     <el-form-item label="业务范围" prop="scopeBusiness">
                       <!-- multiple -->
-                      <el-select v-model="formInfo.data.scopeBusiness" placeholder="请选择业务范围">
+                      <el-select v-model="formInfo.data.scopeBusiness" multiple placeholder="请选择业务范围">
                           <el-option
                             v-for="item in listTypeInfo.statusList"
                             :key="item.value"

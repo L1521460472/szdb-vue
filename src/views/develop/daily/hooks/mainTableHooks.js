@@ -61,6 +61,8 @@ export default function ($vm) {
   }
   // 新增
   function handleAddOpen() {
+    $vm.valueHtml = ''
+    console.log($vm)
     $vm.dialogInfo.visible = true;
   }
   /** 编辑 */

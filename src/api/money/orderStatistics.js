@@ -41,3 +41,11 @@ export function performanceStatistics(data) {
       data: data
     })
 }
+// 首页绩效统计
+export function getOrderProfit(data) {
+    return request({
+      url: '/finance/achievements/orderProfit/'+ data,
+      method: 'post',
+      // data: data
+    })
+}

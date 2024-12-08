@@ -22,10 +22,10 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    name: undefined,
-    deptId: undefined,
-    attendanceStatus: undefined,
-    attendanceMonth: undefined,
+    name: '',
+    deptId: '',
+    attendanceStatus: '',
+    attendanceMonth: '',
   })
 
   // 列显隐信息
@@ -117,7 +117,29 @@ export default function ($vm) {
   onBeforeMount(() => {
     getList()
     getColumnList()
-  }),
+  })
+
+  //部门下拉选择
+  const handleChangeDept = (value) => {
+  //   console.log(value)
+    queryParams.value.deptId = value.slice(-1)[0]
+  }
+  //部门下拉选择
+  const handleChangeDept1 = (value) => {
+    $vm.formInfo.data.deptId = value.slice(-1)[0]
+    $vm.formInfo.data.deptName = $vm.cascaderRef.getCheckedNodes()[0].label
+  }
+
+  /** 搜索按钮操作 */
+  const handleQuery = () => {
+    $vm.queryParams.pageNum = 1;
+    getList();
+  }
+  /** 重置按钮操作 */
+  const resetQuery = () => {
+    $vm.resetForm("queryRef");
+    handleQuery();
+  }
 
   onMounted(() => {
     queryParams.value.workDate = formatDate(new Date()).substring(0,10)
@@ -141,5 +163,9 @@ export default function ($vm) {
     handlePromotion,
     handleImport,
     getColumnList,
+    handleQuery,
+    resetQuery,
+    handleChangeDept,
+    handleChangeDept1
   };
 }

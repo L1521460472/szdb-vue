@@ -650,24 +650,25 @@
           </template>
         </el-dialog>
         <el-dialog title="利润解析" v-model="open4" width="800" append-to-body :close-on-click-modal="false">
+          <div style="text-align: right;margin-bottom: 10px;"><span class="orderText">订单总金额：{{ profitObj.orderAmount }}</span><span class="orderText">人工总成本：{{ profitObj.costLaborTotal }}</span><span class="orderText">总利润：{{ profitObj.profitTotal }}</span></div>
           <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
             <!-- <el-table-column type="selection" width="55" align="center" /> -->
             <el-table-column type="expand">
               <template #default="props">
-                <div style="margin-left: 128px;">
-                  <el-table :data="props.row.list" :show-header="false" border>
-                    <el-table-column label="姓名" align="center" width="80" prop="userName" />
-                    <el-table-column label="总消耗成本" align="center" prop="total" />
-                    <el-table-column label="阶段" align="center" prop="stateName" />
-                    <el-table-column label="工时（天）" align="center" prop="workDay" />
-                    <el-table-column label="日成本单价" align="center" prop="price" />
-                    <el-table-column label="日成本合计" align="center" prop="totalPrice" />
+                <div style="margin-left: 299px;">
+                  <el-table :data="props.row.children" :show-header="false" border>
+                    <!-- <el-table-column label="姓名" align="center" width="80" prop="userName" />
+                    <el-table-column label="总消耗成本" align="center" prop="total" /> -->
+                    <el-table-column label="阶段" align="center" prop="stageName" />
+                    <el-table-column label="工时（天）" align="center" prop="timeConsuming" />
+                    <el-table-column label="日成本单价" align="center" prop="dailyCost" />
+                    <el-table-column label="日成本合计" align="center" prop="timeConsuming2" />
                   </el-table>
                 </div>
               </template>
             </el-table-column>
             <el-table-column label="序号" width="55" align="center" type="index" />
-            <el-table-column label="姓名" align="center" width="80" prop="userName" />
+            <el-table-column label="姓名" align="center" width="80" prop="name" />
             <el-table-column label="总消耗成本" align="center" prop="total" />
             <el-table-column label="阶段" align="center" prop="stateName" />
             <el-table-column label="工时（天）" align="center" prop="workDay" />
@@ -679,7 +680,7 @@
  </template>
  
  <script setup name="OrderStatistics">
- import { listProject,deptList, projectStatistics } from "@/api/money/orderStatistics";
+ import { listProject,deptList, projectStatistics,getOrderProfit } from "@/api/money/orderStatistics";
  import { addCollection, CollectionPrepare } from "@/api/money/collectionDetails";
  import { addInvoice } from "@/api/money/invoicingRecord";
  import { addContract,updateContract } from "@/api/money/contract";
@@ -693,6 +694,11 @@
  const departmentList = ref([]);
  const departmentOptions = ref([]);//部门
 //  利润解析数据
+ const profitObj = ref({
+  orderAmount:'',
+  costLaborTotal:'',
+  profitTotal:'',
+ });
  const tableData = ref([]);
  const expands = ref([]);
  const open = ref(false);
@@ -734,10 +740,10 @@ const options1 = ref([{
   }]);
 
 const options2 = ref([{
-    value: 1,
+    value: 2,
     label: '开发',
   }, {
-    value: 2,
+    value: 1,
     label: '美术'
   }]);
 const options3 = ref([{
@@ -1074,11 +1080,36 @@ const handleChangeDept = (value) => {
    single.value = selection.length != 1;
    multiple.value = !selection.length;
  }
+ function sumAdd(arr){
+  var sum = 0;
+  arr.forEach(function(value) {
+    sum += value.timeConsuming2;
+  })
+  return sum
+ }
  /** 利润解析 */
  function handleProjectOpen(row) {
-   console.log(row)
+  getOrderProfit(row.id).then(response => {
+    console.log(response)
+    profitObj.value.orderAmount = response.data.orderAmount
+    profitObj.value.costLaborTotal = response.data.costLaborTotal
+    profitObj.value.profitTotal = response.data.profitTotal
+    tableData.value = []
+    Object.keys(response.data.data).forEach(async(k,val) => {
+      // obj[k] = null;
+      tableData.value.push({
+        name: k,
+        id: val,
+        total: sumAdd(response.data.data[k]),
+        children: response.data.data[k],
+      })
+    });
+    console.log(tableData.value)
+    // tableData.value = response.data.data
+   });
    open4.value = true
  }
+
  /** 合同 */
  function handleContract(row) { 
   // console.log(row)

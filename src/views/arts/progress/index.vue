@@ -117,9 +117,9 @@
             <span @click="handleProjectOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
           </template>
         </el-table-column>
-        <el-table-column label="参考原画" align="center" min-width="100" prop="fileUrl" fixed="left" v-if="columns[2].visible" >
+        <el-table-column label="参考原画" align="center" min-width="120" prop="fileUrl" fixed="left" v-if="columns[2].visible" >
           <template #default="scope">
-            <el-image style="width: 100px; height: 100px" :src="defaultUrl" fit="fit" />
+            <el-image style="width: 100px; height: 100px" :src="scope.row.projectPaintingUrl ? scope.row.projectPaintingUrl : defaultUrl" fit="cover" />
           </template>
         </el-table-column>
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
@@ -233,7 +233,7 @@
               <el-row>
                 <el-col :span="24">
                   <div style="height: 200px;display: flex;justify-content: center;align-items: center;background-color: #e5e5e5;">
-                    <el-image v-if="item.rateFile" style="width: 100%;height: 200px;" :src="item.rateFile" :fit="fit" />
+                    <el-image v-if="item.rateFile" style="width: 100%;height: 200px;" :src="item.rateFile" fit="fill" />
                     <div v-else>请上传工作截图</div>
                   </div>
                 </el-col>

@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询人事考勤报表列表
 export function getPage(data) {
     return request({
-      url: '/system/report/list',
+      url: '/system/report/list?name=' + data.name + '&deptId=' + data.deptId + '&attendanceStatus=' + data.attendanceStatus + '&attendanceMonth=' + data.attendanceMonth,
       method: 'GET',
     })
 }

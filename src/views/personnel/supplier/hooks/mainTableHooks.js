@@ -75,15 +75,18 @@ export default function ($vm) {
   // 新增
   function handleAddOpen() {
     type.value = 'add'
+    $vm.dialogInfo.btnList[0].disabled = false
     $vm.dialogInfo.visible = true;
   }
   /** 编辑 */
   const handleEdit = (row) => {
     type.value = 'edit'
+    $vm.dialogInfo.btnList[0].disabled = false
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
         $vm.formInfo.data = response.data
+        $vm.formInfo.data.scopeBusiness = response.data.scopeBusiness.split(',')
         $vm.imageUrl1 = response.data.supplierLogo
         // $vm.imageUrl2 = response.data.supplierBusinessLicense
         $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
@@ -95,10 +98,12 @@ export default function ($vm) {
   /** 查看 */
   const handleView = (row) => {
     type.value = 'view'
+    $vm.dialogInfo.btnList[0].disabled = true
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
         $vm.formInfo.data = response.data
+        $vm.formInfo.data.scopeBusiness = response.data.scopeBusiness.split(',')
         $vm.imageUrl1 = response.data.supplierLogo
         // $vm.imageUrl2 = response.data.supplierBusinessLicense
         $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)

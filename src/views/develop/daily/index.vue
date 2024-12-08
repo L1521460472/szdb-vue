@@ -332,7 +332,6 @@ export default defineComponent({
 
     return {
       props,
-      valueHtml,
       // project_stage,
       handleClick,
       handleEvent,

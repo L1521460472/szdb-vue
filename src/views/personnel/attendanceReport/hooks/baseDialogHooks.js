@@ -103,16 +103,7 @@ export default function ($vm) {
     });
   }
   
-  /** 搜索按钮操作 */
-  const handleQuery = () => {
-    $vm.queryParams.pageNum = 1;
-    getDetailList();
-  }
-  /** 重置按钮操作 */
-  const resetQuery = () => {
-    $vm.resetForm("queryRef");
-    handleQuery();
-  }
+
 
   return {
     formInfo,
@@ -121,8 +112,6 @@ export default function ($vm) {
     detailcolumnList,
     visible,
     submitFileForm,
-    handleQuery,
-    resetQuery,
     importTemplate,
     handleFileUploadProgress,
     handleFileSuccess,

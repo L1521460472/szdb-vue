@@ -78,7 +78,11 @@
       <el-table-column label="序号" width="55" align="center" type="index" />
       <el-table-column label="姓名" align="center" prop="name">
       </el-table-column>
-      <el-table-column label="状态" align="center" prop="status" />
+      <el-table-column label="状态" align="center" prop="status">
+        <template #default="scope">
+            <span>{{ scope.row.status == 1 ? '离职' : '在职' }}</span>
+          </template>
+      </el-table-column>
       <el-table-column label="岗位" align="center" prop="post" />
       <el-table-column label="职级" align="center" prop="rank" />
       <el-table-column label="联系电话" align="center" prop="mobile" />
@@ -133,12 +137,12 @@
                </el-col>
                <el-col :span="12">
                 <el-form-item label="岗位">
-                     <el-select v-model="formInfo.data.post" multiple placeholder="请选择">
+                     <el-select v-model="formInfo.data.post" placeholder="请选择">
                         <el-option
                            v-for="item in postOptions"
                            :key="item.postId"
                            :label="item.postName"
-                           :value="item.postId"
+                           :value="item.postName"
                            :disabled="item.status == 1"
                         ></el-option>
                      </el-select>

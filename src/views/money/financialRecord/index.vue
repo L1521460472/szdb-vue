@@ -64,7 +64,10 @@
           </el-col>
           <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
         </el-row> -->
-        <div class="container-title"><span style="color: #666;">财务总览</span><el-button type="primary" icon="Upload" @click="handleImport">导入工资</el-button></div>
+        <div class="container-title">
+          <span style="color: #666;">财务总览</span>
+          <!-- <el-button type="primary" icon="Upload" @click="handleImport">导入工资</el-button> -->
+        </div>
         <div class="container">
           <el-row :gutter="10">
             <el-col :span="24">

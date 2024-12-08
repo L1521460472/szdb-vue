@@ -32,6 +32,7 @@ export default function ($vm) {
         icon: "",
         event: "confirm",
         show: true,
+        disabled: true,
       },
       { label: "取消", type: "", icon: "", event: "close", show: true },
     ],
@@ -186,13 +187,15 @@ export default function ($vm) {
     console.log(formInfo.data,imageUrl1.value);
     $vm.$refs["supplierRef"].validate(valid => {
       if (valid) {
+        console.log(formInfo.data.scopeBusiness,111)
         const params = {
           ...formInfo.data,
-          // scopeBusiness:formInfo.data.scopeBusiness.split(','),
+          scopeBusiness:formInfo.data.scopeBusiness.join(','),
           supplierLogo: imageUrl1.value,
           supplierBusinessLicense: JSON.stringify(imageUrl2.value),
           supplierQualificationCertificate: JSON.stringify(imageUrl3.value),
         }
+        console.log(params)
         if($vm.type === 'add'){
           getAdd(params).then(response => {
             if(response.code == 200){

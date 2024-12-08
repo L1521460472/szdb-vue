@@ -18,19 +18,14 @@
             />
       </el-form-item>
       <el-form-item label="部门" prop="deptId">
-          <el-select
-            v-model="queryParams.deptId"
-            placeholder="部门"
-            clearable
-            style="width: 240px"
-          >
-          <el-option
-            v-for="item in listTypeInfo.depList"
-            :key="item.deptId"
-            :label="item.deptName"
-            :value="item.deptId"
+        <el-cascader
+          v-model="queryParams.deptId"
+          :options="listTypeInfo.depList"
+          :props="props"
+          filterable
+          :show-all-levels="false"
+          @change="handleChangeDept"
           />
-          </el-select>
       </el-form-item>
       <el-form-item label="考勤状态" prop="attendanceStatus">
         <el-select
@@ -151,20 +146,16 @@
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
-                    <el-form-item label="姓名" prop="name">
-                      <el-select
+                    <el-form-item label="部门" prop="deptId">
+                      <el-cascader
+                        ref="cascaderRef"
                         v-model="formInfo.data.deptId"
-                        placeholder="部门"
-                        clearable
-                        style="width: 240px"
-                      >
-                      <el-option
-                        v-for="item in listTypeInfo.depList"
-                        :key="item.deptId"
-                        :label="item.deptName"
-                        :value="item.deptId"
-                      />
-                      </el-select>
+                        :options="listTypeInfo.depList"
+                        :props="props"
+                        filterable
+                        :show-all-levels="false"
+                        @change="handleChangeDept1"
+                        />
                     </el-form-item>
                 </el-col>
                 <el-col :span="8">
@@ -353,7 +344,12 @@ export default defineComponent({
   components: { },
   setup() {
     const instance = getCurrentInstance()?.proxy;
-
+    const props = {
+      value: 'id',
+      // expandTrigger: 'hover',
+      checkStrictly : true
+    }
+    const cascaderRef = ref(null)
     /* 事件回调统一处理 */
     const handleClick = (event, dada, item) => {
       if (Reflect.has(instance, event)) {
@@ -371,6 +367,8 @@ export default defineComponent({
     };
 
     return {
+      props,
+      cascaderRef,
       handleClick,
       handleEvent,
       ...mainForm(instance),

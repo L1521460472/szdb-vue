@@ -7,7 +7,8 @@
  * @LastEditTime: 2023-03-14 17:21:14
  */
 import { reactive, onBeforeMount } from "vue";
-import { departmentList,userList } from "@/api/project/project";
+// import { deptList } from "@/api/money/orderStatistics";
+import { deptList,departmentList,userList,} from "@/api/project/project";
 
 export default function ($vm) {
   /**
@@ -38,7 +39,7 @@ export default function ($vm) {
   });
   /** 查询部门列表 */
   const getDepartmentList = ()=> {
-    departmentList().then(response => {
+    deptList().then(response => {
       listTypeInfo.depList = response.data;
   });
   };

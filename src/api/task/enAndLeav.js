@@ -9,10 +9,11 @@
 import request from '@/utils/request'
 
 // 查询人事入离职列表
-export function getPage(data) {
+export function getPage(query) {
     return request({
       url: '/system/exit/list',
       method: 'GET',
+      params: query
     })
 }
 // 查询人事入离职列表统计

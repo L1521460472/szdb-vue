@@ -1535,7 +1535,7 @@ function getDepartmentList() {
 };
 /** 查询成员列表 */
 function getuserList() {
-  userList().then(response => {
+  userList({pageNum:1,pageSize:2000,status:0}).then(response => {
     userOptions.value = response.rows;
  });
 };
