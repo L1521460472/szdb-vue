@@ -8,6 +8,7 @@
  */
 import { reactive, onBeforeMount,watch } from "vue";
 import { listCategory,listCategoryDetail } from "@/api//project/project";
+import { deptTreeSelect } from "@/api/system/user";
 
 export default function ($vm) {
   /**
@@ -27,10 +28,11 @@ export default function ($vm) {
       { key: "指定日期", value: '6' },
     ],
     deptList:[],
+    deptList1:[],
     categoryList:[]
   });
 
-  const topFormInfo = reactive({
+  const topFormInfo = reactive({  
     data: {},
     labelWidth: "100px",
     fieldList: [
@@ -86,6 +88,25 @@ export default function ($vm) {
       listTypeInfo.deptList = [obj,...response.rows];
     });
   };
+  /** 查询部门下拉树结构 */
+  const getDeptTree1 = ()=> {
+    deptTreeSelect().then(response => {
+      console.log(response,111)
+      listTypeInfo.deptList1 = response.data
+      // let obj = {
+      //   category: null,
+      //   categoryName: '代宝科技',
+      //   isFontWeight: true,
+      //   children: null,
+      //   createBy: null,
+      //   createTime: null,
+      //   id: null,
+      //   parentId: 0,
+      //   remark: null,
+      // }
+      // listTypeInfo.deptList = [obj,...response.rows];
+    });
+  };
    /** 查询企业 */
   const getCategoryDetail = ()=> {
     listCategoryDetail(0).then(response => {
@@ -100,6 +121,7 @@ export default function ($vm) {
 
   onBeforeMount(()=>{
     getDeptTree()
+    getDeptTree1()
     getCategoryDetail()
   })
 

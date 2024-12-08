@@ -59,3 +59,12 @@ export function getLearnAdd(id) {
     method: 'POST',
   })
 }
+
+// 查询员工手册列表
+export function getPage1(data) {
+  return request({
+    url: '/system/manual/list',
+    method: 'GET',
+    data: data
+  })
+}

@@ -11,26 +11,43 @@
     <el-row :gutter="20">
       <!--部门数据-->
       <el-col :span="4" :xs="24">
-        <!-- <div class="head-container">
-          <el-input
+        <div class="head-container">
+          <el-radio-group v-model="radioValue1" style="margin-bottom: 10px;">
+            <el-radio-button label="项目维度" value="项目维度" />
+            <el-radio-button label="部门维度" value="部门维度" />
+          </el-radio-group>
+          <!-- <el-input
               v-model="deptName"
               placeholder="请输入部门名称"
               clearable
               prefix-icon="Search"
               style="margin-bottom: 20px"
-          />
-        </div> -->
+          /> -->
+        </div>
         <div class="head-container">
           <el-tree
-              :data="listTypeInfo.deptList"
-              :props="{ label: 'categoryName', children: 'children',class:customNodeClass }"
-              :expand-on-click-node="false"
-              :filter-node-method="filterNode"
-              ref="deptTreeRef"
-              node-key="id"
-              highlight-current
-              default-expand-all
-              @node-click="handleNodeClick"
+            v-if="radioValue1 == '项目维度'"
+            :data="listTypeInfo.deptList"
+            :props="{ label: 'categoryName', children: 'children',class:customNodeClass }"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            ref="deptTreeRef"
+            node-key="id"
+            highlight-current
+            default-expand-all
+            @node-click="handleNodeClick"
+          />
+          <el-tree
+            v-else
+            :data="listTypeInfo.deptList1"
+            :props="{ label: 'label', children: 'children' }"
+            :expand-on-click-node="false"
+            :filter-node-method="filterNode"
+            ref="deptTreeRef"
+            node-key="id"
+            highlight-current
+            default-expand-all
+            @node-click="handleNodeClick"
           />
         </div>
       </el-col>

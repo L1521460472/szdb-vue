@@ -48,7 +48,7 @@
           />
         </el-select>
       </el-form-item>
-      <el-form-item label="离职时间" prop="time">
+      <!-- <el-form-item label="离职时间" prop="time">
         <el-date-picker
           v-model="queryParams.time"
           type="date"
@@ -56,7 +56,7 @@
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
         />
-      </el-form-item>
+      </el-form-item> -->
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>

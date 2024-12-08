@@ -6,9 +6,9 @@
  * @LastEditors: lijiancong
  * @LastEditTime: 2024-11-07 20:34:22
  */
-import { onMounted, reactive, ref } from "vue";
+import { onBeforeMount,onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,getAdd } from "@/api/task/studyStatistics";
+import { getPage,getAdd,getPage1 } from "@/api/task/studyStatistics";
 
 export default function ($vm) {
 
@@ -45,6 +45,13 @@ export default function ($vm) {
       //  }
       total.value = response.total;
       // loading.value = false;
+    });
+    loading.value = false;
+  }
+  /** 查询表格列表 */
+  const getList1 = () => {
+    getPage1(queryParams.value).then(response => {
+      columnList.value = response.rows;
     });
     loading.value = false;
   }
@@ -103,13 +110,18 @@ export default function ($vm) {
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
 
+  onBeforeMount(() => {
+    getList1()
+  });
   onMounted(() => {
     // 获取当月的第一天
     // queryParams.value.beginTime = outputDate(getFirstDayOfMonth());
     // // 获取当月的最后一天
     // queryParams.value.endTime = outputDate(getLastDayOfMonth());  
     queryParams.value.month = [queryParams.value.beginTime, queryParams.value.endTime];
-    getList()
+    setTimeout(()=>{
+      getList()
+    },300)
   });
 
 

@@ -19,6 +19,7 @@ export default function ($vm) {
   const loading = ref(true);
   const showSearch = ref(true);
   const radioValue = ref('近三季度');
+  const radioValue1 = ref('项目维度');
   const total = ref(0);
   const spanLeft = ref(16);
   const spanRight = ref(8);
@@ -576,6 +577,7 @@ const upload = reactive({
   return {
     tableData,
     radioValue,
+    radioValue1,
     total,
     showSearch,
     loading,

@@ -50,32 +50,28 @@
 
     <el-table v-loading="loading" :data="tableData" border>
       <el-table-column type="selection" width="55" align="center" />
-      <el-table-column label="序号" width="55" align="center" type="index" fixed="left" />
-      <el-table-column label="姓名" align="center" prop="name" fixed="left">
+      <el-table-column label="序号" width="55" align="center" type="index" />
+      <el-table-column label="姓名" align="center" prop="name">
         <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="入职时间" align="center" min-width="120" prop="deptName" fixed="left" />
-      <el-table-column label="学习状态" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="入职必读" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="考勤制度" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="保密制度" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="办公制度" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="学习完成率" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <el-table-column label="最后学习时间" align="center" min-width="150" prop="approveStatus" fixed="left" />
-      <!-- <el-table-column :label="item.label" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
+      <el-table-column label="入职时间" align="center" min-width="120" prop="deptName" />
+      <el-table-column label="学习状态" align="center" min-width="150" prop="approveStatus" />
+      <el-table-column :label="item.manualName" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
-            <span>{{ scope.row.achievementList[index].achievement }}</span>
+            <span>{{ scope.row.manualCompletion[item.id] }}</span>
            </template>
-        </el-table-column> -->
-      <el-table-column label="推送学习提醒" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+        </el-table-column>
+      <el-table-column label="学习完成率" align="center" min-width="150" prop="approveStatus" />
+      <el-table-column label="最后学习时间" align="center" min-width="150" prop="approveStatus" />
+      <!-- <el-table-column label="推送学习提醒" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="推送" placement="top">
                 <el-button link type="primary" icon="Position" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
           </template>
-      </el-table-column>
+      </el-table-column> -->
     </el-table>
     <pagination
       v-show="total > 0"

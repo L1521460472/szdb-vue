@@ -297,7 +297,7 @@
                 class="main-tab-item"
                 :class="{ 'main-tab-item-active': selectTab == 'zuopingPDF' }"
               >
-                {{ "作品PFD" }}
+                {{ "作品PDF" }}
               </div>
               <div
                 @click="selectFilter('ceshi')"
@@ -616,7 +616,7 @@
         </span>
       </template>
     </el-dialog>
-    <!-- 上传作品 -->
+    <!-- 上传pdf作品 -->
     <el-dialog
       v-model="dialogVisible3"
       title="上传作品"
@@ -633,7 +633,6 @@
           :action="uploadUrl"
           multiple
           :auto-upload="false"
-          :beforeUpload="beforeUpload3"
           :onRemove="onRemove3"
           :onSuccess="onSuccess3"
           :onChange="onChange3"
@@ -819,6 +818,10 @@ const handleConfirm1 = () => {
 const handleConfirm2 = () => {
   uploadRef2.value.submit()
 }
+// 确定上传pdf作品
+const handleConfirm3 = () => {
+  uploadRef3.value.submit()
+}
 /** 折叠面板 */
 const handleChange = (val) => {
   console.log(val)
@@ -915,9 +918,9 @@ function handleUpdate(row) {
   }else{
     imageUrl.value = null
   }
-  if(row.resumeFileList1 && row.resumeFileList1.length > 0){
-    files1.value = row.resumeFileList1
-    imageUrl1.value = import.meta.env.VITE_APP_BASE_API + row.resumeFileList1[0].fileName;
+  if(row.pdfFileList && row.pdfFileList.length > 0){
+    files1.value = row.pdfFileList
+    imageUrl1.value = import.meta.env.VITE_APP_BASE_API + row.pdfFileList[0].fileName;
   }else{
     imageUrl1.value = null
   }
@@ -1117,6 +1120,12 @@ const onChange3 = (files) => {
 // 上传作品文件成功
 const onSuccess3 = (response, file, fileLists) => {
   // console.log(response, file, fileLists)
+  if (response.originalFilename.slice(-3) === 'pdf') {
+    isPdf1.value = true
+  } else {
+    isPdf1.value = false
+  }
+  imageUrl1.value = response.url
   if(dialogForm.value.id){
     response.personnelResumeId = dialogForm.value.id;
     response.type = 2;
@@ -1137,6 +1146,7 @@ function submitForm() {
     resumeFileList:files.value,
     worksFileList:fileList.value,
     testFileList:testFiles.value,
+    pdfFileList:fileList1.value,
   }
   btnLoading.value = true
   if(!dialogForm.value.id){
