@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:17:54
+ * @LastEditTime: 2024-12-09 18:16:06
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -58,6 +58,8 @@ export default function ($vm) {
   }
   // 新增
   function handleAddOpen() {
+    // $vm.handleCreated()
+    $vm.valueHtml = '';
     $vm.dialogInfo.visible = true;
   }
   /** 编辑 */
@@ -68,6 +70,9 @@ export default function ($vm) {
         console.log(response.data)
         $vm.formInfo.data = response.data
         $vm.valueHtml = response.data.standardContent
+        if(response.data.standardFile){
+          $vm.fileLists = JSON.parse(response.data.standardFile)
+        }
         $vm.dialogInfo.visible = true;
       }
     });

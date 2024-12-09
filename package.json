@@ -16,6 +16,9 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "2.0.10",
+    "@vue-office/docx": "^1.6.2",
+    "@vue-office/excel": "^1.7.11",
+    "@vue-office/pdf": "^2.0.9",
     "@vueup/vue-quill": "^1.0.0-alpha.40",
     "@vueuse/core": "9.5.0",
     "@wangeditor/editor": "^5.1.23",
@@ -34,6 +37,7 @@
     "pinia": "2.0.22",
     "vue": "3.2.45",
     "vue-cropper": "1.0.3",
+    "vue-demi": "^0.14.10",
     "vue-router": "4.1.4"
   },
   "devDependencies": {

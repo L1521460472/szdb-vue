@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:12:27
+ * @LastEditTime: 2024-12-09 18:40:28
 -->
 <template>
   <div class="app-container">
@@ -125,6 +125,25 @@
                   <el-cascader ref="refDep" v-model="formInfo.data.deptId" :options="departmentOptions" :props="props" filterable :show-all-levels="false" @change="handleChangeDept" clearable />
                 </div>
             </el-form-item>
+            <el-form-item label="文件" prop="fileLists">
+                <div class="tabs-text">
+                  <el-upload
+                    ref="uploadRef"
+                    class="avatar-uploader"
+                    :limit="5"
+                    v-model:file-list="fileLists"
+                    :headers="upload.headers"
+                    :action="upload.url"
+                    :disabled="upload.isUploading"
+                    :auto-upload="true"
+                    :on-preview="handlePictureCardPreview"
+                    :on-success="handleFileSuccess"
+                    :on-remove="handleRemove"
+                  >
+                    <el-icon class="avatar-uploader-icon"><Plus /></el-icon>
+                  </el-upload>
+                </div>
+            </el-form-item>
             <el-form-item label="内容规范" prop="fileName" class="fileUpload">
               <div style="border: 1px solid #ccc">
                 <Toolbar
@@ -134,7 +153,7 @@
                   :mode="mode"
                 />
                 <Editor
-                  style="height: 500px; overflow-y: hidden;"
+                  style="height: 350px; overflow-y: hidden;"
                   v-model="valueHtml"
                   :defaultConfig="editorConfig"
                   :mode="mode"
@@ -165,28 +184,56 @@
           </div>
         </el-form>
     </Dialog>
+    <el-dialog v-model="dialogVisible">
+      <vue-office-docx
+        v-if="fileType == 'docx'"
+        :src="dialogFileUrl"
+        class="w-full"
+        style="height: 80vh;"
+        @rendered="renderedHandler"
+        @error="errorHandler"
+      />
+      <vue-office-excel
+        v-else-if="fileType == 'excel'"
+        :src="dialogFileUrl"
+        class="w-full"
+        style="height: 80vh;"
+        @rendered="renderedHandler"
+        @error="errorHandler"
+      />
+      <vue-office-pdf
+        v-else-if="fileType == 'pdf'"
+        :src="dialogFileUrl"
+        class="w-full"
+        style="height: 80vh;"
+        @rendered="renderedHandler"
+        @error="errorHandler"
+      />
+      <img v-else class="w-full" :src="dialogFileUrl" alt="Preview Image" />
+    </el-dialog>
   </div>
 </template>
 
 <script>
-// import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled} from '@element-plus/icons-vue'
-// import {QuillEditor, Quill } from '@vueup/vue-quill'
-// import { container, ImageExtend, QuillWatch } from 'quill-image-extend-module'
-// import quillTool from '@/utils/quillTool.js'
-// Quill.register(quillTool, true)
-// Quill.register('modules/ImageExtend', ImageExtend)
-// import 'quill/dist/quill.core.css'
-// import 'quill/dist/quill.snow.css'
-// import 'quill/dist/quill.bubble.css'
+//引入VueOfficeDocx组件
+import VueOfficeDocx from '@vue-office/docx'
+//引入相关样式
+import '@vue-office/docx/lib/index.css'
+//引入VueOfficeExcel组件
+import VueOfficeExcel from '@vue-office/excel'
+//引入相关样式
+import '@vue-office/excel/lib/index.css'
+//引入VueOfficePdf组件
+import VueOfficePdf from '@vue-office/pdf'
 
-import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { ref, getCurrentInstance, defineComponent,onBeforeUnmount, shallowRef, onMounted} from "vue";
 import {mainForm, mainTable, baseDialog} from "./hooks/index";
 import { Editor, Toolbar } from '@wangeditor/editor-for-vue'
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { getToken } from "@/utils/auth";
 
 export default defineComponent({
-  components: { Editor, Toolbar },
+  components: { Editor, Toolbar,VueOfficeDocx,VueOfficeExcel,VueOfficePdf },
   setup() {
     const instance = getCurrentInstance()?.proxy;
 
@@ -219,7 +266,54 @@ export default defineComponent({
         }, 1500)
     })
 
-    const toolbarConfig = {}
+    const toolbarConfig = {
+      "toolbarKeys": [
+          "blockquote",
+          "header1",
+          "header2",
+          "header3",
+          "|",
+          "bold",
+          "underline",
+          "italic",
+          "through",
+          "color",
+          "bgColor",
+          "clearStyle",
+          "|",
+          "bulletedList",
+          "numberedList",
+          "todo",
+          "justifyLeft",
+          "justifyRight",
+          "justifyCenter",
+          "|",
+          "insertLink",
+          // {
+          //     "key": "group-image",
+          //     "title": "图片",
+          //     "iconSvg": "<svg viewBox=\"0 0 1024 1024\"><path d=\"M959.877 128l0.123 0.123v767.775l-0.123 0.122H64.102l-0.122-0.122V128.123l0.122-0.123h895.775zM960 64H64C28.795 64 0 92.795 0 128v768c0 35.205 28.795 64 64 64h896c35.205 0 64-28.795 64-64V128c0-35.205-28.795-64-64-64zM832 288.01c0 53.023-42.988 96.01-96.01 96.01s-96.01-42.987-96.01-96.01S682.967 192 735.99 192 832 234.988 832 288.01zM896 832H128V704l224.01-384 256 320h64l224.01-192z\"></path></svg>",
+          //     "menuKeys": [
+          //         "insertImage",
+          //         "uploadImage"
+          //     ]
+          // },
+          // "insertVideo",
+          "insertTable",
+          "codeBlock",
+          "|",
+          "undo",
+          "redo",
+          "|",
+          "fullScreen"
+      ],
+      "excludeKeys": [],
+      "insertKeys": {
+          "index": 0,
+          "keys": []
+      },
+      "modalAppendToBody": false
+    }
 
     // 组件销毁时，也及时销毁编辑器
     onBeforeUnmount(() => {
@@ -438,6 +532,34 @@ export default defineComponent({
     margin: 12px 0 12px 56px;
     padding-left: 5px;
   }
+}
+.avatar-uploader .avatar {
+  width: 100px;
+  height: 100px;
+  display: block;
+}
+.avatar-uploader .el-upload {
+  border: 1px dashed var(--el-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: var(--el-transition-duration-fast);
+}
+
+.avatar-uploader .el-upload:hover {
+  border-color: var(--el-color-primary);
+}
+
+.el-icon.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 60px;
+  height: 60px;
+  text-align: center;
+}
+.w-full{
+  width: 100%;
 }
 </style>
 

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:09:48
+ * @LastEditTime: 2024-12-09 18:19:38
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
@@ -15,7 +15,10 @@ import { getAdd,getEdit } from "../../../../api/task/projectSpecification";
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
   const refDep = ref(null);//部门
-  const content = ref("1111111");
+  const fileType = ref("");
+  const dialogFileUrl = ref("");
+  const dialogVisible = ref(false);
+  const fileLists = ref([]);
   const dialogInfo = reactive({
     visible: false,
     type: "",
@@ -53,6 +56,20 @@ export default function ($vm) {
     },
     labelWidth: "150px",
   });
+  const upload = reactive({
+    // 是否显示弹出层（用户导入）
+    open: false,
+    // 弹出层标题（用户导入）
+    title: "",
+    // 是否禁用上传
+    isUploading: false,
+    // 是否更新已经存在的用户数据
+    updateSupport: 0,
+    // 设置上传的请求头部
+    headers: { Authorization: "Bearer " + getToken() },
+    // 上传的地址
+    url: import.meta.env.VITE_APP_BASE_API + "/common/upload"
+  });
 
   /**
    * @description: 监听弹窗表单disabled属性，为true时，隐藏弹窗【确定】按钮
@@ -74,6 +91,10 @@ export default function ($vm) {
           obj[k] = null;
         });
         $vm.valueHtml = '';
+        // const editor = $vm.editorRef
+        // if (editor == null) return
+        // editor.destroy()
+        fileLists.value = []
         $vm.type = 'add';
       }
       // nextTick(() => {
@@ -96,6 +117,7 @@ export default function ($vm) {
     }
     const params = {
       ...formInfo.data,
+      standardFile: JSON.stringify(fileLists.value),
       standardContent: $vm.valueHtml,
     }
     if($vm.type === 'add'){
@@ -154,16 +176,57 @@ export default function ($vm) {
     return val
   }
 
+  /**文件上传中处理 */
+  const handleFileUploadProgress = (event, file, fileList) => {
+    upload1.isUploading = true;
+  };
+  /** 文件上传成功处理 */
+  const handleFileSuccess = (response, file, fileList) => {
+    console.log(response, file, fileList)
+    if(response.code == 200){
+      fileLists.value.push({name: response.originalFilename,url: response.url})
+      upload.open = false;
+      upload.isUploading = false;
+      $vm.$refs["uploadRef"].handleRemove(file);
+      $vm.$modal.msgSuccess(response.msg);
+    }
+  };
+  const handlePictureCardPreview = (file) => {
+    console.log(file,file.name.split('.'))
+    fileType.value = file.name.split('.')[1];
+    dialogFileUrl.value = file.url
+    dialogVisible.value = true
+  }
+  const handleRemove = (file) => {
+    console.log(file)
+  }
+  const renderedHandler = () => {
+    console.log("渲染完成")
+  }
+  const errorHandler = () => {
+    console.log("渲染失败")
+  }
+
   return {
     refDep,
-    content,
+    dialogVisible,
+    fileType,
+    dialogFileUrl,
+    fileLists,
     dialogInfo,
     formInfo,
+    upload,
     close,
     confirm,
     handleProjectRate,
     handleTime,
     getTwo,
-    handleChangeDept
+    handleChangeDept,
+    handleFileUploadProgress,
+    handleFileSuccess,
+    handlePictureCardPreview,
+    handleRemove,
+    renderedHandler,
+    errorHandler,
   };
 }
