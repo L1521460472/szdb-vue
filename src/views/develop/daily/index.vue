@@ -130,12 +130,12 @@
       <el-row>
           <el-col :span="8">
               <el-form-item label="关联项目" prop="assignmentName">
-                <el-select v-model="formInfo.data.assignmentName" placeholder="请选择关联项目" @change="handleChange">
+                <el-select v-model="formInfo.data.assignmentId" placeholder="请选择关联项目" @change="handleChange">
                     <el-option
                       v-for="item in departmentOptions"
                       :key="item.assignmentId"
                       :label="item.assignmentName"
-                      :value="item.assignmentName"
+                      :value="item.assignmentId"
                     ></el-option>
                 </el-select>
               </el-form-item>

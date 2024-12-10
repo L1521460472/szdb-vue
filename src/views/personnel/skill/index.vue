@@ -370,7 +370,7 @@
                   />
                 </div>
                 <div style="width: 100%;height: 300px;line-height: 300px;text-align: center;" v-else> 请上传作品PDF </div>
-                <div style="position: absolute;top: 0;right: 80px;" @click="handleDeleteSkill"><el-button>删 除</el-button></div>
+                <div style="position: absolute;top: 0;right: 80px;" @click="handleDeletePdf"><el-button>删 除</el-button></div>
                 <div style="position: absolute;top: 0;right: 0;" @click="handleDownLoadSkill('',imageUrl1)"><el-button>下 载</el-button></div>
               </div>
             </div>
@@ -912,6 +912,11 @@ function handleUpdate(row) {
   } else {
     isPdf.value = false
   }
+  if (row.pdfFileList.length > 0 && row.pdfFileList[0].fileName.slice(-3) === 'pdf') {
+    isPdf1.value = true
+  } else {
+    isPdf1.value = false
+  }
   if(row.resumeFileList.length > 0){
     files.value = row.resumeFileList
     imageUrl.value = import.meta.env.VITE_APP_BASE_API + row.resumeFileList[0].fileName;
@@ -919,7 +924,7 @@ function handleUpdate(row) {
     imageUrl.value = null
   }
   if(row.pdfFileList && row.pdfFileList.length > 0){
-    files1.value = row.pdfFileList
+    fileList1.value = row.pdfFileList
     imageUrl1.value = import.meta.env.VITE_APP_BASE_API + row.pdfFileList[0].fileName;
   }else{
     imageUrl1.value = null
@@ -950,6 +955,11 @@ function submitResume() {
 function handleDeleteSkill(){
   imageUrl.value = null;
   files.value = []
+}
+/** 删除Pdf */
+function handleDeletePdf(){
+  imageUrl1.value = null;
+  fileList1.value = []
 }
 /** 下载简历 */
 function handleDownLoadSkill(fileName, objectUrl){
@@ -1128,10 +1138,10 @@ const onSuccess3 = (response, file, fileLists) => {
   imageUrl1.value = response.url
   if(dialogForm.value.id){
     response.personnelResumeId = dialogForm.value.id;
-    response.type = 2;
+    response.type = 4;
   }else{
     // response.personnelResumeId = null;
-    response.type = 2;
+    response.type = 4;
   }
   fileList1.value.push(response)
   proxy.$refs["uploadRef3"].handleRemove(file);

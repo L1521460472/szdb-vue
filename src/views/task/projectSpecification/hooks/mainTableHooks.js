@@ -78,6 +78,22 @@ export default function ($vm) {
     });
     
   }
+  /** 编辑 */
+  const handleView = (row) => {
+    type.value = 'view'
+    getDetail(row.id).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        $vm.formInfo.data = response.data
+        $vm.valueHtml = response.data.standardContent
+        if(response.data.standardFile){
+          $vm.fileLists = JSON.parse(response.data.standardFile)
+        }
+        $vm.dialogInfo.visible = true;
+      }
+    });
+    
+  }
   /** 删除 */
   const handleDelete = (row) => {
     $vm.$modal.confirm('是否确认删除').then(function () {
@@ -108,6 +124,7 @@ export default function ($vm) {
     oldTimeConsuming,
     getList,
     handleEdit,
+    handleView,
     handleDelete,
     handleQuery,
     resetQuery,

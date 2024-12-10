@@ -76,6 +76,9 @@
       <el-table-column label="发布人员" align="center" prop="createBy" />
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
+            <el-tooltip content="查看" placement="top">
+                <el-button link type="primary" icon="View" @click="handleView(scope.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -102,7 +105,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="120px">
+      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="120px" disabled="type == 'view'">
             <el-form-item label="制作规范名称" prop="standardName" :rules="
               {
                 required: true,
@@ -161,27 +164,6 @@
                 />
               </div>
             </el-form-item>
-          <div class="dialog-box-banner">
-            
-          </div>
-          <div class="dialog-box-title" v-if="type == 'view'">
-            <div>审批备注 </div>
-          </div>
-          <div class="dialog-record" v-if="type == 'view'">
-            <div class="dialog-record-top">
-              <div class="dialog-record-box">{{ formInfo.data.approveRecordVo?.approveName? getTwo(formInfo.data.approveRecordVo.approveName) : '' }}</div> 
-              <div class="dialog-record-name">{{ formInfo.data.approveRecordVo?.approveName }}</div>
-              <div class="dialog-record-time">{{ formInfo.data.approveRecordVo?.time }}</div>
-            </div>
-            <div class="dialog-record-conter"><el-icon style="margin-right: 5px;"><Edit /></el-icon><span>编辑属性</span></div>
-            <div class="dialog-record-bottom" v-for="(item,index) in formInfo.data.approveRecordVo?.attributeVoList" :key="index">
-              <div style="margin-right: 40px;">{{ item.attributeName }}</div>
-              <div style="margin-right: 10px;text-decoration: line-through;">{{ item.beforeEditing }}</div>
-              <el-icon><Right /></el-icon>
-              <div style="margin: 0 10px 0 10px;">{{ item.afterEditing }}</div>
-              <div>{{ item.editingTime }}</div>
-            </div>
-          </div>
         </el-form>
     </Dialog>
     <el-dialog v-model="dialogVisible">

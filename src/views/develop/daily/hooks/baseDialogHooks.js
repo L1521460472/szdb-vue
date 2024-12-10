@@ -159,8 +159,9 @@ export default function ($vm) {
   };
   /** change */
   const handleChange = (val) => {
-    console.log(val)
-    let arr = $vm.departmentOptions.find(item => item.assignmentName == val).stageNameList
+    console.log(val,'assignmentName',$vm.departmentOptions.find(item => item.assignmentId == val).assignmentName)
+    $vm.formInfo.data.assignmentName = $vm.departmentOptions.find(item => item.assignmentId == val).assignmentName
+    let arr = $vm.departmentOptions.find(item => item.assignmentId == val).stageNameList
     $vm.listTypeInfo.stageNameList = arr.map((items,index)=>{
       return {
         label: items,
