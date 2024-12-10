@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-05 18:22:26
+ * @LastEditTime: 2024-12-10 17:28:20
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -30,6 +30,7 @@ export default function ($vm) {
     locationCity: '',
     supplierLevel: '',
     supplierScale: '',
+    scopeBusiness: '',
   })
 
   /**

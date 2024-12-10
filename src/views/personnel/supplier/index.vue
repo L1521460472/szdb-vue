@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-07 09:29:06
+ * @LastEditTime: 2024-12-10 17:42:51
 -->
 <template>
   <div class="app-container">
@@ -14,7 +14,7 @@
                v-model="queryParams.supplierName"
                placeholder="请输入供应商名称"
                clearable
-               style="width: 240px"
+               style="width: 200px !important"
             />
       </el-form-item>
       <el-form-item label="归属城市" prop="locationCity">
@@ -25,6 +25,7 @@
           value-key="name"
           placeholder="请选择所在城市"
           check-strictly
+          style="width: 200px"
         />
       </el-form-item>
       <el-form-item label="供应商等级" prop="supplierLevel">
@@ -44,6 +45,16 @@
               :key="item.value"
               :label="item.key"
               :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="业务范围" prop="scopeBusiness">
+        <el-select v-model="queryParams.scopeBusiness" placeholder="请选择业务范围" multiple clearable filterable style="width: 200px">
+          <el-option
+              v-for="item in listTypeInfo.statusList"
+              :key="item.value"
+              :label="item.key"
+              :value="item.key"
           />
         </el-select>
       </el-form-item>
@@ -71,6 +82,7 @@
       <el-table-column label="归属城市" align="center" prop="locationCity" />
       <el-table-column label="供应商等级" align="center" prop="supplierLevel" />
       <el-table-column label="供应商规模" align="center" prop="supplierScale" />
+      <el-table-column label="业务范围" align="center" prop="scopeBusiness" />
         <!-- <template #default="scope">
           <el-select v-model="scope.row.supplierScale">
               <el-option
@@ -195,12 +207,12 @@
                 <el-col :span="8">
                     <el-form-item label="业务范围" prop="scopeBusiness">
                       <!-- multiple -->
-                      <el-select v-model="formInfo.data.scopeBusiness" multiple placeholder="请选择业务范围">
+                      <el-select v-model="formInfo.data.scopeBusiness" multiple filterable clearable placeholder="请选择业务范围">
                           <el-option
                             v-for="item in listTypeInfo.statusList"
                             :key="item.value"
                             :label="item.key"
-                            :value="item.value"
+                            :value="item.key"
                           ></el-option>
                       </el-select>
                     </el-form-item>
