@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-09 18:40:28
+ * @LastEditTime: 2024-12-11 14:34:51
 -->
 <template>
   <div class="app-container">
@@ -105,7 +105,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="120px" disabled="type == 'view'">
+      <el-form ref="rateRef" :model="formInfo.data" :rules="formInfo.data.rules" label-width="120px" :disabled="type == 'view'">
             <el-form-item label="制作规范名称" prop="standardName" :rules="
               {
                 required: true,
@@ -306,6 +306,7 @@ export default defineComponent({
 
     const handleCreated = (editor) => {
       editorRef.value = editor // 记录 editor 实例，重要！
+      console.log(editorRef.value)
     }
     function customCheckImageFn(src, alt, url) {                                                    // JS 语法
       if (!src) {

@@ -4,9 +4,9 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-09 18:16:06
+ * @LastEditTime: 2024-12-11 14:33:54
  */
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref,nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { getPage,getAdd,deptList,getDelete,getDetail } from "@/api/task/projectSpecification";
 
@@ -58,9 +58,12 @@ export default function ($vm) {
   }
   // 新增
   function handleAddOpen() {
-    // $vm.handleCreated()
+    type.value = 'add'
     $vm.valueHtml = '';
     $vm.dialogInfo.visible = true;
+    nextTick(()=>{
+      $vm.editorRef.enable()
+    })
   }
   /** 编辑 */
   const handleEdit = (row) => {
@@ -74,6 +77,9 @@ export default function ($vm) {
           $vm.fileLists = JSON.parse(response.data.standardFile)
         }
         $vm.dialogInfo.visible = true;
+        nextTick(()=>{
+          $vm.editorRef.enable()
+        })
       }
     });
     
@@ -83,16 +89,17 @@ export default function ($vm) {
     type.value = 'view'
     getDetail(row.id).then(response => {
       if(response.code == 200){
-        console.log(response.data)
         $vm.formInfo.data = response.data
         $vm.valueHtml = response.data.standardContent
         if(response.data.standardFile){
           $vm.fileLists = JSON.parse(response.data.standardFile)
         }
         $vm.dialogInfo.visible = true;
+        nextTick(()=>{
+          $vm.editorRef.disable()
+        })
       }
     });
-    
   }
   /** 删除 */
   const handleDelete = (row) => {
