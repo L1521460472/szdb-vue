@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-11 14:34:51
+ * @LastEditTime: 2024-12-11 16:05:14
 -->
 <template>
   <div class="app-container">
@@ -176,7 +176,7 @@
         @error="errorHandler"
       />
       <vue-office-excel
-        v-else-if="fileType == 'excel'"
+        v-else-if="fileType == 'xlsx' || fileType == 'xls'"
         :src="dialogFileUrl"
         class="w-full"
         style="height: 80vh;"
@@ -185,6 +185,14 @@
       />
       <vue-office-pdf
         v-else-if="fileType == 'pdf'"
+        :src="dialogFileUrl"
+        class="w-full"
+        style="height: 80vh;"
+        @rendered="renderedHandler"
+        @error="errorHandler"
+      />
+      <vue-office-pptx
+        v-else-if="fileType == 'pptx'"
         :src="dialogFileUrl"
         class="w-full"
         style="height: 80vh;"
@@ -207,6 +215,8 @@ import VueOfficeExcel from '@vue-office/excel'
 import '@vue-office/excel/lib/index.css'
 //引入VueOfficePdf组件
 import VueOfficePdf from '@vue-office/pdf'
+//引入VueOfficePptx组件
+import VueOfficePptx from '@vue-office/pptx'
 
 import { ref, getCurrentInstance, defineComponent,onBeforeUnmount, shallowRef, onMounted} from "vue";
 import {mainForm, mainTable, baseDialog} from "./hooks/index";
@@ -215,7 +225,7 @@ import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { getToken } from "@/utils/auth";
 
 export default defineComponent({
-  components: { Editor, Toolbar,VueOfficeDocx,VueOfficeExcel,VueOfficePdf },
+  components: { Editor, Toolbar,VueOfficeDocx,VueOfficeExcel,VueOfficePdf,VueOfficePptx },
   setup() {
     const instance = getCurrentInstance()?.proxy;
 
@@ -223,7 +233,7 @@ export default defineComponent({
     const editorRef = shallowRef()
     const editorConfig = { placeholder: "请输入内容...", MENU_CONF: {} };
     // 内容 HTML
-    const valueHtml = ref('')
+    const valueHtml = ref('<p></p>')
     const props = {
       value: 'id',
       // expandTrigger: 'hover',
@@ -243,9 +253,9 @@ export default defineComponent({
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
-        setTimeout(() => {
-            valueHtml.value = ''
-        }, 1500)
+        // setTimeout(() => {
+        //     valueHtml.value = ''
+        // }, 1500)
     })
 
     const toolbarConfig = {
@@ -543,6 +553,11 @@ export default defineComponent({
 }
 .w-full{
   width: 100%;
+  :deep(.pptx-preview-wrapper){
+    width: 100% !important;
+    height: 100% !important;
+  }
 }
+
 </style>
 

@@ -97,8 +97,8 @@
      <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
         <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
-        <el-table-column label="本月工时" width="100" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
-        <el-table-column :label="item.label" min-width="160" align="center" v-for="(item,index) in columnList" :key="index" >
+        <el-table-column label="本月工时" width="80" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
+        <el-table-column :label="item.label" min-width="80" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <div style="display: flex;align-items: center;width: 100%;margin-bottom: 5px;" v-for="v in scope.row.artsProjectRateDataListResponses[index].artsProjectRates">
               <!-- <div style="width: 50px;">{{ v.projectStageName }}</div> -->
@@ -119,7 +119,7 @@
         </el-table-column>
         <el-table-column label="参考原画" align="center" min-width="120" prop="fileUrl" fixed="left" v-if="columns[2].visible" >
           <template #default="scope">
-            <el-image style="width: 100px; height: 100px" :src="scope.row.projectPaintingUrl ? scope.row.projectPaintingUrl : defaultUrl" fit="cover" />
+            <el-image style="width: 100px; height: 100px" :src="scope.row.projectPaintingUrl ? scope.row.projectPaintingUrl : defaultUrl" :preview-src-list="[scope.row.projectPaintingUrl ? scope.row.projectPaintingUrl : defaultUrl]" preview-teleported fit="cover" />
           </template>
         </el-table-column>
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />

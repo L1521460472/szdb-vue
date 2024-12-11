@@ -4,14 +4,17 @@
  * @Autor: lijiancong
  * @Date: 2024-11-04 10:30:01
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-06 18:01:43
+ * @LastEditTime: 2024-12-11 16:59:19
 -->
 <template>
   <div class="app-container">
     <div class="top-box">
-      <el-button type="primary" @click="handleTabsAdd">新增</el-button>
-      <el-button type="success" @click="handleTabsEdits">编辑</el-button>
-      <el-button type="danger" @click="handleTabsDelete">删除</el-button>
+      <div><span style="font-size: 14px;color: #999;">注：点击浏览本公司规则制度后即代表您同意并遵守此管理规定。</span></div>
+      <div>
+        <el-button type="primary" @click="handleTabsAdd">新增</el-button>
+        <el-button type="success" @click="handleTabsEdits">编辑</el-button>
+        <el-button type="danger" @click="handleTabsDelete">删除</el-button>
+      </div>
     </div>
     <div class="box">
       <div style="padding-top: 16px;">
@@ -297,7 +300,7 @@ onMounted(() => {
   width: 100%;
   height: 40px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
 }
 .el-tabs :deep(.el-tabs__new-tab){

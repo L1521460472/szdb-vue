@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-11 14:33:54
+ * @LastEditTime: 2024-12-11 16:40:12
  */
 import { onMounted, reactive, ref,nextTick } from "vue";
 import { useRouter } from "vue-router";
@@ -59,7 +59,7 @@ export default function ($vm) {
   // 新增
   function handleAddOpen() {
     type.value = 'add'
-    $vm.valueHtml = '';
+    $vm.valueHtml = '<p></p>';
     $vm.dialogInfo.visible = true;
     nextTick(()=>{
       $vm.editorRef.enable()
@@ -72,7 +72,7 @@ export default function ($vm) {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
-        $vm.valueHtml = response.data.standardContent
+        $vm.valueHtml = '<p>' + response.data.standardContent + '</p>'
         if(response.data.standardFile){
           $vm.fileLists = JSON.parse(response.data.standardFile)
         }
@@ -90,7 +90,7 @@ export default function ($vm) {
     getDetail(row.id).then(response => {
       if(response.code == 200){
         $vm.formInfo.data = response.data
-        $vm.valueHtml = response.data.standardContent
+        $vm.valueHtml = '<p>' + response.data.standardContent + '</p>'
         if(response.data.standardFile){
           $vm.fileLists = JSON.parse(response.data.standardFile)
         }
