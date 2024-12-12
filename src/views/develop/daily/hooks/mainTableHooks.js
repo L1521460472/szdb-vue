@@ -73,7 +73,7 @@ export default function ($vm) {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
-        $vm.valueHtml = response.data.explanatory
+        $vm.valueHtml = '<p>' + response.data.explanatory + '</p>'
         $vm.dialogInfo.visible = true;
       }
     });

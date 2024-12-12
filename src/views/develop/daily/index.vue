@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-10 17:53:09
+ * @LastEditTime: 2024-12-12 17:45:26
 -->
 <template>
   <div class="app-container">
@@ -97,7 +97,11 @@
           <span v-if="scope.row.approveStatus == 4">已撤回</span>
         </template>
       </el-table-column> -->
-      <el-table-column label="工作总结" align="center" prop="explanatory" />
+      <el-table-column label="工作总结" align="center" prop="explanatory">
+        <template #default="scope">
+          <span v-html="scope.row.explanatory"></span>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="编辑" placement="top">
@@ -231,7 +235,7 @@ export default defineComponent({
     const editorRef = shallowRef()
     const editorConfig = { placeholder: "请输入内容...", MENU_CONF: {} };
     // 内容 HTML
-    const valueHtml = ref('')
+    const valueHtml = ref('<p></p>')
     const props = {
       value: 'id',
       // expandTrigger: 'hover',
@@ -251,9 +255,9 @@ export default defineComponent({
 
     // 模拟 ajax 异步获取内容
     onMounted(() => {
-        setTimeout(() => {
-            valueHtml.value = ''
-        }, 1500)
+        // setTimeout(() => {
+        //     valueHtml.value = ''
+        // }, 1500)
     })
 
     const toolbarConfig = {
