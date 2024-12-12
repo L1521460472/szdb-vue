@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-10 17:42:51
+ * @LastEditTime: 2024-12-12 17:22:01
 -->
 <template>
   <div class="app-container">
@@ -51,10 +51,10 @@
       <el-form-item label="业务范围" prop="scopeBusiness">
         <el-select v-model="queryParams.scopeBusiness" placeholder="请选择业务范围" multiple clearable filterable style="width: 200px">
           <el-option
-              v-for="item in listTypeInfo.statusList"
+              v-for="item in member_shtick_type"
               :key="item.value"
-              :label="item.key"
-              :value="item.key"
+              :label="item.label"
+              :value="item.label"
           />
         </el-select>
       </el-form-item>
@@ -209,10 +209,10 @@
                       <!-- multiple -->
                       <el-select v-model="formInfo.data.scopeBusiness" multiple filterable clearable placeholder="请选择业务范围">
                           <el-option
-                            v-for="item in listTypeInfo.statusList"
+                            v-for="item in member_shtick_type"
                             :key="item.value"
-                            :label="item.key"
-                            :value="item.key"
+                            :label="item.label"
+                            :value="item.label"
                           ></el-option>
                       </el-select>
                     </el-form-item>
@@ -235,9 +235,16 @@
                       <el-input v-model="formInfo.data.businessAddressCompany" placeholder="请输入公司经营地址" maxlength="30" />
                     </el-form-item>
                 </el-col>
-                <el-col :span="8">
+                <el-col :span="16">
                   <el-form-item label="公司介绍" prop="companyIntroduction">
-                    <el-input v-model="formInfo.data.companyIntroduction" placeholder="请输入公司介绍" maxlength="30" />
+                    <el-tooltip
+                      class="box-item"
+                      effect="dark"
+                      :content="formInfo.data.companyIntroduction"
+                      placement="top"
+                    >
+                      <el-input v-model="formInfo.data.companyIntroduction" placeholder="请输入公司介绍" :autosize="{ minRows: 1, maxRows: 4 }" type="textarea" />
+                    </el-tooltip>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -362,6 +369,7 @@ export default defineComponent({
   components: { },
   setup() {
     const instance = getCurrentInstance()?.proxy;
+    const { member_shtick_type } = instance.useDict("member_shtick_type");
     const props = {
       value: 'id',
       // expandTrigger: 'hover',
@@ -393,7 +401,7 @@ export default defineComponent({
       cityCode,
       activeNames,
       handleChange,
-      // project_stage,
+      member_shtick_type,
       handleClick,
       handleEvent,
       ...mainForm(instance),
