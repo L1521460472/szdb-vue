@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:12:27
+ * @LastEditTime: 2024-12-12 18:12:48
 -->
 <template>
   <div class="app-container">
@@ -85,20 +85,24 @@
       </el-table-column>
       <el-table-column label="岗位" align="center" prop="post" />
       <el-table-column label="职级" align="center" prop="rank" />
-      <el-table-column label="联系电话" align="center" prop="mobile" />
-      <el-table-column label="入职时间" align="center" prop="time1" />
+      <el-table-column label="联系电话" align="center" prop="mobile" width="120" />
+      <el-table-column label="入职时间" align="center" prop="createTime" width="160" />
       <el-table-column label="入职薪资" align="center" prop="salary" />
-      <el-table-column label="离职时间" align="center" prop="time2" />
+      <el-table-column label="离职时间" align="center" prop="updateTime" width="160">
+        <template #default="scope">
+          <span>{{ scope.row.status == 1 ? scope.row.updateTime : '' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="离职原因" align="center" prop="resignationReason" />
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+      <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="编辑" placement="top">
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top">
+            <!-- <el-tooltip content="删除" placement="top">
                 <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
-            </el-tooltip>
+            </el-tooltip> -->
           </template>
       </el-table-column>
     </el-table>
@@ -162,7 +166,7 @@
                </el-col>
             </el-row>
             <el-row>
-               <el-col :span="12">
+               <!-- <el-col :span="12">
                   <el-form-item label="入职时间" prop="time1">
                     <el-date-picker
                       v-model="queryParams.time1"
@@ -172,15 +176,27 @@
                       value-format="YYYY-MM-DD"
                     />
                   </el-form-item>
-               </el-col>
+               </el-col> -->
                <el-col :span="12">
                   <el-form-item label="入职薪资" prop="salary">
                     <el-input v-model="formInfo.data.salary" placeholder="请输入入职薪资" maxlength="30" />
                   </el-form-item>
                </el-col>
+               <el-col :span="12">
+                <el-form-item label="状态" prop="status">
+                  <el-select v-model="formInfo.data.status" placeholder="请选择状态" clearable filterable disabled>
+                    <el-option
+                        v-for="item in listTypeInfo.statusList"
+                        :key="item.value"
+                        :label="item.key"
+                        :value="item.value"
+                    />
+                  </el-select>
+                </el-form-item>
+              </el-col>
             </el-row>
             <el-row>
-              <el-col :span="12">
+              <!-- <el-col :span="12">
                 <el-form-item label="离职时间" prop="time2">
                   <el-date-picker
                     v-model="queryParams.time2"
@@ -190,24 +206,10 @@
                     value-format="YYYY-MM-DD"
                   />
                 </el-form-item>
-              </el-col>
+              </el-col> -->
               <el-col :span="12">
                 <el-form-item label="离职原因" prop="resignationReason">
                   <el-input v-model="formInfo.data.resignationReason" placeholder="请输入离职原因" maxlength="30" />
-                </el-form-item>
-              </el-col>
-          </el-row>
-          <el-row>
-              <el-col :span="12">
-                <el-form-item label="状态" prop="status">
-                  <el-select v-model="queryParams.status" placeholder="请选择状态" clearable filterable>
-                    <el-option
-                        v-for="item in listTypeInfo.statusList"
-                        :key="item.value"
-                        :label="item.key"
-                        :value="item.value"
-                    />
-                  </el-select>
                 </el-form-item>
               </el-col>
               <el-col :span="12">

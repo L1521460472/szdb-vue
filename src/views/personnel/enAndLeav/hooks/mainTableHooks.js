@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:17:54
+ * @LastEditTime: 2024-12-12 18:06:12
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -89,6 +89,7 @@ export default function ($vm) {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
+        $vm.formInfo.data.status = response.data.status + ''
         $vm.dialogInfo.visible = true;
       }
     });
