@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-13 11:15:56
+ * @LastEditTime: 2024-12-16 09:11:42
 -->
 <template>
   <div class="app-container">
@@ -64,10 +64,9 @@
       </el-table-column>
       <el-table-column :label="item.manualName" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
         <template #default="scope">
-          <span v-if="scope.row.manualCompletion[item.id] == 0">未学习</span>
-          <span v-else-if="scope.row.manualCompletion[item.id] == 1">已学习</span>
-          <span v-else></span>
-          </template>
+          <span v-if="scope.row.manualCompletion[item.id] == 1">已学习</span>
+          <span v-else>未学习</span>
+        </template>
       </el-table-column>
       <el-table-column label="学习完成率" align="center" min-width="150" prop="approveStatus" />
       <el-table-column label="最后学习时间" align="center" min-width="150" prop="approveStatus" />
