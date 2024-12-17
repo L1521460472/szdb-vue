@@ -1,13 +1,13 @@
 <template>
   <div class="app-container home">
     <div class="home-header">
-      <div>
+      <!-- <div>
         <el-carousel height="40px" direction="vertical">
           <el-carousel-item v-for="item in systemMsg" :key="item">
             <h3 text="2xl" justify="center">{{ item.title }}</h3>
           </el-carousel-item>
         </el-carousel>
-      </div>
+      </div> -->
       <el-row :gutter="20">
         <el-col :span="6">
           <div class="home-list one" @click="handleToProject()">

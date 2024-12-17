@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-06 15:16:13
+ * @LastEditTime: 2024-12-17 11:52:43
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -19,6 +19,7 @@ export default function ($vm) {
   const oId = ref(0);
   const orderId = ref(null);
   const orderName = ref(null);
+  const parentName = ref(null);
   const taskIndex = ref(0);
   const memberIndex = ref(0);
   const ids = ref([]);
@@ -89,12 +90,15 @@ export default function ($vm) {
   const handleNodeClick = (data,v,p)=> {
     orderId.value = data.orderId
     queryParams.value.productionDepartmentId = null
-    if(data.children === null){
-      queryParams.value.productionDepartmentId = data.id
-      queryParams.value.categoryId = data.parentId
-    }else{
-      queryParams.value.categoryId = data.id;
+    if(!(v.parent.data instanceof Array)){
+      parentName.value = v.parent.data.orderName
     }
+    // if(data.children === null){
+    //   queryParams.value.productionDepartmentId = data.id
+    //   queryParams.value.categoryId = data.parentId
+    // }else{
+    //   queryParams.value.categoryId = data.id;
+    // }
     getList(data.orderId);
     setTimeout(() => {
       getCount()
@@ -292,6 +296,7 @@ export default function ($vm) {
     total,
     oId,
     orderName,
+    parentName,
     showSearch,
     loading,
     queryParams,

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-13 10:17:54
+ * @LastEditTime: 2024-12-17 10:23:09
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -24,10 +24,7 @@ export default function ($vm) {
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
-    projectId: undefined,
-    projectName: undefined,
-    producerId: undefined,
-    approveStatus: undefined,
+    assignmentName: ''
   })
 
   /**

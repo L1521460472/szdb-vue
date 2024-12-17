@@ -99,6 +99,6 @@ export function getAddColumn(name) {
 export function getDeleteColumn(name) {
   return request({
     url: '/finance/cost/delPushField?field=' + name,
-    method: 'DELETE',
+    method: 'GET',
   })
 }

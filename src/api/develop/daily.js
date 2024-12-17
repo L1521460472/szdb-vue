@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0.0
+ * @Autor: lijiancong
+ * @Date: 2024-11-25 09:34:30
+ * @LastEditors: lijiancong
+ * @LastEditTime: 2024-12-17 09:16:43
+ */
 import request from '@/utils/request'
 
 // 查询人事考勤报表列表
@@ -5,6 +13,7 @@ export function getPage(data) {
     return request({
       url: '/system/rate/list',
       method: 'GET',
+      params: data
     })
 }
 // 部门树

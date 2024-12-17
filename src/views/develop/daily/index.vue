@@ -4,52 +4,30 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-12 17:45:26
+ * @LastEditTime: 2024-12-17 10:27:09
 -->
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="项目名称" prop="projectName">
-        <!-- <el-select
-          v-model="queryParams.projectId"
-          placeholder="项目名称"
-          clearable
-          style="width: 240px"
-        >
-        <el-option
-          v-for="item in listTypeInfo.projectList"
-          :key="item.projectId"
-          :label="item.projectName"
-          :value="item.projectId"
-        />
-        </el-select> -->
+      <el-form-item label="姓名" prop="createBy">
+        <el-select v-model="queryParams.createBy" placeholder="姓名" clearable filterable style="width: 200px">
+          <el-option
+              v-for="item in listTypeInfo.userList"
+              :key="item.userId"
+              :label="item.userName"
+              :value="item.userName"
+          />
+        </el-select>
+      </el-form-item>
+      <el-form-item label="项目名称" prop="assignmentName">
         <el-input
-               v-model="queryParams.projectName"
+               v-model="queryParams.assignmentName"
                placeholder="请输入项目名称"
                clearable
                style="width: 240px"
             />
       </el-form-item>
-      <!-- <el-form-item label="制作人" prop="producerId">
-        <el-select v-model="queryParams.producerId" placeholder="制作人" clearable filterable style="width: 200px">
-          <el-option
-              v-for="item in listTypeInfo.userList"
-              :key="item.userId"
-              :label="item.userName"
-              :value="item.userId"
-          />
-        </el-select>
-      </el-form-item>
-      <el-form-item label="审批状态" prop="approveStatus">
-        <el-select v-model="queryParams.approveStatus" placeholder="请选择审批状态" clearable filterable style="width: 200px">
-          <el-option
-              v-for="item in listTypeInfo.approveStatusList"
-              :key="item.value"
-              :label="item.key"
-              :value="item.value"
-          />
-        </el-select>
-      </el-form-item> -->
+      
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -77,26 +55,12 @@
       </el-table-column>
       <el-table-column label="日报日期" align="center" width="160" prop="stageTime" />
       <el-table-column label="参与阶段" align="center" prop="stageName" />
-      <!-- <el-table-column label="当前进度" align="center" prop="projectRate" >
-        <template #default="scope">
-          <span>{{ scope.row.projectRate }} <span v-if="scope.row.projectRate">%</span></span>
-          </template>
-      </el-table-column> -->
       <el-table-column label="工作人天" align="center" width="100" prop="workDay" />
       <el-table-column label="工作截图" align="center" width="130" prop="stageFile">
         <template #default="scope">
           <el-image style="width: 100px; height: 50px" :src="scope.row.stageFile" :preview-src-list="[scope.row.stageFile]" preview-teleported/>
         </template>
       </el-table-column>
-      
-      <!-- <el-table-column label="审批状态" align="center" prop="approveStatus">
-        <template #default="scope">
-          <span v-if="scope.row.approveStatus == 1">待提交</span>
-          <span v-if="scope.row.approveStatus == 2">待审核</span>
-          <span v-if="scope.row.approveStatus == 3">审核通过</span>
-          <span v-if="scope.row.approveStatus == 4">已撤回</span>
-        </template>
-      </el-table-column> -->
       <el-table-column label="工作总结" align="center" prop="explanatory">
         <template #default="scope">
           <span v-html="scope.row.explanatory"></span>

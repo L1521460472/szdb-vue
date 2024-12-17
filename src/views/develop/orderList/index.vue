@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-29 18:11:37
+ * @LastEditTime: 2024-12-17 11:53:19
 -->
 <template>
   <div class="app-container">
@@ -37,8 +37,9 @@
             >
               <template #default="{ node, data }">
                 <span class="custom-tree-node">
-                  
-                  <span style="display: flex;align-items: center;line-height: 24px;"><el-icon style="margin-right: 5px;"><Tickets /></el-icon>{{ node.label }}</span>
+                  <el-tooltip :content="node.label" placement="top">
+                      <span style="display: inline-block;max-width: 220px;overflow: hidden;line-height: 24px;"><el-icon style="margin-right: 0px;"><Tickets /></el-icon>{{ node.label }}</span>
+                  </el-tooltip>
                   <span style="display: flex;">
                     <span class="edit-append" style="margin-right: 6px;">
                       <a @click.stop="handleTreeUpdate(data)"> <el-icon color="#409eff"><Edit /></el-icon> </a>
@@ -227,10 +228,12 @@
           </el-table>
 
           <div style="display: flex;justify-content: space-between;align-items: center;">
-            <!-- <div v-show="total > 0" style="border-left: 5px solid #409eff;color: #666;font-weight: 600;padding-left: 5px;">订单统计  <span class="orderText">订单名称：{{ totalObj.orderName }}</span><span class="orderText">计划人天：{{ totalObj.planDay }}</span><span class="orderText">最终人天：{{ totalObj.ultimatelyDay }}</span></div> -->
             <div v-show="total > 0">
               <span style="font-weight: 600;margin-right: 20px;"> 订单统计</span>  
-              订单名称：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.orderName }} 
+              订单名称：
+              <span style="margin-right: 40px;color: #0d06db;">
+                <span v-if="parentName">{{ parentName }} /</span>
+                {{ totalObj.orderName }} 
                 <el-tooltip :content="totalObj.orderRemarks" effect="light" placement="top">
                   <el-icon><ChatDotRound /></el-icon>
                 </el-tooltip>
@@ -877,6 +880,7 @@ export default defineComponent({
   align-items: center;
 }
 .custom-tree-node {
+  width: 100%;
   flex: 1;
   display: flex;
   align-items: center;
@@ -927,6 +931,7 @@ export default defineComponent({
   font-size: 20px !important;
 }
 .el-tree{
+  width: 100%;
   height: 76vh;
   overflow-y: auto;
 }

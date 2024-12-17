@@ -53,7 +53,7 @@ export default function ($vm) {
 
   onBeforeMount(()=>{
     // getArtsList()
-    // getUserList()
+    getUserList()
   })
 
   return {
