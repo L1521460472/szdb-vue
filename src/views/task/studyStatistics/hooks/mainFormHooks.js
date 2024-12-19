@@ -15,8 +15,8 @@ export default function ($vm) {
    */
   const listTypeInfo = reactive({
     enableList: [
-      { key: "启用", value: true },
-      { key: "停用", value: false },
+      { key: "未完成", value: '0' },
+      { key: "已完成", value: '1' },
     ],
     dateList: [
       { key: "近一周", value: '1' },

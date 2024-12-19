@@ -26,7 +26,8 @@ export default function ($vm) {
     month: [],
     beginTime: '',
     endTime: '',
-    name: ''
+    name: '',
+    status: ''
   })
 
   /**

@@ -4,12 +4,12 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-19 09:50:25
+ * @LastEditTime: 2024-12-19 10:23:34
 -->
 <template>
   <div class="app-container">
     <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
-      <el-form-item label="日期" prop="month">
+      <el-form-item label="入职时间" prop="month">
           <el-date-picker
               v-model="queryParams.month"
               type="monthrange"
@@ -29,6 +29,21 @@
             prefix-icon="Search"
         />
       </el-form-item>
+      <el-form-item label="状态" prop="status">
+        <el-select
+            v-model="queryParams.status"
+            placeholder="状态"
+            clearable
+            style="width: 240px"
+          >
+          <el-option
+            v-for="item in listTypeInfo.enableList"
+            :key="item.value"
+            :label="item.key"
+            :value="item.value"
+          />
+          </el-select>
+        </el-form-item>
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -70,7 +85,7 @@
       </el-table-column>
       <el-table-column label="学习完成率" align="center" min-width="150" prop="completionRate">
       <template #default="scope">
-          <span>{{ scope.row.completionRate }} %</span>
+          <span><el-progress :percentage="scope.row.completionRate" /></span>
         </template>
       </el-table-column>
       <el-table-column label="最后学习时间" align="center" min-width="160" prop="lastTime" />
