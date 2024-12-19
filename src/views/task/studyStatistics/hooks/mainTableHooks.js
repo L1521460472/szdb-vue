@@ -23,6 +23,7 @@ export default function ($vm) {
     orderByColumn: '',
     isAsc: 'asc',
     reasonable: true,
+    month: [],
     beginTime: '',
     endTime: '',
     name: ''

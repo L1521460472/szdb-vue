@@ -31,6 +31,8 @@ export default function ($vm) {
   /** 重置按钮操作 */
   const resetQuery = () => {
     $vm.resetForm("queryRef");
+    $vm.queryParams.beginTime = ''
+    $vm.queryParams.endTime = ''
     handleQuery();
   }
 

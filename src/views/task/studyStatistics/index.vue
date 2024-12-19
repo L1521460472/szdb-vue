@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-16 09:11:42
+ * @LastEditTime: 2024-12-19 09:50:25
 -->
 <template>
   <div class="app-container">
@@ -56,10 +56,10 @@
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="入职时间" align="center" min-width="120" prop="deptName" />
-      <el-table-column label="学习状态" align="center" min-width="150" prop="approveStatus">
+      <el-table-column label="入职时间" align="center" min-width="120" prop="entryTime" />
+      <el-table-column label="学习状态" align="center" min-width="150" prop="status">
         <template #default="scope">
-          <!-- <span>{{ scope.row.approveStatus == 0 ? '未学习' : '已学习' }}</span> -->
+          <span>{{ scope.row.status == 0 ? '未完成' : '已完成' }}</span>
         </template>
       </el-table-column>
       <el-table-column :label="item.manualName" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
@@ -68,8 +68,12 @@
           <span v-else>未学习</span>
         </template>
       </el-table-column>
-      <el-table-column label="学习完成率" align="center" min-width="150" prop="approveStatus" />
-      <el-table-column label="最后学习时间" align="center" min-width="150" prop="approveStatus" />
+      <el-table-column label="学习完成率" align="center" min-width="150" prop="completionRate">
+      <template #default="scope">
+          <span>{{ scope.row.completionRate }} %</span>
+        </template>
+      </el-table-column>
+      <el-table-column label="最后学习时间" align="center" min-width="160" prop="lastTime" />
       <!-- <el-table-column label="推送学习提醒" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="推送" placement="top">

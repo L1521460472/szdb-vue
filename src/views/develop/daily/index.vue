@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-17 10:27:09
+ * @LastEditTime: 2024-12-19 09:53:41
 -->
 <template>
   <div class="app-container">
@@ -366,6 +366,14 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.app-container{
+  height: calc(100vh - 84px);
+  display: flex;
+  flex-direction: column;
+}
+.app-container .el-table{
+  flex: 1;
+}
 /* 富文本框汉化 */
 .ql-snow .ql-picker.ql-size .ql-picker-label::before,
 .ql-snow .ql-picker.ql-size .ql-picker-item::before {
