@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-11 16:40:12
+ * @LastEditTime: 2024-12-21 10:41:31
  */
 import { onMounted, reactive, ref,nextTick } from "vue";
 import { useRouter } from "vue-router";
@@ -59,6 +59,8 @@ export default function ($vm) {
   // 新增
   function handleAddOpen() {
     type.value = 'add'
+    $vm.dialogInfo.btnList[0].show = true
+    $vm.dialogInfo.btnList[1].show = true
     $vm.valueHtml = '<p></p>';
     $vm.dialogInfo.visible = true;
     nextTick(()=>{
@@ -68,6 +70,8 @@ export default function ($vm) {
   /** 编辑 */
   const handleEdit = (row) => {
     type.value = 'edit'
+    $vm.dialogInfo.btnList[0].show = true
+    $vm.dialogInfo.btnList[1].show = true
     getDetail(row.id).then(response => {
       if(response.code == 200){
         console.log(response.data)
@@ -84,9 +88,11 @@ export default function ($vm) {
     });
     
   }
-  /** 编辑 */
+  /** 查看 */
   const handleView = (row) => {
     type.value = 'view'
+    $vm.dialogInfo.btnList[0].show = false
+    $vm.dialogInfo.btnList[1].show = false
     getDetail(row.id).then(response => {
       if(response.code == 200){
         $vm.formInfo.data = response.data

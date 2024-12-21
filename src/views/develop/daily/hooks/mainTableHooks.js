@@ -6,7 +6,7 @@
  * @LastEditors: lijiancong
  * @LastEditTime: 2024-12-17 10:23:09
  */
-import { onMounted, reactive, ref } from "vue";
+import { onMounted, reactive, ref,nextTick } from "vue";
 import { useRouter } from "vue-router";
 import { getPage,getAdd,getUserAssignment,getDelete,getDetail } from "@/api/develop/daily";
 
@@ -58,20 +58,47 @@ export default function ($vm) {
   }
   // 新增
   function handleAddOpen() {
+    type.value = 'add'
     $vm.valueHtml = ''
-    console.log($vm)
+    $vm.dialogInfo.btnList[0].show = true
+    $vm.dialogInfo.btnList[1].show = true
     $vm.dialogInfo.visible = true;
+    nextTick(()=>{
+      $vm.editorRef.enable()
+    })
   }
   /** 编辑 */
   const handleEdit = (row) => {
-    console.log(row)
     type.value = 'edit'
+    $vm.dialogInfo.btnList[0].show = true
+    $vm.dialogInfo.btnList[1].show = true
     getDetail(row.id).then(response => {
       if(response.code == 200){
         console.log(response.data)
         $vm.formInfo.data = response.data
         $vm.valueHtml = '<p>' + response.data.explanatory + '</p>'
         $vm.dialogInfo.visible = true;
+        nextTick(()=>{
+          $vm.editorRef.enable()
+        })
+      }
+    });
+    
+  }
+  /** 查看 */
+  const handleView = (row) => {
+    type.value = 'view'
+    $vm.dialogInfo.btnList[0].show = false
+    $vm.dialogInfo.btnList[1].show = false
+    getDetail(row.id).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        $vm.formInfo.data = response.data
+        $vm.valueHtml = '<p>' + response.data.explanatory + '</p>'
+        $vm.dialogInfo.visible = true;
+        nextTick(()=>{
+          $vm.editorRef.disable()
+        })
       }
     });
     
@@ -105,6 +132,7 @@ export default function ($vm) {
     oldProjectRate,
     oldTimeConsuming,
     getList,
+    handleView,
     handleEdit,
     handleDelete,
     handleQuery,

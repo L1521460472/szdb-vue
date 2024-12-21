@@ -68,6 +68,9 @@
       </el-table-column>
       <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
+            <el-tooltip content="查看" placement="top">
+                <el-button link type="primary" icon="View" @click="handleView(scope.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="编辑" placement="top">
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
@@ -94,7 +97,7 @@
       @close="dialogInfo.visible = false"
       @handleClick="handleClick"
     >
-    <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px">
+    <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px" :disabled="type == 'view'">
       <el-row>
           <el-col :span="8">
               <el-form-item label="关联项目" prop="assignmentName">
