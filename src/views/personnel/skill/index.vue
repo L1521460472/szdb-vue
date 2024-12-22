@@ -212,11 +212,11 @@
             <div class="form-main-left">
               <div class="form-main-left-text">基本信息</div>
               <div class="form-main-left-form">
-                <el-form :model="dialogForm" label-width="80px">
-                  <el-form-item label="姓名">
+                <el-form :model="dialogForm" label-width="80px" :rules="rules" ref="skillRef">
+                  <el-form-item label="姓名" prop="applicantName">
                     <el-input v-model="dialogForm.applicantName" />
                   </el-form-item>
-                  <el-form-item label="应聘岗位">
+                  <el-form-item label="应聘岗位" prop="applicantPostId">
                     <el-select v-model="dialogForm.applicantPostId" filterable placeholder="请选择">
                       <el-option
                         v-for="item in postOptionsList"
@@ -226,19 +226,19 @@
                       />
                     </el-select>
                   </el-form-item>
-                  <el-form-item label="年龄">
-                    <el-input v-model="dialogForm.age" />
+                  <el-form-item label="年龄" prop="age">
+                    <el-input type="number" v-model="dialogForm.age" />
                   </el-form-item>
-                  <el-form-item label="工作年限">
+                  <el-form-item label="工作年限" prop="workingExperience">
                     <el-input v-model="dialogForm.workingExperience" />
                   </el-form-item>
-                  <el-form-item label="职位年限">
+                  <el-form-item label="职位年限" prop="positionAgeLimit">
                     <el-input v-model="dialogForm.positionAgeLimit" />
                   </el-form-item>
-                  <el-form-item label="联系电话">
+                  <el-form-item label="联系电话" prop="phonenumber">
                     <el-input v-model="dialogForm.phonenumber" />
                   </el-form-item>
-                  <el-form-item label="邮箱">
+                  <el-form-item label="邮箱" prop="email">
                     <el-input v-model="dialogForm.email" />
                   </el-form-item>
                 </el-form>
@@ -405,8 +405,8 @@
                 <el-collapse v-model="activeNames" @change="handleChange">
                   <el-collapse-item title="测试情况" name="1">
                     <div class="form-main-right-form">
-                      <el-form :model="dialogForm" label-width="70px">
-                        <el-form-item label="发送日期">
+                      <el-form :model="dialogForm" label-width="80px" :rules="rules1" ref="skillRef1">
+                        <el-form-item label="发送日期" prop="testSendTime">
                           <el-date-picker
                             v-model="dialogForm.testSendTime"
                             type="date"
@@ -415,7 +415,7 @@
                             value-format="YYYY-MM-DD HH:mm:ss"
                           />
                         </el-form-item>
-                        <el-form-item label="回传日期">
+                        <el-form-item label="回传日期" prop="testBackhaulTime">
                           <el-date-picker
                             v-model="dialogForm.testBackhaulTime"
                             type="date"
@@ -424,17 +424,17 @@
                             value-format="YYYY-MM-DD HH:mm:ss"
                           />
                         </el-form-item>
-                        <el-form-item label="结果">
+                        <el-form-item label="结果" prop="testEvaluation">
                           <el-select v-model="dialogForm.testEvaluation" placeholder="请选择">
                             <el-option label="通过" value="1" />
                             <el-option label="不通过" value="2" />
                             <el-option label="待定" value="3" />
                           </el-select>
                         </el-form-item>
-                        <el-form-item label="星级">
+                        <el-form-item label="星级" prop="expectations">
                           <el-rate v-model="dialogForm.expectations" />
                         </el-form-item>
-                        <el-form-item label="测试反馈">
+                        <el-form-item label="测试反馈" prop="testFeedback">
                           <el-input v-model="dialogForm.testFeedback" type="textarea" />
                         </el-form-item>
                       </el-form>
@@ -744,9 +744,20 @@ const data = reactive({
     interviewResults: '',
   },
   rules: {
-    //  postName: [{ required: true, message: "岗位名称不能为空", trigger: "blur" }],
-    //  postCode: [{ required: true, message: "岗位编码不能为空", trigger: "blur" }],
-    //  postSort: [{ required: true, message: "岗位顺序不能为空", trigger: "blur" }],
+     applicantName: [{ required: true, message: "姓名不能为空", trigger: "blur" }],
+     applicantPostId: [{ required: true, message: "应聘岗位不能为空", trigger: "blur" }],
+     age: [{ required: true, message: "年龄不能为空", trigger: "blur" }],
+     workingExperience: [{ required: true, message: "工作年限不能为空", trigger: "blur" }],
+     positionAgeLimit: [{ required: true, message: "职位年限不能为空", trigger: "blur" }],
+     phonenumber: [{ required: true, message: "联系电话不能为空", trigger: "blur" }],
+     email: [{ required: true, message: "邮箱不能为空", trigger: "blur" }],
+  },
+  rules1: {
+     testSendTime: [{ required: true, message: "发送日期不能为空", trigger: "blur" }],
+     testBackhaulTime: [{ required: true, message: "回传日期不能为空", trigger: "blur" }],
+     testEvaluation: [{ required: true, message: "结果不能为空", trigger: "blur" }],
+     expectations: [{ required: true, message: "星级不能为空", trigger: "blur" }],
+     testFeedback: [{ required: true, message: "测试反馈不能为空", trigger: "blur" }],
   },
 });
 
@@ -761,7 +772,7 @@ const data = reactive({
 //     }
 //   );
 
-const { queryParams, form, rules } = toRefs(data);
+const { queryParams, form, rules,rules1 } = toRefs(data);
 
 const uploadRef = ref(null)
 const uploadRef1 = ref(null)
@@ -1151,31 +1162,39 @@ const onSuccess3 = (response, file, fileLists) => {
 }
 /** 提交按钮 */
 function submitForm() {
-  const params = {
-    ...dialogForm.value,
-    resumeFileList:files.value,
-    worksFileList:fileList.value,
-    testFileList:testFiles.value,
-    pdfFileList:fileList1.value,
-  }
-  btnLoading.value = true
-  if(!dialogForm.value.id){
-    addResume(params).then((response) => {
-      btnLoading.value = false
-      getList();
-      open.value = false;
-    }).catch(() => {
-      btnLoading.value = false
-    })
-  }else{
-    editResume(params).then((response) => {
-      btnLoading.value = false
-      getList();
-      open.value = false;
-    }).catch(() => {
-      btnLoading.value = false
-    })
-  }
+  proxy.$refs["skillRef"].validate( async valid => {
+    if (valid) {
+      proxy.$refs["skillRef1"].validate( async valid => {
+    if (valid) {
+      const params = {
+        ...dialogForm.value,
+        resumeFileList:files.value,
+        worksFileList:fileList.value,
+        testFileList:testFiles.value,
+        pdfFileList:fileList1.value,
+      }
+      btnLoading.value = true
+      if(!dialogForm.value.id){
+        addResume(params).then((response) => {
+          btnLoading.value = false
+          getList();
+          open.value = false;
+        }).catch(() => {
+          btnLoading.value = false
+        })
+      }else{
+        editResume(params).then((response) => {
+          btnLoading.value = false
+          getList();
+          open.value = false;
+        }).catch(() => {
+          btnLoading.value = false
+        })
+      }
+      }
+    });
+    }
+  });
 }
 /** 删除按钮操作 */
 function handleDelete(row) {

@@ -94,7 +94,7 @@
         </template>
       </el-table-column>
       <el-table-column label="离职原因" align="center" prop="resignationReason" />
-      <el-table-column label="备注" align="center" prop="remark" />
+      <el-table-column label="备注" align="center" prop="remarks" />
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
             <el-tooltip content="编辑" placement="top">

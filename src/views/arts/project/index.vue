@@ -480,11 +480,14 @@
         <el-collapse-item title="项目成员" name="3" disabled>
           <div class="dialog-member-title">
               <div>负责人：<span style="margin-right: 20px;color: #00a660;"> {{ fzUserData.length }}</span>PM： <span style="margin-right: 20px;color: #67C23A">{{ pmObj.userId ? 1 : 0 }}</span>制作人： <span style="margin-right: 20px;color: #409eff;">{{ zzUserData.length }}</span></div>
-              <div><el-button :icon="Plus" @click="handleAddMember">添加成员</el-button></div>
+              <!-- <div><el-button :icon="Plus" @click="handleAddMember">添加成员</el-button></div> -->
             </div>
             <div class="dialog-member-box">
               <div class="dialog-member-box-left">
-                <div style="margin-bottom: 16px;font-size: 16px;margin-left: 8px;">项目负责人</div>
+                <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 0px;">
+                  <span style="margin-right: 6px">项目负责人</span>
+                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('1')" circle />
+                </div>
                 <div v-if="fzUserData.length > 0" style="height: calc(100% - 44px);overflow-y: auto;">
                   <div class="el-result" style="border: 1px solid #00a660;border-radius: 16px;width: 96%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="(item,index) in fzUserData" key="item">
                     负责人：{{ item.userName }}
@@ -501,7 +504,10 @@
                 </div>
               </div>
               <div class="dialog-member-box-left">
-                <div style="margin-bottom: 16px;font-size: 16px;margin-left: 24px;">PM跟进人</div>
+                <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 10px;">
+                  <span style="margin-right: 6px">PM跟进人</span>
+                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('3')" circle />
+                </div>
                 <el-result v-if="pmObj.userId" :title="pmObj.userName" sub-title="">
                   <template #icon>
                     <div class="title-circle title-circle-leader">{{ getTwo(pmObj.userName) }}</div>
@@ -518,15 +524,20 @@
                 </div>
               </div>
               <div class="dialog-member-box-right">
-                <div style="margin-bottom: 16px;font-size: 16px;margin-left: 26px;">项目制作人</div>
+                <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 20px;">
+                  <span style="margin-right: 6px">项目制作人</span>
+                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('2')" circle />
+                </div>
                 <div class="member-box-list">
                   <div class="member-list el-result" v-if="zzUserData.length > 0" v-for="(item,index) in zzUserData" :key="item.userId">
                     <div>
                       <div class="el-result__icon" style="width:100%;height: 64px;display: flex;justify-content: center;">
                         <div class="title-circle">{{ getTwo(item.userName) }}</div>
                       </div>
-                      <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;align-items: center;font-size: 16px;">
-                        {{ item.userName }}
+                      <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;flex-wrap: nowrap;font-size: 16px;overflow: hidden;">
+                        <el-tooltip :content="item.userName" placement="top">
+                          <span>{{ item.userName }}</span>
+                        </el-tooltip>
                       </div>
                       <div style="width:100%;height: 24px;display: flex;flex-wrap: wrap;align-items: center;margin-top: 2px;">
                         <span v-for="(v,indexs) in item.stageNames" :key="indexs">
@@ -626,7 +637,7 @@
      <!-- 新增成员对话框 -->
      <el-dialog title="添加成员" v-model="addMemberOpen" :close-on-click-modal="false" width="500px" append-to-body>
       <el-form :model="addMemberform" ref="addMemberRef" label-width="80px">
-        <el-form-item label="成员角色" prop="type" :rules="
+        <!-- <el-form-item label="成员角色" prop="type" :rules="
           {
             required: true,
             message: '请选择角色',
@@ -638,7 +649,7 @@
             <el-radio label="3">PM跟进人</el-radio>
             <el-radio label="2">项目制作人</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="负责阶段" prop="stage" v-if="addMemberform.type == '2'" :rules="
         {
           required: true,
@@ -1331,14 +1342,16 @@ const submitremoveMemberForm = ()=>{
 }
 //新增成员弹框
 const handleAddMember = (val)=>{
+  console.log(val)
+  if(val == 3){
+    multiple.value = false
+  }else{
+    multiple.value = true
+  }
   addMemberform.userId = ''
   addMemberform.userName = ''
   addMemberform.userIdList = []
-  if(val == 2){
-    addMemberform.type = '2'
-  }else{
-    addMemberform.type = '1'
-  }
+  addMemberform.type = val
   addMemberOpen.value = true;
 }
 //项目详情弹框
