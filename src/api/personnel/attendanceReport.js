@@ -102,3 +102,12 @@ export function getDeleteColumn(name) {
     method: 'GET',
   })
 }
+
+// 考勤一键推送
+export function getPush(data) {
+  return request({
+    url: '/system/report/push/'+ data,
+    method: 'POST',
+    // data: data
+  })
+}

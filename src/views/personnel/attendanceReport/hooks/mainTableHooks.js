@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-15 18:15:14
+ * @LastEditTime: 2024-12-23 12:04:13
  */
 import { onMounted,onBeforeMount, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail,getImport,getColumn } from "@/api/personnel/attendanceReport";
+import { getPage,deptList,getDelete,getDetail,getImport,getColumn,getPush } from "@/api/personnel/attendanceReport";
 import { formatDate } from "@/utils/index";
 
 export default function ($vm) {
@@ -19,6 +19,7 @@ export default function ($vm) {
   const columnList = ref([])
   const total = ref(0);
   const userName = ref(null)
+  const ids = ref('')
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
@@ -74,6 +75,10 @@ export default function ($vm) {
       }
     });
   }
+  /** 选择条数  */
+  function handleSelectionChange(selection) {
+    ids.value = selection.map(item => item.id).join(',');
+  };
 
   /** 导入按钮操作 */
   function handleImport() {
@@ -108,7 +113,10 @@ export default function ($vm) {
   }
   /** 一键推送 */
   const handlePush = () => {
-    console.log('一键推送')
+    getPush(ids.value).then(async(response) => {
+      console.log('一键推送',response)
+      $vm.$modal.msgSuccess("推送成功");
+    });
   }
   /** 发送确认 */
   const handlePromotion = (row) => {
@@ -156,6 +164,7 @@ export default function ($vm) {
     columnList,
     userName,
     getList,
+    handleSelectionChange,
     handleAdd,
     handleEdit,
     handleDelete,
