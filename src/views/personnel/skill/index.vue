@@ -904,6 +904,8 @@ function handleAdd() {
   imageUrl1.value = null;
   filesUrl.value = null;
   fileList.value = [];
+  files.value = [];
+  testFiles.value = [];
   nextTick(() => {
     open.value = true;
     title.value = "新增简历";
