@@ -10,7 +10,7 @@ import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
-import { getAdd,getEdit } from "@/api/personnel/supplier";
+import { getAdd,getEdit,getEncipher,getSqEncipher } from "@/api/personnel/supplier";
 // import { useRouter } from 'vue-router'
 export default function ($vm) {
   const userName = ref(Cookies.get("userName"));
@@ -18,8 +18,6 @@ export default function ($vm) {
   const imageUrl1 = ref('')
   const imageUrl2 = ref([])
   const imageUrl3 = ref([])
-  const infoEncipher = ref('2')
-  const financeEncipher = ref('2')
   const dialogImageUrl = ref('')
   const dialogVisible = ref(false)
   const dialogVisible1 = ref(false)
@@ -112,7 +110,8 @@ export default function ($vm) {
     data: {
       infoEncipher: '',
       financeEncipher: '',
-      deptName: '',
+      userId: '',
+      id: '',
     },
     disabled: false,
     fieldList: [],
@@ -334,27 +333,37 @@ export default function ($vm) {
   const handleRemove2 = (file) => {
     console.log(file)
   }
+  const handleChangeUser = (val) => {
+    const params = {
+      userId:val,
+      id:formInfo1.data.id,
+    }
+    getSqEncipher(params).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        formInfo1.data.infoEncipher = response.data.infoEncipher
+        formInfo1.data.financeEncipher = response.data.financeEncipher
+      }
+    });
+  }
+
   // 授权
   const handleAuthorize = () => {
     $vm.$refs["supplierRef1"].validate(valid => {
       if (valid) {
         console.log(formInfo1.data,111)
-        // const params = {
-        //   ...formInfo.data,
-        //   scopeBusiness:formInfo.data.scopeBusiness.join(','),
-        //   supplierLogo: imageUrl1.value,
-        //   supplierBusinessLicense: JSON.stringify(imageUrl2.value),
-        //   supplierQualificationCertificate: JSON.stringify(imageUrl3.value),
-        // }
-        // console.log(params)
-        // getAdd(params).then(response => {
-        //   if(response.code == 200){
-        //     $vm.getList()
-        //     dialogInfo.visible = false;
-        //     $vm.$modal.msgSuccess("保存成功");
-        //   }
-        // });
-        dialogVisible1.value = false
+        const params = {
+          ...formInfo1.data,
+        }
+        console.log(params)
+        getEncipher(params).then(response => {
+          if(response.code == 200){
+            $vm.getList()
+            dialogVisible1.value = false;
+            $vm.$modal.msgSuccess("成功");
+          }
+        });
+        // dialogVisible1.value = false
       }
     });
   }
@@ -373,8 +382,6 @@ export default function ($vm) {
     upload1,
     upload2,
     upload3,
-    infoEncipher,
-    financeEncipher,
     close,
     confirm,
     handleProjectRate,
@@ -391,5 +398,6 @@ export default function ($vm) {
     handleFileUploadProgress2,
     handleFileSuccess2,
     handleAuthorize,
+    handleChangeUser,
   };
 }

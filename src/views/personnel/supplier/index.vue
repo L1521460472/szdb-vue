@@ -121,7 +121,7 @@
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="冻结" placement="top">
-                <el-button link type="primary" icon="Lock" @click="handleOpenOrClose(scope.row,'2')"></el-button>
+                <el-button link type="primary" icon="Lock" @click="handleOpenOrClose(scope.row,'0')"></el-button>
             </el-tooltip>
             <el-tooltip content="开通" placement="top">
                 <el-button link type="primary" icon="Unlock" @click="handleOpenOrClose(scope.row,'1')"></el-button>
@@ -380,7 +380,7 @@
     >
       <el-form ref="supplierRef1" :model="formInfo1.data" :rules="formInfo1.rules" label-width="110px">
         <el-form-item label="授权用户" prop="userId">
-          <el-select v-model="formInfo1.data.userId" placeholder="授权用户" clearable filterable style="width: 200px">
+          <el-select v-model="formInfo1.data.userId" placeholder="授权用户" clearable filterable style="width: 200px" @change="handleChangeUser">
             <el-option
                 v-for="item in listTypeInfo.userList"
                 :key="item.userId"
@@ -390,15 +390,15 @@
           </el-select>
         </el-form-item>
         <el-form-item label="基本信息" prop="infoEncipher">
-          <el-radio-group v-model="infoEncipher">
-            <el-radio value="1">加密</el-radio>
-            <el-radio value="2">不加密</el-radio>
+          <el-radio-group v-model="formInfo1.data.infoEncipher">
+            <el-radio label="0">加密</el-radio>
+            <el-radio label="1">不加密</el-radio>
           </el-radio-group>
         </el-form-item>
         <el-form-item label="财务信息" prop="financeEncipher">
-          <el-radio-group v-model="financeEncipher">
-            <el-radio value="1">加密</el-radio>
-            <el-radio value="2">不加密</el-radio>
+          <el-radio-group v-model="formInfo1.data.financeEncipher">
+            <el-radio label="0">加密</el-radio>
+            <el-radio label="1">不加密</el-radio>
           </el-radio-group>
         </el-form-item>
       </el-form>

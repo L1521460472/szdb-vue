@@ -8,8 +8,9 @@
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail,getOpenOrClose,getClearEmpty } from "@/api/personnel/supplier";
+import { getPage,deptList,getDelete,getDetail,getOpenOrClose,getClearEmpty,getSqEncipher } from "@/api/personnel/supplier";
 import { getUser, } from "@/api/system/user";
+import Cookies from "js-cookie";
 
 export default function ($vm) {
 
@@ -22,6 +23,9 @@ export default function ($vm) {
   const resignationRate = ref(0);
   const type = ref('add');
   const ids = ref('');
+  const userId = ref(Cookies.get("userId"));
+  const infoEncipher = ref('')
+  const financeEncipher = ref('')
   const oldProjectRate = ref('');
   const oldTimeConsuming = ref('');
   const queryParams = ref({
@@ -91,6 +95,17 @@ export default function ($vm) {
     $vm.dialogInfo.btnList[0].show = true;
     $vm.dialogInfo.btnList[1].show = true;
     $vm.activeNames = []
+    getSqEncipher({userId:userId.value,id:row.id}).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        if(response.data.infoEncipher == '1'){
+          $vm.activeNames.push('1')
+        }
+        if(response.data.financeEncipher == '1'){
+          $vm.activeNames.push('2')
+        }
+      }
+    });
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
@@ -100,12 +115,6 @@ export default function ($vm) {
         // $vm.imageUrl2 = response.data.supplierBusinessLicense
         $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
         $vm.imageUrl3 = JSON.parse(response.data.supplierQualificationCertificate)
-        if(row.infoEncipher == '1'){
-          $vm.activeNames.push('1')
-        }
-        if(row.financeEncipher == '1'){
-          $vm.activeNames.push('2')
-        }
         $vm.dialogInfo.visible = true;
       }
     });
@@ -116,6 +125,17 @@ export default function ($vm) {
     $vm.dialogInfo.btnList[0].show = false
     $vm.dialogInfo.btnList[1].show = false
     $vm.activeNames = []
+    getSqEncipher({userId:userId.value,id:row.id}).then(response => {
+      if(response.code == 200){
+        console.log(response.data)
+        if(response.data.infoEncipher == '1'){
+          $vm.activeNames.push('1')
+        }
+        if(response.data.financeEncipher == '1'){
+          $vm.activeNames.push('2')
+        }
+      }
+    });
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
@@ -158,7 +178,8 @@ export default function ($vm) {
     }).catch(() => {});
   }
   /** 授权 */
-  const handleTools = (row,val) => {
+  const handleTools = (row) => {
+    $vm.formInfo1.data.id = row.id
     $vm.dialogVisible1 = true;
   }
   /** 开通、冻结 */
@@ -202,6 +223,8 @@ export default function ($vm) {
     oldTimeConsuming,
     postOptions,
     roleOptions,
+    infoEncipher,
+    financeEncipher,
     getList,
     handleEdit,
     handleView,

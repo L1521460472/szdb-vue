@@ -64,6 +64,22 @@ export function getOpenOrClose(data) {
     method: 'POST',
   })
 }
+// 查询加、解密人事供应商授权用户
+export function getSqEncipher(data) {
+  return request({
+    url: `/system/supplier/sqEncipher`,
+    method: 'POST',
+    data: data
+  })
+}
+// 加、解密人事供应商
+export function getEncipher(data) {
+  return request({
+    url: `/system/supplier/encipher`,
+    method: 'POST',
+    data: data
+  })
+}
 // 一键清空人事供应商授权
 export function getClearEmpty(ids) {
   return request({
