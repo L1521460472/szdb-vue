@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-07 20:34:22
+ * @LastEditTime: 2024-12-25 14:59:34
  */
 import { onBeforeMount,onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -17,6 +17,7 @@ export default function ($vm) {
   const showSearch = ref(true);
   const columnList = ref([])
   const total = ref(0);
+  const ids = ref('');
   const queryParams = ref({
     pageNum: 1,
     pageSize: 50,
@@ -50,6 +51,10 @@ export default function ($vm) {
     });
     loading.value = false;
   }
+  /** 选择条数  */
+  function handleSelectionChange(selection) {
+    ids.value = selection.map(item => item.userId).join(',');
+  };
   /** 查询表格列表 */
   const getList1 = () => {
     getPage1(queryParams.value).then(response => {
@@ -58,11 +63,11 @@ export default function ($vm) {
     loading.value = false;
   }
   const handlePush = ()=>{
-    console.log('handlePush');
-    getAdd().then(response => {
+    console.log('handlePush',ids.value);
+    getAdd(ids.value).then(response => {
       console.log(response)
       if(response.code == 200){
-        proxy.$modal.msgSuccess("推送成功");
+        $vm.$modal.msgSuccess("推送成功");
       }
     });
   }
@@ -140,5 +145,6 @@ export default function ($vm) {
     handleChangeDept,
     handleChangeTime,
     handlePush,
+    handleSelectionChange,
   };
 }

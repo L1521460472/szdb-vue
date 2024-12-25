@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-12 17:22:01
+ * @LastEditTime: 2024-12-25 18:14:15
 -->
 <template>
   <div class="app-container">
@@ -71,11 +71,16 @@
             icon="Plus"
             @click="handleAddOpen"
           >新增</el-button>
+          <el-button
+            type="danger"
+            plain
+            @click="handleClear"
+          >一键清空授权</el-button>
       </el-col>
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
-    <el-table v-loading="loading" :data="tableData" border>
-      <!-- <el-table-column type="selection" width="55" align="center" /> -->
+    <el-table v-loading="loading" :data="tableData" border @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55" align="center" />
       <el-table-column label="序号" width="55" align="center" type="index" />
       <el-table-column label="供应商名称" align="center" prop="supplierName">
       </el-table-column>
@@ -98,14 +103,28 @@
       <el-table-column label="联系电话" align="center" prop="mobile" />
       <el-table-column label="职务" align="center" prop="positionLiaisonPerson" />
       <el-table-column label="入库时间" align="center" prop="storageTime" />
+      <el-table-column label="状态" align="center" prop="supplierStatus">
+      <template #default="scope">
+          <span>{{ scope.row.supplierStatus == '1' ? '开通': '冻结' }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="备注" align="center" prop="remark" />
-      <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+      <el-table-column label="操作" align="center" width="210" class-name="small-padding fixed-width" fixed="right">
           <template #default="scope">
+            <el-tooltip content="授权" placement="top">
+                <el-button link type="primary" icon="Tools" @click="handleTools(scope.row)"></el-button>
+            </el-tooltip>
             <el-tooltip content="查看" placement="top">
                 <el-button link type="primary" icon="View" @click="handleView(scope.row)"></el-button>
             </el-tooltip>
             <el-tooltip content="编辑" placement="top">
                 <el-button link type="primary" icon="Edit" @click="handleEdit(scope.row)"></el-button>
+            </el-tooltip>
+            <el-tooltip content="冻结" placement="top">
+                <el-button link type="primary" icon="Lock" @click="handleOpenOrClose(scope.row,'2')"></el-button>
+            </el-tooltip>
+            <el-tooltip content="开通" placement="top">
+                <el-button link type="primary" icon="Unlock" @click="handleOpenOrClose(scope.row,'1')"></el-button>
             </el-tooltip>
             <el-tooltip content="删除" placement="top">
                 <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
@@ -133,7 +152,7 @@
     >
       <el-form ref="supplierRef" :model="formInfo.data" :rules="formInfo.rules" label-width="110px" :disabled="type == 'view'">
         <el-collapse v-model="activeNames" @change="handleChange">
-          <el-collapse-item title="供应商基础信息" name="1">
+          <el-collapse-item title="供应商基础信息" name="1" disabled>
               <el-row>
                 <el-col :span="8">
                     <el-form-item label="公司名称" prop="supplierName">
@@ -310,7 +329,7 @@
                 </el-col>
             </el-row>
           </el-collapse-item>
-          <el-collapse-item title="供应商财务信息" name="2">
+          <el-collapse-item title="供应商财务信息" name="2" disabled>
             <el-row>
               <el-col :span="12">
                 <el-form-item label="发票抬头" prop="invoiceHeader">
@@ -354,6 +373,44 @@
     <el-dialog v-model="dialogVisible">
       <img class="w-full" :src="dialogImageUrl" alt="Preview Image" />
     </el-dialog>
+    <el-dialog
+      v-model="dialogVisible1"
+      title="授权"
+      width="500"
+    >
+      <el-form ref="supplierRef1" :model="formInfo1.data" :rules="formInfo1.rules" label-width="110px">
+        <el-form-item label="授权用户" prop="userId">
+          <el-select v-model="formInfo1.data.userId" placeholder="授权用户" clearable filterable style="width: 200px">
+            <el-option
+                v-for="item in listTypeInfo.userList"
+                :key="item.userId"
+                :label="item.userName"
+                :value="item.userId"
+            />
+          </el-select>
+        </el-form-item>
+        <el-form-item label="基本信息" prop="infoEncipher">
+          <el-radio-group v-model="infoEncipher">
+            <el-radio value="1">加密</el-radio>
+            <el-radio value="2">不加密</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="财务信息" prop="financeEncipher">
+          <el-radio-group v-model="financeEncipher">
+            <el-radio value="1">加密</el-radio>
+            <el-radio value="2">不加密</el-radio>
+          </el-radio-group>
+        </el-form-item>
+      </el-form>
+      <template #footer>
+        <div class="dialog-footer">
+          <el-button @click="dialogVisible1 = false">取消</el-button>
+          <el-button type="primary" @click="handleAuthorize">
+            授权
+          </el-button>
+        </div>
+      </template>
+    </el-dialog>
   </div>
 </template>
 
@@ -375,7 +432,7 @@ export default defineComponent({
       // expandTrigger: 'hover',
       checkStrictly : true
     }
-    const activeNames = ref(['1','2'])
+    const activeNames = ref([])
     const handleChange = (val) => {
       console.log(val)
     }

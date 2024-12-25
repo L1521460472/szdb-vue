@@ -4,11 +4,10 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-12 17:14:31
+ * @LastEditTime: 2024-12-25 17:35:16
  */
 import { reactive, onBeforeMount } from "vue";
-import { listProject,artsList } from "@/api/project/project";
-import { userList } from "@/api/money/performance";
+import { listProject,artsList,userList } from "@/api/project/project";
 
 export default function ($vm) {
   /**
@@ -59,15 +58,16 @@ export default function ($vm) {
       listTypeInfo.projectList = response.data;
     });
   };
+  /** 查询成员列表 */
   const getUserList = ()=> {
-    userList().then(response => {
+    userList({pageNum:1,pageSize:2000,status:0}).then(response => {
       listTypeInfo.userList = response.rows;
     });
   };
 
   onBeforeMount(()=>{
     // getArtsList()
-    // getUserList()
+    getUserList()
   })
 
   return {

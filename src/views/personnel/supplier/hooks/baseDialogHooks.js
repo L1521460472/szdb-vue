@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-05 18:23:29
+ * @LastEditTime: 2024-12-25 18:16:01
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { approveOperate } from "@/api/task/pendingApproval";
@@ -18,8 +18,11 @@ export default function ($vm) {
   const imageUrl1 = ref('')
   const imageUrl2 = ref([])
   const imageUrl3 = ref([])
+  const infoEncipher = ref('2')
+  const financeEncipher = ref('2')
   const dialogImageUrl = ref('')
   const dialogVisible = ref(false)
+  const dialogVisible1 = ref(false)
   const dialogInfo = reactive({
     visible: false,
     type: "",
@@ -32,7 +35,7 @@ export default function ($vm) {
         icon: "",
         event: "confirm",
         show: true,
-        disabled: true,
+        disabled: false,
       },
       { label: "取消", type: "", icon: "", event: "close", show: true },
     ],
@@ -98,6 +101,23 @@ export default function ($vm) {
         { required: true, message: '必填', trigger: 'blur' },
       ],
       phoneNumber: [
+        { required: true, message: '必填', trigger: 'blur' },
+      ],
+    },
+    labelWidth: "150px",
+  });
+  const formInfo1 = reactive({
+    ref: {},
+    span: 12,
+    data: {
+      infoEncipher: '',
+      financeEncipher: '',
+      deptName: '',
+    },
+    disabled: false,
+    fieldList: [],
+    rules: {
+      userId: [
         { required: true, message: '必填', trigger: 'blur' },
       ],
     },
@@ -314,20 +334,47 @@ export default function ($vm) {
   const handleRemove2 = (file) => {
     console.log(file)
   }
-  
+  // 授权
+  const handleAuthorize = () => {
+    $vm.$refs["supplierRef1"].validate(valid => {
+      if (valid) {
+        console.log(formInfo1.data,111)
+        // const params = {
+        //   ...formInfo.data,
+        //   scopeBusiness:formInfo.data.scopeBusiness.join(','),
+        //   supplierLogo: imageUrl1.value,
+        //   supplierBusinessLicense: JSON.stringify(imageUrl2.value),
+        //   supplierQualificationCertificate: JSON.stringify(imageUrl3.value),
+        // }
+        // console.log(params)
+        // getAdd(params).then(response => {
+        //   if(response.code == 200){
+        //     $vm.getList()
+        //     dialogInfo.visible = false;
+        //     $vm.$modal.msgSuccess("保存成功");
+        //   }
+        // });
+        dialogVisible1.value = false
+      }
+    });
+  }
 
   return {
     refDep,
     dialogInfo,
     dialogVisible,
+    dialogVisible1,
     dialogImageUrl,
     formInfo,
+    formInfo1,
     imageUrl1,
     imageUrl2,
     imageUrl3,
     upload1,
     upload2,
     upload3,
+    infoEncipher,
+    financeEncipher,
     close,
     confirm,
     handleProjectRate,
@@ -343,5 +390,6 @@ export default function ($vm) {
     handleRemove2,
     handleFileUploadProgress2,
     handleFileSuccess2,
+    handleAuthorize,
   };
 }

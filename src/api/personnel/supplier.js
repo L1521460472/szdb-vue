@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-19 09:19:28
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-10 17:28:55
+ * @LastEditTime: 2024-12-25 15:44:17
  */
 import request from '@/utils/request'
 
@@ -55,6 +55,20 @@ export function getDetail(id) {
   return request({
     url: '/system/supplier/' + id,
     method: 'GET',
+  })
+}
+// 开通、冻结人事供应商
+export function getOpenOrClose(data) {
+  return request({
+    url: `/system/supplier/openOrClose/${data.id}/${data.type}`,
+    method: 'POST',
+  })
+}
+// 一键清空人事供应商授权
+export function getClearEmpty(ids) {
+  return request({
+    url: `/system/supplier/clearEmpty/${ids}`,
+    method: 'POST',
   })
 }
 

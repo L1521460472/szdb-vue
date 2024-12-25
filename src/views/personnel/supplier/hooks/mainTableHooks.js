@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-10 17:28:20
+ * @LastEditTime: 2024-12-25 18:11:57
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
-import { getPage,deptList,getDelete,getDetail } from "@/api/personnel/supplier";
+import { getPage,deptList,getDelete,getDetail,getOpenOrClose,getClearEmpty } from "@/api/personnel/supplier";
 import { getUser, } from "@/api/system/user";
 
 export default function ($vm) {
@@ -21,6 +21,7 @@ export default function ($vm) {
   const resign = ref(0);
   const resignationRate = ref(0);
   const type = ref('add');
+  const ids = ref('');
   const oldProjectRate = ref('');
   const oldTimeConsuming = ref('');
   const queryParams = ref({
@@ -76,13 +77,20 @@ export default function ($vm) {
   // 新增
   function handleAddOpen() {
     type.value = 'add'
-    $vm.dialogInfo.btnList[0].disabled = false
+    $vm.dialogInfo.btnList[0].show = true;
+    $vm.dialogInfo.btnList[1].show = true;
+    $vm.imageUrl1 = ''
+    $vm.imageUrl2 = []
+    $vm.imageUrl3 = []
+    $vm.activeNames = ['1','2']
     $vm.dialogInfo.visible = true;
   }
   /** 编辑 */
   const handleEdit = (row) => {
     type.value = 'edit'
-    $vm.dialogInfo.btnList[0].disabled = false
+    $vm.dialogInfo.btnList[0].show = true;
+    $vm.dialogInfo.btnList[1].show = true;
+    $vm.activeNames = []
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
@@ -92,6 +100,12 @@ export default function ($vm) {
         // $vm.imageUrl2 = response.data.supplierBusinessLicense
         $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
         $vm.imageUrl3 = JSON.parse(response.data.supplierQualificationCertificate)
+        if(row.infoEncipher == '1'){
+          $vm.activeNames.push('1')
+        }
+        if(row.financeEncipher == '1'){
+          $vm.activeNames.push('2')
+        }
         $vm.dialogInfo.visible = true;
       }
     });
@@ -99,7 +113,9 @@ export default function ($vm) {
   /** 查看 */
   const handleView = (row) => {
     type.value = 'view'
-    $vm.dialogInfo.btnList[0].disabled = true
+    $vm.dialogInfo.btnList[0].show = false
+    $vm.dialogInfo.btnList[1].show = false
+    $vm.activeNames = []
     getDetail(row.id).then(response => {
       if(response.code == 200){
         // console.log(response.data)
@@ -109,6 +125,12 @@ export default function ($vm) {
         // $vm.imageUrl2 = response.data.supplierBusinessLicense
         $vm.imageUrl2 = JSON.parse(response.data.supplierBusinessLicense)
         $vm.imageUrl3 = JSON.parse(response.data.supplierQualificationCertificate)
+        if(row.infoEncipher == '1'){
+          $vm.activeNames.push('1')
+        }
+        if(row.financeEncipher == '1'){
+          $vm.activeNames.push('2')
+        }
         $vm.dialogInfo.visible = true;
       }
     });
@@ -122,6 +144,41 @@ export default function ($vm) {
       $vm.$modal.msgSuccess("删除成功");
     }).catch(() => {});
   }
+  /** 一键清空授权 */
+  const handleClear = (row) => {
+    if(ids.value == ''){
+      $vm.$modal.msgSuccess("请选择供应商");
+      return
+    }
+    $vm.$modal.confirm('是否确认清空此供应商授权').then(function () {
+      return getClearEmpty(ids.value);
+    }).then(() => {
+      getList();
+      $vm.$modal.msgSuccess("清空授权成功");
+    }).catch(() => {});
+  }
+  /** 授权 */
+  const handleTools = (row,val) => {
+    $vm.dialogVisible1 = true;
+  }
+  /** 开通、冻结 */
+  const handleOpenOrClose = (row,val) => {
+    const params = {
+      id: row.id,
+      type: val
+    }
+    var msg = (val == '2') ? '冻结' : '开通'
+    $vm.$modal.confirm('是否确认' + msg).then(function () {
+      return getOpenOrClose(params);
+    }).then(() => {
+      getList();
+      $vm.$modal.msgSuccess(msg + "成功");
+    }).catch(() => {});
+  }
+  /** 选择条数  */
+  function handleSelectionChange(selection) {
+    ids.value = selection.map(item => item.id).join(',');
+  };
 
 
   onMounted(() => {
@@ -151,6 +208,10 @@ export default function ($vm) {
     handleDelete,
     handleQuery,
     resetQuery,
-    handleAddOpen
+    handleAddOpen,
+    handleClear,
+    handleTools,
+    handleOpenOrClose,
+    handleSelectionChange
   };
 }

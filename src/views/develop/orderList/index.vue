@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-19 09:39:32
+ * @LastEditTime: 2024-12-25 18:06:05
 -->
 <template>
   <div class="app-container">
@@ -231,15 +231,15 @@
             <div v-show="total > 0">
               <span style="font-weight: 600;margin-right: 20px;"> 订单统计</span>  
               订单名称：
-              <span style="margin-right: 40px;color: #0d06db;">
+              <span style="margin-right: 40px;color: #409eff;">
                 <span v-if="parentName">{{ parentName }} /</span>
                 {{ totalObj.orderName }} 
                 <el-tooltip :content="totalObj.orderRemarks" effect="light" placement="top">
                   <el-icon><ChatDotRound /></el-icon>
                 </el-tooltip>
               </span>
-              计划人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.planDay }}</span>
-              最终人天：<span style="margin-right: 40px;color: #0d06db;">{{ totalObj.ultimatelyDay }}</span>
+              工作人天：<span style="margin-right: 40px;color: #409eff;">{{ totalObj.ultimatelyDay }}</span>
+              绩效人天：<span style="margin-right: 40px;color: #409eff;">{{ totalObj.planDay }}</span>
             </div>
             <pagination
               v-show="total > 0"

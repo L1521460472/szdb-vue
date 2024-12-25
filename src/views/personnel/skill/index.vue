@@ -1514,6 +1514,7 @@ onMounted(() => {
   flex-wrap: nowrap;
 }
 .app-container{
+  height: calc(100vh - 84px);
   display: flex;
   flex-direction: column;
 }

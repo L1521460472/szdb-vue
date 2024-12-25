@@ -702,7 +702,7 @@
         </div>
         <div class="project-box">
           <div class="project-box-left">
-            <el-button class="addTab" @click="handleTabsAdd">上传新版本</el-button>
+            <el-button type="primary" class="addTab" @click="handleTabsAdd">上传新版本</el-button>
             <el-tabs
               v-model="activeName"
               type="card"
@@ -731,7 +731,7 @@
               </template>
               <div v-for="(items,index) in projectform.artsProjectStages" :key="index" class="text item">
                 <span>{{ items.projectStage }}</span>
-                <span>{{ items.userName }}</span>
+                <span style="display: inline-block;width: 60%;">{{ items.userName }}</span>
                 <span>{{ items.projectRate }} %</span>
               </div>
             </el-card>

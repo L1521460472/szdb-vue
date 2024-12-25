@@ -1,3 +1,11 @@
+/*
+ * @Description: 
+ * @Version: 1.0.0
+ * @Autor: lijiancong
+ * @Date: 2024-11-07 19:43:54
+ * @LastEditors: lijiancong
+ * @LastEditTime: 2024-12-25 14:48:33
+ */
 import request from '@/utils/request'
 
 // 获取学习统计列表
@@ -17,12 +25,12 @@ export function getDetail() {
   })
 }
 
-// 新增员工手册
+// 一键推送
 export function getAdd(data) {
   return request({
-    url: '/system/user/push',
+    url: '/system/user/push/' + data,
     method: 'POST',
-    data: data
+    // data: data
   })
 }
 
