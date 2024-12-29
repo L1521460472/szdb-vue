@@ -59,7 +59,7 @@ export default function ($vm) {
       $vm.spanRight = 0
     }
     $vm.queryParams.productionDepartmentId = null
-    if(data.children === null){
+    if($vm.radioValue1 === '部门维度'){
       $vm.queryParams.productionDepartmentId = data.id
       $vm.queryParams.categoryId = data.parentId
       if(data.categoryName == '代宝科技'){
