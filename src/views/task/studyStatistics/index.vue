@@ -74,7 +74,8 @@
       <el-table-column label="入职时间" align="center" min-width="120" prop="entryTime" />
       <el-table-column label="学习状态" align="center" min-width="150" prop="status">
         <template #default="scope">
-          <span>{{ scope.row.status == 0 ? '未完成' : '已完成' }}</span>
+          <span v-if="scope.row.status == 0" style="color: #42ec18;">未完成</span>
+          <span v-if="scope.row.status == 1" style="color: #409eff;">已完成</span>
         </template>
       </el-table-column>
       <el-table-column :label="item.manualName" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >

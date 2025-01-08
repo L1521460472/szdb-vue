@@ -753,11 +753,11 @@ const data = reactive({
      email: [{ required: true, message: "邮箱不能为空", trigger: "blur" }],
   },
   rules1: {
-     testSendTime: [{ required: true, message: "发送日期不能为空", trigger: "blur" }],
-     testBackhaulTime: [{ required: true, message: "回传日期不能为空", trigger: "blur" }],
-     testEvaluation: [{ required: true, message: "结果不能为空", trigger: "blur" }],
-     expectations: [{ required: true, message: "星级不能为空", trigger: "blur" }],
-     testFeedback: [{ required: true, message: "测试反馈不能为空", trigger: "blur" }],
+    //  testSendTime: [{ required: true, message: "发送日期不能为空", trigger: "blur" }],
+    //  testBackhaulTime: [{ required: true, message: "回传日期不能为空", trigger: "blur" }],
+    //  testEvaluation: [{ required: true, message: "结果不能为空", trigger: "blur" }],
+    //  expectations: [{ required: true, message: "星级不能为空", trigger: "blur" }],
+    //  testFeedback: [{ required: true, message: "测试反馈不能为空", trigger: "blur" }],
   },
 });
 

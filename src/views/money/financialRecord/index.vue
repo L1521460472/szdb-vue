@@ -40,7 +40,7 @@
           <el-tree
             v-else
             :data="listTypeInfo.deptList1"
-            :props="{ label: 'label', children: 'children' }"
+            :props="{ label: 'label', children: 'children',class:customNodeClass }"
             :expand-on-click-node="false"
             :filter-node-method="filterNode"
             ref="deptTreeRef"
@@ -270,7 +270,14 @@
                     </div>
                   </el-col>
                   <el-col :span="7">
-                    <div id="myChart2" class="box1"></div>
+                    <div id="myChart2" class="box6">
+                      <img v-if="financialObj.num < 5" style="width: 80%; height: 50px;margin-bottom: 20px;" src="@/assets/images/bolang1.png" :title="financialObj.num + '%'"/>
+                      <img v-if="financialObj.num >= 5 && financialObj.num < 9" style="width: 80%; height: 50px;margin-bottom: 20px;" src="@/assets/images/bolang1.png" :title="financialObj.num + '%'"/>
+                      <img v-if="financialObj.num >= 9" style="width: 80%; height: 50px;margin-bottom: 20px;" src="@/assets/images/bolang1.png" :title="financialObj.num + '%'"/>
+                      <div v-if="financialObj.num < 5" style="width: 80%;">抱歉，根据系统预测分析，您的订单盈利难度较大，请注意！</div>
+                      <div v-if="financialObj.num >= 5 && financialObj.num < 9" style="width: 80%;">根据系统预测分析，您的订单盈利能力一般，请注意提升相关环节。</div>
+                      <div v-if="financialObj.num >= 9" style="width: 80%;">根据系统预测分析，很棒！您的订单盈利能力很强，请继续保持！</div>
+                    </div>
                   </el-col>
                   <el-col :span="10">
                     <div id="myChart3" class="box1"></div>
@@ -515,6 +522,16 @@ export default defineComponent({
   background-color: #fff;
   border: 1px solid #e5e5e5;
 }
+.box6{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 250px;
+  background-color: #fff;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+}
 .el-descriptions{
   padding: 6px 12px;
   :deep(.el-descriptions__header){
@@ -632,6 +649,10 @@ export default defineComponent({
 }
 .red {
   color: var(--el-color-error);
+}
+.el-col-4{
+  height: 88vh;
+  overflow-y: auto;
 }
 </style>
 

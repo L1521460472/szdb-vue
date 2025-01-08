@@ -92,19 +92,14 @@ export default function ($vm) {
   const getDeptTree1 = ()=> {
     deptTreeSelect().then(response => {
       console.log(response,111)
-      listTypeInfo.deptList1 = response.data
-      // let obj = {
-      //   category: null,
-      //   categoryName: '代宝科技',
-      //   isFontWeight: true,
-      //   children: null,
-      //   createBy: null,
-      //   createTime: null,
-      //   id: null,
-      //   parentId: 0,
-      //   remark: null,
-      // }
-      // listTypeInfo.deptList = [obj,...response.rows];
+      let obj = {
+        categoryName: '代宝科技',
+        label: '代宝科技',
+        isFontWeight: true,
+        sysUser: null,
+        id: null,
+      }
+      listTypeInfo.deptList1 = [obj,...response.data]
     });
   };
    /** 查询企业 */

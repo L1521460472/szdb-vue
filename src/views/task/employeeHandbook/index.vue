@@ -9,7 +9,7 @@
 <template>
   <div class="app-container">
     <div class="top-box">
-      <div><span style="font-size: 14px;color: #999;">注：点击浏览本公司规则制度后即代表您同意并遵守此管理规定。</span></div>
+      <div><span style="font-size: 14px;color: #999;">注：点击浏览本公司规章制度后即代表您同意并遵守此管理规定。</span></div>
       <div>
         <el-button type="primary" @click="handleTabsAdd">新增</el-button>
         <el-button type="success" @click="handleTabsEdits">编辑</el-button>

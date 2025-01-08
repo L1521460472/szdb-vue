@@ -227,7 +227,13 @@
        </el-table>
 
        <div style="display: flex;justify-content: space-between;align-items: center;">
-        <div style="border-left: 5px solid #409eff;color: #666;font-weight: 600;padding-left: 5px;">统计  <span class="orderText">订单数量：{{ orderNumber }}</span><span class="orderText">订单金额：{{ orderAmount }}</span><span class="orderText">外包金额：{{ outsourceAmount }}</span><span class="orderText">回款金额：{{ collectionAmount }}</span></div>
+        <div style="border-left: 5px solid #409eff;color: #666;font-weight: 600;padding-left: 5px;">
+          统计  
+          <span class="orderText">订单数量：{{ orderNumber }}</span>
+          <span class="orderText">订单金额：{{ orderAmount }}</span>
+          <span class="orderText">外包金额：{{ outsourceAmount }}</span>
+          <span class="orderText">回款金额：{{ collectionAmount }}</span>
+        </div>
         <pagination
           v-show="total > 0"
           :total="total"
@@ -650,7 +656,15 @@
           </template>
         </el-dialog>
         <el-dialog title="利润解析" v-model="open4" width="800" append-to-body :close-on-click-modal="false">
-          <div style="text-align: right;margin-bottom: 10px;"><span class="orderText">订单总金额：{{ profitObj.orderAmount }}</span><span class="orderText">人工总成本：{{ profitObj.costLaborTotal }}</span><span class="orderText">总利润：{{ profitObj.profitTotal }}</span></div>
+          <div style="text-align: right;margin-bottom: 10px;"><span class="orderText">
+            订单总金额：{{ profitObj.orderAmount }}</span>
+            <span class="orderText">人工总成本：{{ profitObj.costLaborTotal }}</span>
+            <span class="orderText" style="margin-right: 0;">总利润：
+              <!-- {{ profitObj.profitTotal }} -->
+              <div style="display: inline-block;" v-if="profitObj.profitTotal >= 0"><span class="orderText2">{{ profitObj.profitTotal }}</span><img style="width: 30px; height: 20px;" src="@/assets/images/top1.png" /></div>
+              <div style="display: inline-block;" v-if="profitObj.profitTotal < 0"><span class="orderText1">{{ profitObj.profitTotal }}</span><img style="width: 30px; height: 20px;" src="@/assets/images/down1.png" /></div>
+            </span>
+          </div>
           <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
             <!-- <el-table-column type="selection" width="55" align="center" /> -->
             <el-table-column type="expand">
@@ -1324,8 +1338,21 @@ const handleChangeDept = (value) => {
    margin-bottom: 0 !important;
  }
  .orderText{
-  color: #666;
+  color: #409eff;
   font-weight: 600;
   margin: 0 20px;
+ }
+ .orderText1{
+  color: #666;
+  font-weight: 600;
+  margin: 0;
+  margin-left: 0;
+ }
+ .orderText2{
+  display: inline-block;
+  color: #ff9725;
+  font-weight: 600;
+  margin: 0 ;
+  margin-left: 0;
  }
  </style>

@@ -486,7 +486,8 @@
               <div class="dialog-member-box-left">
                 <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 0px;">
                   <span style="margin-right: 6px">项目负责人</span>
-                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('1')" circle />
+                  <img style="width: 19px; height: 16px;cursor: pointer;" src="@/assets/images/user04.png" @click="handleAddMember('1')"/>
+                  <!-- <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('1')" circle /> -->
                 </div>
                 <div v-if="fzUserData.length > 0" style="height: calc(100% - 44px);overflow-y: auto;">
                   <div class="el-result" style="border: 1px solid #00a660;border-radius: 16px;width: 96%;padding-left: 4px;background-color: #00a660;color: #fff;margin-bottom: 10px;" v-for="(item,index) in fzUserData" key="item">
@@ -506,7 +507,8 @@
               <div class="dialog-member-box-left">
                 <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 10px;">
                   <span style="margin-right: 6px">PM跟进人</span>
-                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('3')" circle />
+                  <img style="width: 19px; height: 16px;cursor: pointer;" src="@/assets/images/user1.png" @click="handleAddMember('3')"/>
+                  <!-- <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('3')" circle /> -->
                 </div>
                 <el-result v-if="pmObj.userId" :title="pmObj.userName" sub-title="">
                   <template #icon>
@@ -526,7 +528,8 @@
               <div class="dialog-member-box-right">
                 <div style="display: flex;align-items: center;margin-bottom: 16px;font-size: 16px;margin-left: 20px;">
                   <span style="margin-right: 6px">项目制作人</span>
-                  <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('2')" circle />
+                  <img style="width: 19px; height: 16px;cursor: pointer;" src="@/assets/images/user2.png" @click="handleAddMember('2')"/>
+                  <!-- <el-button :icon="Plus" size="small" type="warning" @click="handleAddMember('2')" circle /> -->
                 </div>
                 <div class="member-box-list">
                   <div class="member-list el-result" v-if="zzUserData.length > 0" v-for="(item,index) in zzUserData" :key="item.userId">
@@ -1847,12 +1850,37 @@ const handleFileSuccess1 = (response, file, fileList) => {
 const handleFileUploadProgress2 = (event, file, fileList) => {
  upload1.isUploading = true;
 };
-/** 文件上传成功处理 */
+/** 批量导入成功处理 */
 const handleFileSuccess2 = (response, file, fileList) => {
-    upload2.open = false;
-    upload2.isUploading = false;
-    proxy.$refs["uploadRef2"].handleRemove(file);
- console.log(response, file, fileList)
+  console.log(response, file, fileList)
+  // if(response.code == 200){
+  //   // upload2.open = false;
+  //   upload2.isUploading = false;
+  //   proxy.$refs["uploadRef2"].handleRemove(file);
+  //   // proxy.$modal.msgSuccess(response.msg);
+  //   if(response.data){
+  //     proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.data + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  //   }else{
+  //     proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  //   }
+  //   getList()
+  // }else{
+  //   // proxy.$modal.msgWarning(response.msg);
+  //   if(response.data){
+  //     proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.data + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  //   }else{
+  //     proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  //   }
+  // }
+  upload2.isUploading = false;
+  proxy.$refs["uploadRef2"].handleRemove(file);
+  // proxy.$modal.msgSuccess(response.msg);
+  if(response.data){
+    proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.data + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  }else{
+    proxy.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
+  }
+  getList()
 };
 /**文件上传中处理 */
 const handleFileUploadProgress3 = (event, file, fileList) => {

@@ -31,7 +31,7 @@ export default function ($vm) {
     date: [{ required: true, message: "日期不能为空", trigger: "blur" }],
   })
   const financialObj = ref({
-
+    num: 0
   });
   /*** 导入参数 */
 const upload = reactive({
@@ -329,7 +329,7 @@ const upload = reactive({
     graphic: [
       {
         type: "text",
-        left: "30%",
+        left: "46%",
         top: "38%",
         style: {
           text: '销售总额',
@@ -342,7 +342,7 @@ const upload = reactive({
       },
         {
         type: "text",
-        left: "30%",
+        left: "46%",
         top: "50%",
         style: {
           text: '0',
@@ -359,12 +359,13 @@ const upload = reactive({
         name: '部门',
         type: 'pie',
         radius: ['40%', '70%'],
-        center: ['35%', '50%'],
+        // center: ['35%', '50%'],
+        center: 'center',
         avoidLabelOverlap: false,
-        label: {
-          show: false,
-          position: 'center'
-        },
+        // label: {
+        //   show: false,
+        //   position: 'center'
+        // },
         // emphasis: {
         //   label: {
         //     show: true,
@@ -408,6 +409,7 @@ const upload = reactive({
       financeData(queryParams.value).then(response => {
         // console.log(response.data)
         financialObj.value = cloneDeep(response.data)
+        financialObj.value.num = parseInt(Number(response.data.netProfitLastMonth) / Number(response.data.totalExpenditureLastMonth)) || 0
         // 各团队收支
         if(response.data.financeReportCostFormsOne){
           financialObj.value.financeReportCostFormsOne = response.data.financeReportCostFormsOne.map(item=>{
@@ -567,7 +569,7 @@ const upload = reactive({
     // initMyChart1()
     setTimeout(() => {
       // console.log(xAxisDataOne.value)
-      initMyChart2()
+      // initMyChart2()
       initMyChart3()
       initMyChart4('近三季度')
     }, 1000);
