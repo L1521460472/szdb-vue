@@ -30,7 +30,7 @@ export default function ($vm) {
     
     setTimeout(() => {
       // console.log(xAxisDataOne.value)
-      $vm.initMyChart2();
+      // $vm.initMyChart2();
       $vm.initMyChart3();
       $vm.initMyChart4();
     }, 500);

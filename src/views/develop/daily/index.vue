@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-19 09:53:41
+ * @LastEditTime: 2025-01-10 16:21:06
 -->
 <template>
   <div class="app-container">
@@ -101,7 +101,7 @@
       <el-row>
           <el-col :span="8">
               <el-form-item label="关联项目" prop="assignmentName">
-                <el-select v-model="formInfo.data.assignmentId" placeholder="请选择关联项目" @change="handleChange">
+                <el-select v-model="formInfo.data.assignmentId" placeholder="请选择关联项目" filterable @change="handleChange">
                     <el-option
                       v-for="item in departmentOptions"
                       :key="item.assignmentId"

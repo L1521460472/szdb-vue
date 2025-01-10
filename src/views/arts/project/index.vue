@@ -537,7 +537,7 @@
                       <div class="el-result__icon" style="width:100%;height: 64px;display: flex;justify-content: center;">
                         <div class="title-circle">{{ getTwo(item.userName) }}</div>
                       </div>
-                      <div class="el-result__title" style="width:100%;height: 24px;display: flex;justify-content: center;flex-wrap: nowrap;font-size: 16px;overflow: hidden;">
+                      <div class="el-result__title" style="width:90%;height: 24px;display: flex;justify-content: center;flex-wrap: nowrap;font-size: 16px;overflow: hidden;">
                         <el-tooltip :content="item.userName" placement="top">
                           <span>{{ item.userName }}</span>
                         </el-tooltip>

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-25 18:14:15
+ * @LastEditTime: 2025-01-10 15:59:39
 -->
 <template>
   <div class="app-container">
@@ -85,20 +85,15 @@
       <el-table-column label="供应商名称" align="center" prop="supplierName">
       </el-table-column>
       <el-table-column label="归属城市" align="center" prop="locationCity" />
-      <el-table-column label="供应商等级" align="center" prop="supplierLevel" />
+      <el-table-column label="供应商等级" align="center" prop="supplierLevel">
+        <template #default="scope">
+          <div v-if="scope.row.supplierStatus == 1" style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #409eff;margin-right: 3px;"></div>
+          <div v-else style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: red;margin-right: 3px;"></div>
+          <span>{{scope.row.supplierLevel}}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="供应商规模" align="center" prop="supplierScale" />
       <el-table-column label="业务范围" align="center" prop="scopeBusiness" />
-        <!-- <template #default="scope">
-          <el-select v-model="scope.row.supplierScale">
-              <el-option
-                v-for="item in listTypeInfo.supplierList"
-                :key="item.value"
-                :label="item.key"
-                :value="item.value"
-              ></el-option>
-          </el-select>
-        </template>
-      </el-table-column> -->
       <el-table-column label="联系人" align="center" prop="contactPerson" />
       <el-table-column label="联系电话" align="center" prop="mobile" />
       <el-table-column label="职务" align="center" prop="positionLiaisonPerson" />
