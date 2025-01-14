@@ -104,3 +104,13 @@ export function getImport(data) {
     data: data
   })
 }
+
+// 成员列表
+export function userList(query) {
+  return request({
+    // url: '/system/user/all',
+    url: '/system/user/list',
+    method: 'GET',
+    params: query
+  })
+}

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-25 18:11:57
+ * @LastEditTime: 2025-01-13 14:40:35
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -205,7 +205,7 @@ export default function ($vm) {
   onMounted(() => {
     getList()
     getDeptTreeList()
-    getUserData()
+    // getUserData()
   });
 
 

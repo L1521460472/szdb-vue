@@ -41,7 +41,7 @@ export default function ($vm) {
   const getDepartmentList = ()=> {
     deptList().then(response => {
       listTypeInfo.depList = response.data;
-  });
+    });
   };
   /** 查询成员列表 */
   const getuserList = ()=> {

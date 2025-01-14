@@ -4,10 +4,10 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-15 09:50:31
+ * @LastEditTime: 2025-01-14 09:31:56
  */
 import { reactive, onBeforeMount } from "vue";
-import { listProject,artsList } from "@/api/project/project";
+import { deptList,departmentList,} from "@/api/project/project";
 import { userList } from "@/api/money/performance";
 
 export default function ($vm) {
@@ -25,6 +25,7 @@ export default function ($vm) {
     ],
     projectList: [],
     userList: [],
+    depList: [],
   });
 
   const topFormInfo = reactive({
@@ -37,10 +38,10 @@ export default function ($vm) {
     ],
   });
 
-  /** 查询财务项目列表 */
-  const getArtsList = ()=> {
-    artsList().then(response => {
-      listTypeInfo.projectList = response.data;
+  /** 查询部门列表 */
+  const getDepartmentList = ()=> {
+    deptList().then(response => {
+      listTypeInfo.depList = response.data;
     });
   };
   const getUserList = ()=> {
@@ -50,7 +51,7 @@ export default function ($vm) {
   };
 
   onBeforeMount(()=>{
-    // getArtsList()
+    getDepartmentList()
     // getUserList()
   })
 

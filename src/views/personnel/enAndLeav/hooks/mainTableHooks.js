@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-12 18:06:12
+ * @LastEditTime: 2025-01-14 09:47:23
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -29,7 +29,9 @@ export default function ($vm) {
     name: undefined,
     post: undefined,
     status: undefined,
-    time: undefined,
+    beginTime: undefined,
+    endTime: undefined,
+    deptId: undefined,
   })
 
   /**
@@ -76,6 +78,8 @@ export default function ($vm) {
   /** 重置按钮操作 */
   function resetQuery() {
     $vm.resetForm("queryRef");
+    queryParams.value.beginTime = null;
+    queryParams.value.endTime = null;
     handleQuery();
   }
   // 新增
@@ -103,6 +107,17 @@ export default function ($vm) {
       $vm.$modal.msgSuccess("删除成功");
     }).catch(() => {});
   }
+  //部门下拉选择
+  const handleChangeDept1 = (value) => {
+  //   console.log(value)
+    queryParams.value.deptId = value.slice(-1)[0]
+  }
+  /** 时间查询 */
+  function handleChangeTime(val) {
+    // val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+    queryParams.value.beginTime = val[0];
+    queryParams.value.endTime = val[1];
+  };
 
 
   onMounted(() => {
@@ -131,6 +146,8 @@ export default function ($vm) {
     handleDelete,
     handleQuery,
     resetQuery,
-    handleAddOpen
+    handleAddOpen,
+    handleChangeTime,
+    handleChangeDept1
   };
 }

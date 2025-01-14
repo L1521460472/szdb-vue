@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-20 14:54:12
+ * @LastEditTime: 2025-01-14 10:02:25
 -->
 <template>
   <div class="app-container">
@@ -38,6 +38,16 @@
                style="width: 240px"
             />
       </el-form-item>
+      <el-form-item label="部门" prop="deptId">
+        <el-cascader
+          v-model="queryParams.deptId"
+          :options="listTypeInfo.depList"
+          :props="props"
+          filterable
+          :show-all-levels="false"
+          @change="handleChangeDept1"
+          />
+      </el-form-item>
       <el-form-item label="状态" prop="status">
         <el-select v-model="queryParams.status" placeholder="请选择状态" clearable filterable style="width: 200px">
           <el-option
@@ -48,15 +58,18 @@
           />
         </el-select>
       </el-form-item>
-      <!-- <el-form-item label="离职时间" prop="time">
+      <el-form-item label="离职时间" prop="time">
         <el-date-picker
           v-model="queryParams.time"
-          type="date"
+          type="daterange"
           placeholder="离职时间"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"
+          start-placeholder="开始时间"
+          end-placeholder="结束时间"
+          @change="handleChangeTime"
         />
-      </el-form-item> -->
+      </el-form-item>
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -84,6 +97,11 @@
           </template>
       </el-table-column>
       <el-table-column label="岗位" align="center" prop="post" />
+      <!-- <el-table-column label="部门" align="center" prop="deptId">
+        <template #default="scope">
+            <span>{{ scope.row.deptId == 1 ? '离职' : '在职' }}</span>
+          </template>
+      </el-table-column> -->
       <el-table-column label="职级" align="center" prop="rank" />
       <el-table-column label="联系电话" align="center" prop="mobile" width="120" />
       <el-table-column label="入职时间" align="center" prop="createTime" width="160" />
