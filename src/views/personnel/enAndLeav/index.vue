@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-01-14 10:02:25
+ * @LastEditTime: 2025-01-14 17:14:03
 -->
 <template>
   <div class="app-container">
@@ -106,11 +106,11 @@
       <el-table-column label="联系电话" align="center" prop="mobile" width="120" />
       <el-table-column label="入职时间" align="center" prop="createTime" width="160" />
       <el-table-column label="入职薪资" align="center" prop="salary" />
-      <el-table-column label="离职时间" align="center" prop="updateTime" width="160">
-        <template #default="scope">
-          <span>{{ scope.row.status == 1 ? scope.row.updateTime : '' }}</span>
+      <el-table-column label="离职时间" align="center" prop="resignTime" width="110" />
+        <!-- <template #default="scope">
+          <span>{{ scope.row.status == 1 ? scope.row.resignTime : '' }}</span>
         </template>
-      </el-table-column>
+      </el-table-column> -->
       <el-table-column label="离职原因" align="center" prop="resignationReason" />
       <el-table-column label="备注" align="center" prop="remarks" />
       <el-table-column label="操作" align="center" width="100" class-name="small-padding fixed-width" fixed="right">
