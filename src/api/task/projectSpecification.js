@@ -3,7 +3,7 @@ import request from '@/utils/request'
 // 查询制作规范列表
 export function getPage(data) {
     return request({
-      url: '/system/standard/list?standardName='+ data,
+      url: '/system/standard/list?standardName='+ data.standardName + '&deptId='+ data.deptId + '&beginTime='+ data.beginTime + '&endTime='+ data.endTime,
       method: 'GET',
     })
 }

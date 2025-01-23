@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-21 10:41:31
+ * @LastEditTime: 2025-01-22 13:51:50
  */
 import { onMounted, reactive, ref,nextTick } from "vue";
 import { useRouter } from "vue-router";
@@ -25,6 +25,10 @@ export default function ($vm) {
     pageNum: 1,
     pageSize: 50,
     standardName: '',
+    deptId: '',
+    month: [],
+    beginTime: '',
+    endTime: '',
   })
 
   /**
@@ -34,18 +38,12 @@ export default function ($vm) {
   /** 查询表格列表 */
   const getList = () => {
     loading.value = true;
-    getPage(queryParams.value.standardName).then(response => {
+    getPage(queryParams.value).then(response => {
       tableData.value = response.rows;
       total.value = response.total;
       loading.value = false;
     });
   }
-  /** 查询部门树 */
-  function getDeptTreeList() {
-    deptList().then(response => {
-      $vm.departmentOptions = response.data;
-  });
-  };
    /** 搜索按钮操作 */
   function handleQuery() {
     queryParams.value.pageNum = 1;
@@ -53,6 +51,9 @@ export default function ($vm) {
   }
   /** 重置按钮操作 */
   function resetQuery() {
+    queryParams.value.month = [];
+    queryParams.value.beginTime = '';
+    queryParams.value.endTime = '';
     $vm.resetForm("queryRef");
     handleQuery();
   }
@@ -116,11 +117,27 @@ export default function ($vm) {
       $vm.$modal.msgSuccess("删除成功");
     }).catch(() => {});
   }
-
-
+  //部门下拉选择
+  const handleChangeDept1 = (value) => {
+    console.log(value)
+    queryParams.value.deptId = value.slice(-1)[0]
+  }
+  function getDaysInCurrentMonth(year,month) {
+    // const now = new Date();
+    // const year = now.getFullYear();
+    // const month = now.getMonth() + 1; // 月份从0开始，所以要加1
+    const days = new Date(year, month, 0).getDate();
+    return days;
+  }
+  /** 时间查询 */
+  function handleChangeTime(val) {
+    val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+    queryParams.value.beginTime = val[0];
+    queryParams.value.endTime = val[1];
+    console.log(queryParams.value)
+  };
   onMounted(() => {
     getList()
-    getDeptTreeList()
   });
 
 
@@ -141,6 +158,8 @@ export default function ($vm) {
     handleDelete,
     handleQuery,
     resetQuery,
-    handleAddOpen
+    handleAddOpen,
+    handleChangeDept1,
+    handleChangeTime
   };
 }

@@ -112,9 +112,16 @@ export default function ($vm) {
   //   console.log(value)
     queryParams.value.deptId = value.slice(-1)[0]
   }
+  function getDaysInCurrentMonth(year,month) {
+    // const now = new Date();
+    // const year = now.getFullYear();
+    // const month = now.getMonth() + 1; // 月份从0开始，所以要加1
+    const days = new Date(year, month, 0).getDate();
+    return days;
+  }
   /** 时间查询 */
   function handleChangeTime(val) {
-    // val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+    val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
     queryParams.value.beginTime = val[0];
     queryParams.value.endTime = val[1];
   };

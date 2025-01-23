@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-14 10:50:21
+ * @LastEditTime: 2025-01-18 11:54:30
 -->
 <template>
   <div class="app-container">
@@ -50,7 +50,7 @@
       <el-form-item label="日期" prop="producerId">
           <el-date-picker
             v-model="time"
-            type="daterange"
+            type="monthrange"
             range-separator="~"
             start-placeholder="开始日期"
             end-placeholder="结束日期"

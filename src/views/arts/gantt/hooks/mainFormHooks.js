@@ -60,7 +60,20 @@ export default function ($vm) {
   const time = ref('')
   const chooseDay = ref(null)
   /** 时间查询 */
+  // function handleChangeTime(val) {
+  //   $vm.queryParams.startTime = val[0];
+  //   $vm.queryParams.endTime = val[1];
+  // };
+  function getDaysInCurrentMonth(year,month) {
+    // const now = new Date();
+    // const year = now.getFullYear();
+    // const month = now.getMonth() + 1; // 月份从0开始，所以要加1
+    const days = new Date(year, month, 0).getDate();
+    return days;
+  }
+  /** 时间查询 */
   function handleChangeTime(val) {
+    val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
     $vm.queryParams.startTime = val[0];
     $vm.queryParams.endTime = val[1];
   };

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-01-14 17:14:03
+ * @LastEditTime: 2025-01-18 13:44:24
 -->
 <template>
   <div class="app-container">
@@ -61,7 +61,7 @@
       <el-form-item label="离职时间" prop="time">
         <el-date-picker
           v-model="queryParams.time"
-          type="daterange"
+          type="monthrange"
           placeholder="离职时间"
           format="YYYY-MM-DD"
           value-format="YYYY-MM-DD"

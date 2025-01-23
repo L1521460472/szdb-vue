@@ -60,7 +60,7 @@
         <el-form-item label="日期" prop="time">
           <el-date-picker
             v-model="time"
-            type="daterange"
+            type="monthrange"
             range-separator="~"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
@@ -438,9 +438,22 @@ function getProjectList() {
  });
 };
 /** 时间查询 */
+// function handleChangeTime(val) {
+//  queryParams.value.startTime = val[0];
+//  queryParams.value.endTime = val[1];
+// };
+function getDaysInCurrentMonth(year,month) {
+  // const now = new Date();
+  // const year = now.getFullYear();
+  // const month = now.getMonth() + 1; // 月份从0开始，所以要加1
+  const days = new Date(year, month, 0).getDate();
+  return days;
+}
+/** 时间查询 */
 function handleChangeTime(val) {
- queryParams.value.startTime = val[0];
- queryParams.value.endTime = val[1];
+  val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+  queryParams.value.startTime = val[0];
+  queryParams.value.endTime = val[1];
 };
 /** 时间查询 */
 function handleCalendarChange(val) {

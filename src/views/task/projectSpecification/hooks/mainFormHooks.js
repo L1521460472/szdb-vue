@@ -4,10 +4,10 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-22 10:11:39
+ * @LastEditTime: 2025-01-22 13:38:31
  */
 import { reactive, onBeforeMount } from "vue";
-import { listProject,artsList } from "@/api/project/project";
+import { listProject,artsList,deptList } from "@/api/project/project";
 import { userList } from "@/api/money/performance";
 
 export default function ($vm) {
@@ -27,6 +27,7 @@ export default function ($vm) {
     ],
     projectList: [],
     userList: [],
+    depList:[],
   });
 
   const topFormInfo = reactive({
@@ -50,9 +51,15 @@ export default function ($vm) {
       listTypeInfo.userList = response.rows;
     });
   };
+  /** 查询部门列表 */
+  const getDepartmentList = ()=> {
+    deptList().then(response => {
+      listTypeInfo.depList = response.data;
+  });
+  };
 
   onBeforeMount(()=>{
-    // getArtsList()
+    getDepartmentList()
     // getUserList()
   })
 

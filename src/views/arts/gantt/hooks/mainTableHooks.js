@@ -300,6 +300,6 @@ export default function ($vm) {
     getSchedulingList,
     fullScreen,
     handleSpanMethod,
-    handleChangeDept
+    handleChangeDept,
   };
 }

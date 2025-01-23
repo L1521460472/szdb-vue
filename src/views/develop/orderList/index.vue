@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-25 18:06:05
+ * @LastEditTime: 2025-01-20 09:04:23
 -->
 <template>
   <div class="app-container">
@@ -80,12 +80,13 @@
                 <el-form-item label="任务日期" prop="attendanceMonth">
                   <el-date-picker
                     v-model="date"
-                    type="daterange"
+                    type="monthrange"
                     placeholder="任务日期"
                     format="YYYY-MM-DD"
                     value-format="YYYY-MM-DD"
                     start-placeholder="计划开始日期"
                     end-placeholder="计划结束日期"
+                    @change="handleChangeTime"
                   />
                 </el-form-item>
                 <el-form-item>
@@ -207,7 +208,7 @@
                 <span v-else>延期</span>
               </template>
             </el-table-column> -->
-            <el-table-column label="内容" align="center" min-width="160" key="assignmentName" prop="assignmentName" sortable :show-overflow-tooltip="true" />
+            <el-table-column label="任务名称" align="center" min-width="160" key="assignmentName" prop="assignmentName" sortable :show-overflow-tooltip="true" />
             <el-table-column label="流程" align="center" min-width="120" key="assignmentFlowPathName" prop="assignmentFlowPathName" :show-overflow-tooltip="true" />
             <el-table-column label="工作人天" align="center" min-width="100" key="finalDay" prop="finalDay" :show-overflow-tooltip="true" />
             <el-table-column label="绩效人天" align="center" min-width="100" key="estimateDay" prop="estimateDay" :show-overflow-tooltip="true" />

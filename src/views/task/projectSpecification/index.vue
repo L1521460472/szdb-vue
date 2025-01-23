@@ -4,11 +4,11 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-11 16:05:14
+ * @LastEditTime: 2025-01-22 13:40:44
 -->
 <template>
   <div class="app-container">
-    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
+    <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="100px">
       <el-form-item label="文件名称" prop="standardName">
         <!-- <el-select
           v-model="queryParams.projectId"
@@ -30,26 +30,29 @@
                style="width: 240px"
             />
       </el-form-item>
-      <!-- <el-form-item label="制作人" prop="producerId">
-        <el-select v-model="queryParams.producerId" placeholder="制作人" clearable filterable style="width: 200px">
-          <el-option
-              v-for="item in listTypeInfo.userList"
-              :key="item.userId"
-              :label="item.userName"
-              :value="item.userId"
+      <el-form-item label="文件适用部门" prop="deptId">
+        <el-cascader
+          v-model="queryParams.deptId"
+          :options="listTypeInfo.depList"
+          :props="props"
+          filterable
+          clearable
+          :show-all-levels="false"
+          @change="handleChangeDept1"
           />
-        </el-select>
       </el-form-item>
-      <el-form-item label="审批状态" prop="approveStatus">
-        <el-select v-model="queryParams.approveStatus" placeholder="请选择审批状态" clearable filterable style="width: 200px">
-          <el-option
-              v-for="item in listTypeInfo.approveStatusList"
-              :key="item.value"
-              :label="item.key"
-              :value="item.value"
-          />
-        </el-select>
-      </el-form-item> -->
+      <el-form-item label="发布日期" prop="month">
+        <el-date-picker
+          v-model="queryParams.month"
+          type="monthrange"
+          range-separator="~"
+          start-placeholder="开始月份"
+          end-placeholder="结束月份"
+          format="YYYY-MM-DD"
+          value-format="YYYY-MM-DD"
+          @change="handleChangeTime"
+        />
+      </el-form-item>
       <el-form-item>
           <el-button type="primary" icon="Search" @click="handleQuery">搜索</el-button>
           <el-button icon="Refresh" @click="resetQuery">重置</el-button>
@@ -125,7 +128,7 @@
                 trigger: 'blur',
               }">
                 <div class="tabs-text">
-                  <el-cascader ref="refDep" v-model="formInfo.data.deptId" :options="departmentOptions" :props="props" filterable :show-all-levels="false" @change="handleChangeDept" clearable />
+                  <el-cascader ref="refDep" v-model="formInfo.data.deptId" :options="listTypeInfo.depList" :props="props" filterable :show-all-levels="false" @change="handleChangeDept" clearable />
                 </div>
             </el-form-item>
             <el-form-item label="文件" prop="fileLists">

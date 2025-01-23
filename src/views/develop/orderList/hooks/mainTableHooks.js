@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-17 11:52:43
+ * @LastEditTime: 2025-01-18 11:47:28
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -271,6 +271,19 @@ export default function ($vm) {
       return 'fileUploads'
     }
   }
+  function getDaysInCurrentMonth(year,month) {
+    // const now = new Date();
+    // const year = now.getFullYear();
+    // const month = now.getMonth() + 1; // 月份从0开始，所以要加1
+    const days = new Date(year, month, 0).getDate();
+    return days;
+  }
+  /** 时间查询 */
+  function handleChangeTime(val) {
+    val[1] = val[1].slice(0,-2) + getDaysInCurrentMonth(val[1].slice(0,4),val[1].slice(5,7))
+    queryParams.value.plannedStartTime = val[0];
+    queryParams.value.plannedEndTime = val[1];
+  };
   /** 搜索按钮操作 */
   const handleQuery = () => {
     $vm.queryParams.pageNum = 1;
@@ -325,6 +338,7 @@ export default function ($vm) {
     handleDelAll,
     handleDelMember,
     handleDeleteUserImg,
+    handleChangeTime,
     handleQuery,
     resetQuery,
   };

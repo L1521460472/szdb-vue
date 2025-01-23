@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-06 15:45:56
+ * @LastEditTime: 2025-01-18 12:01:24
 -->
 <template>
   <div class="app-container">
@@ -60,7 +60,7 @@
           <el-date-picker
               style="width: 280px"
               v-model="queryParams.month"
-              type="daterange"
+              type="monthrange"
               range-separator="~"
               start-placeholder="计划开始日期"
               end-placeholder="计划结束日期"

@@ -500,7 +500,7 @@
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
                   <!-- <div class="title-circle title-circle-leader" @click="handleAddMember"> -->
                   <div class="title-circle title-circle-leader">
-                    <el-icon style="color: #fff;"><Plus /></el-icon>
+                    <!-- <el-icon style="color: #fff;"><Plus /></el-icon> -->
                   </div>
                 </div>
               </div>
@@ -521,7 +521,7 @@
                 <div style="height: 100%;display: flex;justify-content: center;" v-else>
                   <!-- <div class="title-circle title-circle-leader" @click="handleAddMember"> -->
                   <div class="title-circle title-circle-leader">
-                    <el-icon style="color: #fff;"><Plus /></el-icon>
+                    <!-- <el-icon style="color: #fff;"><Plus /></el-icon> -->
                   </div>
                 </div>
               </div>
@@ -555,7 +555,7 @@
                   <div style="height: 100%;display: flex;margin-left: 30px;" v-else>
                     <!-- <div class="title-circle" @click="handleAddMember(2)"> -->
                     <div class="title-circle">
-                      <el-icon style="color: #fff;"><Plus /></el-icon>
+                      <!-- <el-icon style="color: #fff;"><Plus /></el-icon> -->
                     </div>
                   </div>
                 </div>
@@ -1022,6 +1022,9 @@ const restaurantOne = ref([])
 const restaurantTow = ref([])
 const restaurantThree = ref([])
 
+// 制作人index
+ const makePeopleIndex = ref(0)
+
 // 
 const batchList = ref([])
 const activeNames = ref(['1','2','3'])
@@ -1345,7 +1348,8 @@ const submitremoveMemberForm = ()=>{
 }
 //新增成员弹框
 const handleAddMember = (val)=>{
-  console.log(val)
+  console.log(val,zzUserData.value.length)
+  makePeopleIndex.value = zzUserData.value.length
   if(val == 3){
     multiple.value = false
   }else{
@@ -2124,10 +2128,12 @@ function submitAddMemberForm() {
  proxy.$refs["addMemberRef"].validate(valid => {
    if (valid) {
     if(addMemberform.type == 2){
-      zzUserData.value = zzUserData.value.map(item=>{
-        item.stageNames = addMemberform.stage.map((v)=>{
-          return {stageName : v}
-        })
+      zzUserData.value = zzUserData.value.map((item,index)=>{
+        if(index > (makePeopleIndex.value - 1)){
+          item.stageNames = addMemberform.stage.map((v)=>{
+            return {stageName : v}
+          })
+        }
         return item
       })
       userData.value = userData.value.map(items=>{
