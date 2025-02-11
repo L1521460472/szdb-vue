@@ -424,7 +424,7 @@
             </el-row>
           </el-form>
         </el-collapse-item>
-        <el-collapse-item title="财务信息" name="2">
+        <el-collapse-item title="财务信息" name="2" disabled>
           <el-form :model="form" :rules="rules" ref="projectRef1" label-width="110px">
             <el-row>
                 <el-col :span="8">
@@ -1027,7 +1027,7 @@ const restaurantThree = ref([])
 
 // 
 const batchList = ref([])
-const activeNames = ref(['1','2','3'])
+const activeNames = ref(['1','3'])
 const props = {
   value: 'id',
   // expandTrigger: 'hover',
@@ -1976,14 +1976,14 @@ function handleUpdate(row) {
   form.value.artsProjectFlowPathName = row.artsProjectFlowPathName.split(',')
  }
  form.value.artsProjectFlowPathIdList = []
- form.value.commerceDay = row.artsProjectFinance.commerceDay
- form.value.unitPrice = row.artsProjectFinance.unitPrice
- form.value.fabrication = row.artsProjectFinance.fabrication
- form.value.outsourcingAmount = row.artsProjectFinance.outsourcingAmount
- form.value.orderAmount = row.artsProjectFinance.orderAmount
- form.value.remarks = row.artsProjectFinance.remarks
- form.value.isContractor = row.artsProjectFinance.isContractor
- form.value.projectId = row.artsProjectFinance.projectId
+ form.value.commerceDay = row.artsProjectFinance?.commerceDay
+ form.value.unitPrice = row.artsProjectFinance?.unitPrice
+ form.value.fabrication = row.artsProjectFinance?.fabrication
+ form.value.outsourcingAmount = row.artsProjectFinance?.outsourcingAmount
+ form.value.orderAmount = row.artsProjectFinance?.orderAmount
+ form.value.remarks = row.artsProjectFinance?.remarks
+ form.value.isContractor = row.artsProjectFinance?.isContractor
+ form.value.projectId = row.artsProjectFinance?.projectId
  userData.value = cloneDeep(row.artsProjectMemberVos)
  row.artsProjectMemberVos.map(item=>{
   if(item.projectRole == '1'){
@@ -2136,8 +2136,8 @@ function submitAddMemberForm() {
         }
         return item
       })
-      userData.value = userData.value.map(items=>{
-        if(items.projectRole == '2'){
+      userData.value = userData.value.map((items,idx)=>{
+        if((items.projectRole == '2') && (idx > (fzUserData.value.length + 1 + makePeopleIndex.value - 1))){
           items.stageNames = addMemberform.stage.map((v)=>{
             return {stageName : v}
           })
