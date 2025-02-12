@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2023-03-14 17:08:13
+ * @LastEditTime: 2025-02-12 10:13:21
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { useRouter } from 'vue-router'
@@ -31,6 +31,10 @@ export default function ($vm) {
   /** 重置按钮操作 */
   const resetQuery = () => {
     $vm.resetForm("queryRef");
+    $vm.queryParams.beginTime = $vm.outputDate($vm.getFirstDayOfMonth());
+    // 获取当月的最后一天
+    $vm.queryParams.endTime = $vm.outputDate($vm.getLastDayOfMonth());  
+    $vm.queryParams.month = [$vm.queryParams.beginTime, $vm.queryParams.endTime];
     handleQuery();
   }
 

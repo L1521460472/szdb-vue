@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-03-03 16:50:00
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-06 15:02:48
+ * @LastEditTime: 2025-02-12 09:05:59
  */
 import { reactive, onBeforeMount } from "vue";
 import { deptList,userList } from "@/api/project/project";
@@ -61,7 +61,7 @@ export default function ($vm) {
   };
   /** 查询成员列表 */
   const getuserList = ()=> {
-    userList().then(response => {
+    userList({pageNum:1,pageSize:2000,status:0}).then(response => {
       listTypeInfo.userList = response.rows;
     });
   };

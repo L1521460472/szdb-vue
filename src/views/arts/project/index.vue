@@ -1975,6 +1975,11 @@ function handleUpdate(row) {
  }else{
   form.value.artsProjectFlowPathName = row.artsProjectFlowPathName.split(',')
  }
+ if(row.financialAuthority == 1){
+  activeNames.value = ['1','2','3']
+ }else{
+  activeNames.value = ['1','3']
+ }
  form.value.artsProjectFlowPathIdList = []
  form.value.commerceDay = row.artsProjectFinance?.commerceDay
  form.value.unitPrice = row.artsProjectFinance?.unitPrice

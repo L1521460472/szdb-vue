@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-03 14:38:24
+ * @LastEditTime: 2025-02-12 10:09:49
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -108,8 +108,30 @@ export default function ($vm) {
     }
     getList()
   }
+  // 获取当月的第一天
+  function getFirstDayOfMonth() {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth(), 1);
+  }
+
+  // 获取当月的最后一天
+  function getLastDayOfMonth() {
+    const today = new Date();
+    return new Date(today.getFullYear(), today.getMonth() + 1, 0);
+  }
+  // 输出年月日
+  function outputDate(date) {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1; // 月份是从0开始的
+    const day = date.getDate();
+    return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  }
 
   onMounted(() => {
+    queryParams.value.beginTime = outputDate(getFirstDayOfMonth());
+    // 获取当月的最后一天
+    queryParams.value.endTime = outputDate(getLastDayOfMonth());  
+    queryParams.value.month = [queryParams.value.beginTime, queryParams.value.endTime];
     getList()
   });
 
@@ -128,6 +150,9 @@ export default function ($vm) {
     handleChangeDept,
     handleChangeTime,
     expandChange,
-    handleSortChange
+    handleSortChange,
+    getFirstDayOfMonth,
+    getLastDayOfMonth,
+    outputDate
   };
 }
