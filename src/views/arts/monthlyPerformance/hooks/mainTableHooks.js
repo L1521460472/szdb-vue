@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-02-12 10:09:49
+ * @LastEditTime: 2025-02-17 16:26:33
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -98,15 +98,15 @@ export default function ($vm) {
   /** sort排序 */
   function handleSortChange({ column, prop, order }) {
     console.log(column, prop, order)
-    queryParams.value.orderByColumn = prop
-    if(order == 'descending'){
-      queryParams.value.isAsc = 'desc'
-    }else if(order == 'ascending'){
-      queryParams.value.isAsc = 'asc'
-    }else{
-      queryParams.value.isAsc = undefined
-    }
-    getList()
+    // queryParams.value.orderByColumn = prop
+    // if(order == 'descending'){
+    //   queryParams.value.isAsc = 'desc'
+    // }else if(order == 'ascending'){
+    //   queryParams.value.isAsc = 'asc'
+    // }else{
+    //   queryParams.value.isAsc = undefined
+    // }
+    // getList()
   }
   // 获取当月的第一天
   function getFirstDayOfMonth() {

@@ -86,7 +86,7 @@
               icon="Plus"
               @click="handleAdd"
            >新增</el-button> -->
-          <el-radio-group v-model="activeName">
+          <el-radio-group v-model="activeName" @change="handleActiveName">
             <el-radio-button label="汇总预览" value="汇总预览" />
             <el-radio-button label="汇总详情" value="汇总详情" />
           </el-radio-group>
@@ -94,7 +94,7 @@
         <!-- <right-toolbar v-model:showSearch="showSearch" @queryTable="getList" :columns="columns"></right-toolbar> -->
         <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
      </el-row>
-     <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList" @selection-change="handleSelectionChange" border>
+     <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList1" @selection-change="handleSelectionChange" border>
         <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
         <el-table-column label="本月工时" width="80" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
@@ -292,7 +292,7 @@
 </template>
 
 <script setup name="Progress">
-import { listRate,addRate,getRate,userList,listProject,getProject } from "@/api/project/progress";
+import { listRate,listRate2,addRate,getRate,userList,listProject,getProject } from "@/api/project/progress";
 import { deptList } from "@/api/money/orderStatistics";
 import { getToken } from "@/utils/auth";
 import Cookies from "js-cookie";
@@ -303,6 +303,7 @@ const router = useRouter();
 import defaultUrl from '../../../assets/logo/image.png';
 
 const rateList = ref([]);
+const rateList1 = ref([]);
 const userOptions = ref([]);//成员
 const projectOptions = ref([]);//项目列表
 const departmentList = ref([]);
@@ -410,11 +411,38 @@ const handleChangeDept = (value) => {
   queryParams.value.deptId = value.slice(-1)[0]
 }
 
-/** 查询进度列表 */
+function handleActiveName(val){
+  console.log(val)
+  activeName.value = val
+  if(activeName.value === '汇总预览'){
+    // activeName.value = '汇总详情'
+    getList2()
+  }else{
+    activeName.value = '汇总详情'
+    getList()
+  }
+}
+
+/** 查询进度列表详情 */
 function getList() {
  loading.value = true;
  listRate(queryParams.value).then(response => {
    rateList.value = response.rows;
+   if(response.rows.length > 0){
+    columnList.value = response.rows[0].artsProjectRateDataListResponses.map((item)=>{
+      item.label = item.time
+      return item
+    })
+   }
+   total.value = response.total;
+   loading.value = false;
+ });
+}
+/** 查询进度列表预览 */
+function getList2() {
+ loading.value = true;
+ listRate2(queryParams.value).then(response => {
+   rateList1.value = response.rows;
    if(response.rows.length > 0){
     columnList.value = response.rows[0].artsProjectRateDataListResponses.map((item)=>{
       item.label = item.time
@@ -545,7 +573,7 @@ function reset() {
 /** 搜索按钮操作 */
 function handleQuery() {
  queryParams.value.pageNum = 1;
- getList();
+ getList2();
 }
 /** 重置按钮操作 */
 function resetQuery() {
@@ -606,7 +634,7 @@ function submitForm() {
  });
 }
 getTime();
-getList();
+getList2();
 getuserList();
 getDeptTreeList();
 getProjectList();

@@ -548,7 +548,12 @@
                         </span>
                       </div>
                       <div class="el-result__extra">
-                        <el-button :icon="Delete" type="danger" @click="handleSetMember2(index)" circle />
+                        <div style="margin-bottom: 6px;">
+                          <el-button :icon="Edit" type="success" @click="handleEditMember2(item,index)" circle />
+                        </div>
+                        <div>
+                          <el-button :icon="Delete" type="danger" @click="handleSetMember2(index)" circle />
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -597,7 +602,7 @@
         ">
           <span>{{ setMemberform.userName }}</span>
         </el-form-item>
-        <el-form-item label="角色" prop="type" :rules="
+        <!-- <el-form-item label="角色" prop="type" :rules="
           {
             required: true,
             message: '请选择角色',
@@ -609,7 +614,7 @@
             <el-radio label="3">PM跟进人</el-radio>
             <el-radio label="2">项目制作人</el-radio>
           </el-radio-group>
-        </el-form-item>
+        </el-form-item> -->
         <el-form-item label="负责阶段" prop="stage" v-if="setMemberform.type == '2'" :rules="
         {
           required: true,
@@ -629,10 +634,11 @@
       </el-form>
         <template #footer>
            <div class="dialog-footer">
-              <el-button type="danger" @click="submitremoveMemberForm">移除成员</el-button>
+              <!-- <el-button type="danger" @click="submitremoveMemberForm">移除成员</el-button>
               <el-button v-if="setMemberform.isShow == 1" type="primary" @click="submitSetMemberForm1">确 定</el-button>
               <el-button v-if="setMemberform.isShow == 3" type="primary" @click="submitSetMemberFormPM">确 定</el-button>
-              <el-button v-else type="primary" @click="submitSetMemberForm2">确 定</el-button>
+              <el-button v-else type="primary" @click="submitSetMemberForm2">确 定</el-button> -->
+              <el-button type="primary" @click="submitSetMemberForm2">确 定</el-button>
               <el-button @click="setMemberOpen = false">取 消</el-button>
            </div>
         </template>
@@ -974,7 +980,7 @@
 import { getToken } from "@/utils/auth";
 import { changeUserStatus, listUser, resetUserPwd, delUser, getUser, updateUser, addUser, deptTreeSelect } from "@/api/system/user";
 import { listCategory,listCategoryDetail,listCategoryByType,listProject,deptList,departmentList,userList,dictData,addProject,editProject,delProject,getProject,getDetailsAdd,upProjectThumbnail,upState,flowPathList,setTemplate,projectBatch,delProjectCategory,editProjectCategory,download} from "@/api/project/project";
-import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled,Delete} from '@element-plus/icons-vue'
+import {Grid,Expand,Plus,UserFilled,Setting,MoreFilled,Picture,WarnTriangleFilled,Delete,Edit} from '@element-plus/icons-vue'
 import { listTemplate } from "@/api/project/projectTemplate";
 import { cloneDeep, set } from 'lodash-es';
 import {HOLIDAY} from './hooks/holiday.js';
@@ -1159,6 +1165,7 @@ const userNameList = ref([])
 const userNameListLeader = ref([])//负责人名称，如果有则过滤
 const userNameListLeader1 = ref([])//制作人名称，如果有则过滤
 const userData = ref([]) // 项目成员   1 负责人， 2 制作人， 3 PM
+const userDataList = ref([]) // 项目成员   1 负责人， 2 制作人， 3 PM
 
 // 负责人
 const fzUserData = ref([])
@@ -1317,6 +1324,16 @@ const handleSetMemberPm = ()=>{
   userData.value = userData.value.filter(item => item.projectRole != '3' )
 }
 //设置制作人成员弹框
+const handleEditMember2 =async (row,index)=>{
+  setMemberform.isShow = 2
+  setMemberform.type = '2'
+  setMemberform.index = index
+  setMemberform.userId = zzUserData.value[index].userId
+  setMemberform.userName = zzUserData.value[index].userName
+  setMemberform.stage = zzUserData.value[index].stageNames.map((item)=>item.stageName)
+  setMemberOpen.value = true;
+}
+//删除制作人成员
 const handleSetMember2 =async (index)=>{
   // setMemberform.isShow = 2
   // setMemberform.type = '2'
@@ -1956,6 +1973,7 @@ function cancel() {
 /** 新增按钮操作 */
 function handleAdd() {
  reset();
+ activeNames.value = ['1','2','3']
  open.value = true;
  title.value = "新建项目订单";
  getProjectBatch()
@@ -1990,7 +2008,8 @@ function handleUpdate(row) {
  form.value.isContractor = row.artsProjectFinance?.isContractor
  form.value.projectId = row.artsProjectFinance?.projectId
  userData.value = cloneDeep(row.artsProjectMemberVos)
- row.artsProjectMemberVos.map(item=>{
+ userDataList.value = cloneDeep(row.artsProjectMemberVos)
+ userDataList.value.map(item=>{
   if(item.projectRole == '1'){
     userNameListLeader.value.push(item.userName)
     fzUserData.value.push(item)
@@ -2003,6 +2022,8 @@ function handleUpdate(row) {
  })
  open.value = true;
  title.value = "修改项目订单";
+//  nextTick(()=>{
+//  })
 };
 /** 提交按钮 */
 function submitForm() {
@@ -2034,7 +2055,8 @@ function submitForm() {
         }
         const params = {
           ...form.value,
-          artsProjectMemberVos: userData.value,
+          // artsProjectMemberVos: userData.value,
+          artsProjectMemberVos: [...fzUserData.value,pmObj.value,...zzUserData.value],
           artsProjectFinance:{
             id: form.value.artsProjectFinance?.id || null,
             commerceDay: form.value.commerceDay,
@@ -2122,7 +2144,8 @@ function submitSetMemberForm2() {
           stageName:item,
         })
       })
-      form.value.artsProjectMemberVos[setMemberform.index].stageNames = setMemberform.stageNames
+      zzUserData.value[setMemberform.index].stageNames = setMemberform.stageNames
+      userData.value[fzUserData.value.length + 1 + setMemberform.index].stageNames = setMemberform.stageNames
     }
     setMemberOpen.value = false;
    }

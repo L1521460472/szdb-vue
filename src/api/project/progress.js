@@ -4,14 +4,22 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 09:26:22
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-24 09:50:19
+ * @LastEditTime: 2025-02-17 15:26:40
  */
 import request from '@/utils/request'
 
-// 查询每日进度列表
+// 查询每日进度列表详情
 export function listRate(data) {
   return request({
     url: '/arts/rate/list',
+    method: 'post',
+    data: data
+  })
+}
+// 查询每日进度列表预览
+export function listRate2(data) {
+  return request({
+    url: '/arts/rate/list2',
     method: 'post',
     data: data
   })

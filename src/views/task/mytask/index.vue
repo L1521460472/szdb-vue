@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-09-27 15:45:35
+ * @LastEditTime: 2025-02-12 17:54:46
 -->
 <template>
   <div class="app-container">
@@ -333,7 +333,7 @@ export default defineComponent({
 }
 .box-card{
   width: 49%;
-  height: 430px;
+  height: 480px;
   margin-bottom: 20px;
 }
 .boxCardView{
