@@ -112,13 +112,13 @@
       <el-table-column label="流程" align="center" prop="invoiceTime" />
       <el-table-column label="进度" align="center" prop="name" />
       <el-table-column label="项目组" align="center" prop="name" />
-      <el-table-column label="工作人天" align="center" prop="workDay">
+      <el-table-column label="工作人天" align="center" prop="workDay" sortable :sort-method="sortDate">
         <template #default="scope">
           <span v-if="scope.row.isExpandeds">{{ scope.row.workDay }} (合计)</span>
           <span v-else>{{ scope.row.workDay }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="绩效人天" align="center" prop="estimateDay">
+      <el-table-column label="绩效人天" align="center" prop="estimateDay" sortable :sort-method="sortDate1">
         <template #default="scope">
           <span v-if="scope.row.isExpandeds">{{ scope.row.estimateDay }} (合计)</span>
           <span v-else>{{ scope.row.estimateDay }}</span>

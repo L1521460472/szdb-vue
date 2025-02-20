@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-02-17 16:31:47
+ * @LastEditTime: 2025-02-19 15:50:26
 -->
 <template>
   <div class="app-container">
@@ -102,7 +102,7 @@
       <right-toolbar v-model:showSearch="showSearch" @queryTable="getList"></right-toolbar>
     </el-row>
 
-    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" @sort-change="handleSortChange" border :default-sort="{ prop: 'producerDay', order: 'descending' }">
+    <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" @sort-change="handleSortChange" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column type="expand">
         <template #default="props">
@@ -147,10 +147,10 @@
       <el-table-column label="流程" align="center" prop="label" />
       <el-table-column label="进度" align="center" prop="label" />
       <el-table-column label="项目组" align="center" prop="label" />
-      <el-table-column label="制作人天" align="center" prop="producerDay" sortable />
-      <el-table-column label="绩效人天" align="center" prop="performanceDay" sortable />
-      <el-table-column label="计划开始时间" align="center" prop="startTime" sortable />
-      <el-table-column label="计划结束时间" align="center" prop="endTime" sortable />
+      <el-table-column label="制作人天" align="center" prop="producerDay" sortable :sort-method="sortDate" />
+      <el-table-column label="绩效人天" align="center" prop="performanceDay" sortable :sort-method="sortDate1" />
+      <el-table-column label="计划开始时间" align="center" prop="startTime" />
+      <el-table-column label="计划结束时间" align="center" prop="endTime" />
       <!-- <el-table-column :label="item.label" min-width="110" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <span>{{ scope.row.achievementList[index].achievement }}</span>

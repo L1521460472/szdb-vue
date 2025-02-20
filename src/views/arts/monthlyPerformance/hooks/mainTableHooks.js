@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-02-17 16:26:33
+ * @LastEditTime: 2025-02-19 15:48:07
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -29,6 +29,7 @@ export default function ($vm) {
     orderByColumn: undefined,
     isAsc: undefined,
   })
+  const sortObj = ref({ prop: 'producerDay', order: 'descending' })
 
   /**
    * @description: 表格数据
@@ -98,6 +99,15 @@ export default function ($vm) {
   /** sort排序 */
   function handleSortChange({ column, prop, order }) {
     console.log(column, prop, order)
+    // 自定义排序逻辑
+    // tableData.value.sort((a, b) => {
+    //   if (order === 'ascending') {
+    //     console.log(Number(a[prop]), Number(b[prop]))
+    //     return Number(a[prop]) > Number(b[prop]) ? 1 : -1;
+    //   } else {
+    //     return Number(a[prop]) < Number(b[prop]) ? 1 : -1;
+    //   }
+    // });
     // queryParams.value.orderByColumn = prop
     // if(order == 'descending'){
     //   queryParams.value.isAsc = 'desc'
@@ -108,6 +118,30 @@ export default function ($vm) {
     // }
     // getList()
   }
+  function sortDate (a, b) {
+    // const dateA = new Date(a.date).getTime();
+    // const dateB = new Date(b.date).getTime();
+    const dateA = Number(a.producerDay);
+    const dateB = Number(b.producerDay);
+    return dateA - dateB;
+  };
+  function sortDate1 (a, b) {
+    // const dateA = new Date(a.date).getTime();
+    // const dateB = new Date(b.date).getTime();
+    const dateA = Number(a.performanceDay);
+    const dateB = Number(b.performanceDay);
+    return dateA - dateB;
+  };
+  function sortDate2 (a, b) {
+    const dateA = new Date(a.startTime).getTime();
+    const dateB = new Date(b.startTime).getTime();
+    return dateA - dateB;
+  };
+  function sortDate3 (a, b) {
+    const dateA = new Date(a.endTime).getTime();
+    const dateB = new Date(b.endTime).getTime();
+    return dateA - dateB;
+  };
   // 获取当月的第一天
   function getFirstDayOfMonth() {
     const today = new Date();
@@ -144,6 +178,7 @@ export default function ($vm) {
     queryParams,
     expands,
     columnList,
+    sortObj,
     getList,
     handleToDoOpen,
     handleDelete,
@@ -153,6 +188,8 @@ export default function ($vm) {
     handleSortChange,
     getFirstDayOfMonth,
     getLastDayOfMonth,
-    outputDate
+    outputDate,
+    sortDate,
+    sortDate1
   };
 }

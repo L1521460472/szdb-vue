@@ -1460,6 +1460,7 @@ const handleChangeUser = (value) => {
     if(multiple.value){
       value.map((v)=>{
         if(item.userId == v){
+          console.log(addMemberform.type == 2 && !userNameListLeader1.value.includes(item.userName), "Please select")
           if(addMemberform.type == 1 && !userNameListLeader.value.includes(item.userName)){
             userNameListLeader.value.push(item.userName)
             userData.value.push({

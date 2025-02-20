@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-03 14:35:47
+ * @LastEditTime: 2025-02-20 09:47:54
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -135,6 +135,20 @@ export default function ($vm) {
     const day = date.getDate();
     return `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
   }
+  function sortDate (a, b) {
+    // const dateA = new Date(a.date).getTime();
+    // const dateB = new Date(b.date).getTime();
+    const dateA = Number(a.workDay);
+    const dateB = Number(b.workDay);
+    return dateA - dateB;
+  };
+  function sortDate1 (a, b) {
+    // const dateA = new Date(a.date).getTime();
+    // const dateB = new Date(b.date).getTime();
+    const dateA = Number(a.estimateDay);
+    const dateB = Number(b.estimateDay);
+    return dateA - dateB;
+  };
 
   onMounted(() => {
     // 获取当月的第一天
@@ -159,6 +173,8 @@ export default function ($vm) {
     getSummaries,
     handleChangeTime,
     handleChangeDept,
-    expandChange
+    expandChange,
+    sortDate,
+    sortDate1,
   };
 }
