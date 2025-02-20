@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-01-10 15:59:39
+ * @LastEditTime: 2025-02-20 11:53:55
 -->
 <template>
   <div class="app-container">
@@ -87,8 +87,10 @@
       <el-table-column label="归属城市" align="center" prop="locationCity" />
       <el-table-column label="供应商等级" align="center" prop="supplierLevel">
         <template #default="scope">
-          <div v-if="scope.row.supplierStatus == 1" style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #409eff;margin-right: 3px;"></div>
-          <div v-else style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: red;margin-right: 3px;"></div>
+          <div v-if="scope.row.supplierLevel == '合格供应商'" style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #0d06db;margin-right: 3px;"></div>
+          <div v-if="scope.row.supplierLevel == '退出供应商'" style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #f71702;margin-right: 3px;"></div>
+          <div v-if="scope.row.supplierLevel == '淘汰供应商'" style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #f71702;margin-right: 3px;"></div>
+          <div v-else style="display: inline-block;width: 6px;height: 6px;border-radius: 3px;background-color: #42ec18;margin-right: 3px;"></div>
           <span>{{scope.row.supplierLevel}}</span>
         </template>
       </el-table-column>

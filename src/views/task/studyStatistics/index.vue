@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2024-11-06 20:23:21
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-19 10:23:34
+ * @LastEditTime: 2025-02-20 11:57:29
 -->
 <template>
   <div class="app-container">
@@ -74,7 +74,7 @@
       <el-table-column label="入职时间" align="center" min-width="120" prop="entryTime" />
       <el-table-column label="学习状态" align="center" min-width="150" prop="status">
         <template #default="scope">
-          <span v-if="scope.row.status == 0" style="color: #42ec18;">未完成</span>
+          <span v-if="scope.row.status == 0" style="color: #ff9725;">未完成</span>
           <span v-if="scope.row.status == 1" style="color: #409eff;">已完成</span>
         </template>
       </el-table-column>

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-05-27 16:09:46
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-25 14:35:13
+ * @LastEditTime: 2025-02-20 14:44:38
  */
 import request from '@/utils/request'
 
@@ -25,8 +25,8 @@ export function delExpenditure(id) {
 // 查询财务员工成本管理列表
 export function getPage(name,dep,time) {
   return request({
-    // url: '/finance/cost/list'+ '?name=' + name + '&department=' + dep + '&wagesTime=' + time,
-    url: '/finance/cost/list',
+    url: '/finance/cost/list'+ '?name=' + name + '&department=' + dep + '&wagesTime=' + time,
+    // url: '/finance/cost/list',
     method: 'GET',
   })
 }

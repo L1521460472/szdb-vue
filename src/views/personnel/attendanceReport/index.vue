@@ -97,8 +97,8 @@
       <el-table-column label="职位" align="center" prop="positionName" />
       <el-table-column label="考勤状态" align="center" prop="attendanceStatus">
       <template #default="scope">
-          <span v-if="scope.row.attendanceStatus == 1">已确认</span>
-          <span v-if="scope.row.attendanceStatus == 2">未确认</span>
+          <span style="color: #0d06db;" v-if="scope.row.attendanceStatus == 1">已确认</span>
+          <span style="color: #ff9725;" v-if="scope.row.attendanceStatus == 2">未确认</span>
           <span v-if="scope.row.attendanceStatus == 3">异常</span>
         </template>
       </el-table-column>

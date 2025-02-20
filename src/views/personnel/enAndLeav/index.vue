@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-01-18 13:44:24
+ * @LastEditTime: 2025-02-20 12:01:09
 -->
 <template>
   <div class="app-container">
@@ -93,7 +93,8 @@
       </el-table-column>
       <el-table-column label="状态" align="center" prop="status">
         <template #default="scope">
-            <span>{{ scope.row.status == 1 ? '离职' : '在职' }}</span>
+            <span style="color: #f71702;" v-if="scope.row.status == 1">离职</span>
+            <span style="color: #0d06db;" v-else>在职</span>
           </template>
       </el-table-column>
       <el-table-column label="岗位" align="center" prop="post" />
