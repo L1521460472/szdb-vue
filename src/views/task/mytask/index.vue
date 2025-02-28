@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-02-12 17:54:46
+ * @LastEditTime: 2025-02-27 15:43:06
 -->
 <template>
   <div class="app-container">
@@ -45,6 +45,7 @@
     <el-table v-loading="loading" :data="tableData" border>
       <!-- <el-table-column type="selection" width="55" align="center" /> -->
       <el-table-column label="序号" width="55" align="center" type="index" />
+      <el-table-column label="姓名" align="center" prop="producerName" />
       <el-table-column label="项目名称" align="center" prop="projectName">
       <!-- <template #default="scope">
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
@@ -86,7 +87,7 @@
             <el-tooltip content="详情" placement="top" v-if="scope.row.approveStatus == 3">
                 <el-button link type="primary" icon="View" @click="handleView(scope.row)"></el-button>
             </el-tooltip>
-            <el-tooltip content="删除" placement="top" v-if="scope.row.approveStatus !== 3">
+            <el-tooltip content="删除" placement="top">
                 <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)"></el-button>
             </el-tooltip>
           </template>

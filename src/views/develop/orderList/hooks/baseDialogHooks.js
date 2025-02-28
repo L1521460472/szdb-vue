@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:48:02
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-01-19 10:12:26
+ * @LastEditTime: 2025-02-24 17:24:28
  */
 import { ref, reactive, watch, nextTick } from "vue";
 import { listCategoryDetail,} from "@/api/project/project";
@@ -215,6 +215,7 @@ export default function ($vm) {
             if (valid) {
               const params = {
                 ...formInfo.data,
+                // chargeUserId: formInfo.data.chargeUserId.join(','),
                 artsProjectFinance:{
                   id: formInfo.data.artsProjectFinance?.id || null,
                   commerceDay: formInfo.data.commerceDay,
