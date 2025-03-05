@@ -270,12 +270,12 @@
 
     <!-- 工资导入对话框 -->
     <el-dialog :title="upload1.title" v-model="upload1.open" width="500px" append-to-body>
-        <el-form ref="reportRef" :model="formInfo.data" label-width="90px">
-            <!-- <el-row>
+        <el-form ref="userRef1" :model="formInfo.data" label-width="90px">
+            <el-row>
               <el-col :span="24">
-                <el-form-item label="归属月份" prop="attendanceMonth">
+                <el-form-item label="归属月份" prop="date">
                   <el-date-picker
-                    v-model="formInfo.data.attendanceMonth"
+                    v-model="formInfo.data.date"
                     type="month"
                     placeholder="请选择归属月份"
                     format="YYYY-MM"
@@ -283,7 +283,7 @@
                   />
                 </el-form-item>
               </el-col>
-            </el-row> -->
+            </el-row>
             <el-row>
               <el-col :span="24">
                 <el-form-item label="附件" class="fileUpload" prop="file">
@@ -293,7 +293,7 @@
                     :limit="1"
                     accept=".xlsx, .xls"
                     :headers="upload1.headers"
-                    :action="upload1.url"
+                    :action="upload1.url + '?data=' + formInfo.data.date"
                     :disabled="upload1.isUploading"
                     :on-progress="handleFileUploadProgress1"
                     :on-success="handleFileSuccess1"

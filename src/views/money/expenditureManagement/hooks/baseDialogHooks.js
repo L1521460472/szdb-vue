@@ -33,32 +33,13 @@ export default function ($vm) {
   const formInfo = reactive({
     ref: {},
     span: 12,
-    data: {},
+    data: {
+      date: ''
+    },
     disabled: false,
     fieldList: [],
     rules: {
-      name: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      department: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      salary: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      monthlySpread: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      legalDays: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      wagesTime: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      taxCost: [
-        { required: true, message: '必填', trigger: 'blur' }
-      ],
-      dailyCost: [
+      date: [
         { required: true, message: '必填', trigger: 'blur' }
       ],
     },

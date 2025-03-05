@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
        <el-form :model="queryParams" ref="queryRef" :inline="true">
-        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectEnterpriseName">
+        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectCategoryOneName">
             <el-input
-               v-model="queryParams.projectEnterpriseName"
+               v-model="queryParams.projectCategoryOneName"
                placeholder="请输入客户名称"
                clearable
             />

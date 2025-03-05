@@ -163,18 +163,18 @@ export default function ($vm) {
   const handleFileSuccess1 = (response, file, fileList) => {
     upload1.open = false;
     upload1.isUploading = false;
-    $vm.$refs["reportRef"].handleRemove(file);
+    $vm.$refs["uploadRef1"].handleRemove(file);
     $vm.$alert("<div style='overflow: auto;overflow-x: hidden;max-height: 70vh;padding: 10px 20px 0;'>" + response.msg + "</div>", "导入结果", { dangerouslyUseHTMLString: true });
     getList();
   };
   /** 提交上传文件 */
   const submitFileForm1 = ()=> {
-    $vm.$refs["uploadRef1"].submit();
-    // $vm.$refs["userRef"].validate(valid => {
-    //   if (valid) {
-    //     console.log(form.value.date)
-    //   }
-    // });
+    $vm.$refs["userRef1"].validate(valid => {
+      if (valid) {
+        $vm.$refs["uploadRef1"].submit();
+        console.log(form.value.date)
+      }
+    });
   };
 
    /** 搜索按钮操作 */
