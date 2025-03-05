@@ -659,13 +659,14 @@
           <div style="text-align: right;margin-bottom: 10px;"><span class="orderText">
             订单总金额：{{ profitObj.orderAmount }}</span>
             <span class="orderText">人工总成本：{{ profitObj.costLaborTotal }}</span>
-            <span class="orderText" style="margin-right: 0;">总利润：
+            <span class="orderText" style="margin-right: 0;">净利润：
               <!-- {{ profitObj.profitTotal }} -->
               <div style="display: inline-block;" v-if="profitObj.profitTotal >= 0"><span class="orderText2">{{ profitObj.profitTotal }}</span><img style="width: 30px; height: 20px;" src="@/assets/images/top1.png" /></div>
               <div style="display: inline-block;" v-if="profitObj.profitTotal < 0"><span class="orderText1">{{ profitObj.profitTotal }}</span><img style="width: 30px; height: 20px;" src="@/assets/images/down1.png" /></div>
             </span>
           </div>
-          <el-table v-loading="loading" :data="tableData" row-key="id" :expand-row-keys="expands" @expand-change="expandChange" border>
+          <el-table v-loading="loading" :data="tableData" row-key="id" @expand-change="expandChange" border>
+            <!-- :expand-row-keys="expands" -->
             <!-- <el-table-column type="selection" width="55" align="center" /> -->
             <el-table-column type="expand">
               <template #default="props">
@@ -995,13 +996,13 @@ watch(
 /** 展开 */
 const expandChange = (row, expandedRows) => {
   // console.log(row,expandedRows,'expandChange')
-  expands.value = []
-  if(expandedRows.length){
-    row.isExpandeds = true                      
-    expands.value.push(row.id)
-  }else{
-    row.isExpandeds = false
-  }
+  // expands.value = []
+  // if(expandedRows.length){
+  //   row.isExpandeds = true                      
+  //   expands.value.push(row.id)
+  // }else{
+  //   row.isExpandeds = false
+  // }
   //  tableData.value = response.rows
   //   ?.map((item,index)=>{
   //     item.id = index
@@ -1039,7 +1040,7 @@ const expandChange = (row, expandedRows) => {
     deptId: queryParams.value.deptId,
   }
   
-   projectStatistics(params).then(response => {
+   projectStatistics(proxy.addDateRange(queryParams.value,dateRange.value)).then(response => {
     //  projectList.value = response.rows;
     orderNumber.value = response.data.orderNumber;
     orderAmount.value = response.data.orderAmount;

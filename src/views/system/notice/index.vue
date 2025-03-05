@@ -95,6 +95,7 @@
          </el-table-column>
          <el-table-column label="操作" align="center" class-name="small-padding fixed-width">
             <template #default="scope">
+               <el-button link type="primary" icon="View" @click="handleView(scope.row)">查看</el-button>
                <el-button link type="primary" icon="Edit" @click="handleUpdate(scope.row)" v-hasPermi="['system:notice:edit']">修改</el-button>
                <el-button link type="primary" icon="Delete" @click="handleDelete(scope.row)" v-hasPermi="['system:notice:remove']" >删除</el-button>
             </template>
@@ -111,7 +112,7 @@
 
       <!-- 添加或修改公告对话框 -->
       <el-dialog :title="title" v-model="open" width="780px" append-to-body>
-         <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px">
+         <el-form ref="noticeRef" :model="form" :rules="rules" label-width="80px" :disabled="disabled">
             <el-row>
                <el-col :span="12">
                   <el-form-item label="公告标题" prop="noticeTitle">
@@ -155,8 +156,8 @@
          </el-form>
          <template #footer>
             <div class="dialog-footer">
-               <el-button type="primary" @click="submitForm">确 定</el-button>
-               <el-button @click="cancel">取 消</el-button>
+               <el-button v-if="!disabled" type="primary" @click="submitForm">确 定</el-button>
+               <el-button v-if="!disabled" @click="cancel">取 消</el-button>
             </div>
          </template>
       </el-dialog>
@@ -170,6 +171,7 @@ const { proxy } = getCurrentInstance();
 const { sys_notice_status, sys_notice_type } = proxy.useDict("sys_notice_status", "sys_notice_type");
 
 const noticeList = ref([]);
+const disabled = ref(false);
 const open = ref(false);
 const loading = ref(true);
 const showSearch = ref(true);
@@ -240,6 +242,7 @@ function handleSelectionChange(selection) {
 /** 新增按钮操作 */
 function handleAdd() {
   reset();
+  disabled.value = false;
   open.value = true;
   title.value = "添加公告";
 }
@@ -247,10 +250,22 @@ function handleAdd() {
 function handleUpdate(row) {
   reset();
   const noticeId = row.noticeId || ids.value;
+  disabled.value = false;
   getNotice(noticeId).then(response => {
     form.value = response.data;
     open.value = true;
     title.value = "修改公告";
+  });
+}
+/**查看按钮操作 */
+function handleView(row) {
+  reset();
+  const noticeId = row.noticeId || ids.value;
+  disabled.value = true;
+  getNotice(noticeId).then(response => {
+    form.value = response.data;
+    open.value = true;
+    title.value = "查看公告";
   });
 }
 /** 提交按钮 */

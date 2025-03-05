@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-11-27 10:26:02
+ * @LastEditTime: 2025-03-05 09:48:04
 -->
 <template>
   <div class="app-container">
@@ -85,7 +85,7 @@
           <el-table-column label="应发工资" align="center" prop="salary" />
           <el-table-column label="当月均摊" align="center" prop="monthlySpread" />
           <el-table-column label="法定天数" align="center" prop="legalDays" />
-          <el-table-column label="税成本" align="center" prop="taxCost" />
+          <el-table-column label="其他成本" align="center" prop="taxCost" />
           <el-table-column label="日成本" align="center" prop="dailyCost" />
           <el-table-column label="备注" align="center" prop="remarks" />
           <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
@@ -182,8 +182,8 @@
               </el-form-item>
           </el-col>
           <el-col :span="12">
-              <el-form-item label="税成本:" prop="taxCost">
-                <el-input v-model="formInfo.data.taxCost" placeholder="请输入税成本" maxlength="30" />
+              <el-form-item label="其他成本:" prop="taxCost">
+                <el-input v-model="formInfo.data.taxCost" placeholder="包含社保、公积金、个人报销" maxlength="30" />
               </el-form-item>
           </el-col>
         </el-row>

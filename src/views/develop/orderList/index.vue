@@ -77,7 +77,7 @@
                     />
                   </el-select>
                 </el-form-item>
-                <el-form-item label="任务日期" prop="attendanceMonth">
+                <el-form-item label="任务日期" prop="date">
                   <el-date-picker
                     v-model="date"
                     type="monthrange"

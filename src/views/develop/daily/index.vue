@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-01-10 16:21:06
+ * @LastEditTime: 2025-03-05 09:50:00
 -->
 <template>
   <div class="app-container">
@@ -53,7 +53,7 @@
           <span @click="handleToDoOpen(scope.row)" style="color: #409eff;cursor: pointer;">{{ scope.row.projectName }}</span>
         </template> -->
       </el-table-column>
-      <el-table-column label="日报日期" align="center" width="160" prop="stageTime" />
+      <el-table-column label="周报日期" align="center" width="160" prop="stageTime" />
       <el-table-column label="参与阶段" align="center" prop="stageName" />
       <el-table-column label="工作人天" align="center" width="100" prop="workDay" />
       <el-table-column label="工作截图" align="center" width="130" prop="stageFile">
@@ -112,11 +112,11 @@
               </el-form-item>
           </el-col>
           <el-col :span="8">
-              <el-form-item label="日报日期" prop="stageTime">
+              <el-form-item label="周报日期" prop="stageTime">
                 <el-date-picker
                   v-model="formInfo.data.stageTime"
                   type="date"
-                  placeholder="日报日期"
+                  placeholder="周报日期"
                   format="YYYY-MM-DD"
                   value-format="YYYY-MM-DD"
                 />

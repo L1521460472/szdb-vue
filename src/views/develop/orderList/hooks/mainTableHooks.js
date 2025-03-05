@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-02-24 17:01:56
+ * @LastEditTime: 2025-03-05 09:42:56
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -292,6 +292,9 @@ export default function ($vm) {
   /** 重置按钮操作 */
   const resetQuery = () => {
     $vm.resetForm("queryRef");
+    date.value = []
+    queryParams.value.plannedStartTime = null;
+    queryParams.value.plannedEndTime = null;
     handleQuery();
   }
 

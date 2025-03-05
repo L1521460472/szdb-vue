@@ -573,7 +573,14 @@ function reset() {
 /** 搜索按钮操作 */
 function handleQuery() {
  queryParams.value.pageNum = 1;
- getList2();
+//  getList2();
+ if(activeName.value === '汇总预览'){
+    // activeName.value = '汇总详情'
+    getList2()
+  }else{
+    activeName.value = '汇总详情'
+    getList()
+  }
 }
 /** 重置按钮操作 */
 function resetQuery() {
