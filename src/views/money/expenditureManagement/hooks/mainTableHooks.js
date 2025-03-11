@@ -88,7 +88,7 @@ export default function ($vm) {
   /** 查询工资数据列表 */
   const getDataList = () => {
     loading.value = true;
-    getPage(queryParams.value.name,queryParams.value.department,queryParams.value.wagesTime).then(response => {
+    getPage(queryParams.value.name,queryParams.value.department,queryParams.value.wagesTime,queryParams.value.pageNum,queryParams.value.pageSize).then(response => {
       tableDataList.value = response.rows;
       total.value = response.total;
       loading.value = false;

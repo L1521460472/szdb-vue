@@ -21,6 +21,7 @@ export function getStatistics(data) {
     return request({
       url: '/system/exit/dataStatistics',
       method: 'POST',
+      data: data
     })
 }
 // 部门树

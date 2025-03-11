@@ -50,7 +50,7 @@ export default function ($vm) {
       total.value = response.total;
       loading.value = false;
     });
-    getStatistics().then(response => {
+    getStatistics(queryParams.value).then(response => {
       console.log(response)
       atWork.value = response.data.atWork
       resign.value = response.data.resign

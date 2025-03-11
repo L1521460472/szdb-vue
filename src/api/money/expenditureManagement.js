@@ -23,9 +23,9 @@ export function delExpenditure(id) {
   })
 }
 // 查询财务员工成本管理列表
-export function getPage(name,dep,time) {
+export function getPage(name,dep,time,page,size) {
   return request({
-    url: '/finance/cost/list'+ '?name=' + name + '&department=' + dep + '&wagesTime=' + time,
+    url: '/finance/cost/list'+ '?name=' + name + '&department=' + dep + '&wagesTime=' + time + '&pageNum=' + page+ '&pageSize=' + size,
     // url: '/finance/cost/list',
     method: 'GET',
   })
