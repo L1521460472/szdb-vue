@@ -1100,7 +1100,7 @@ const handleChangeDept = (value) => {
   arr.forEach(function(value) {
     sum += value.timeConsuming2;
   })
-  return sum
+  return sum.toFixed(2)
  }
  /** 利润解析 */
  function handleProjectOpen(row) {

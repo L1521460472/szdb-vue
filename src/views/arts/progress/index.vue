@@ -100,11 +100,10 @@
         <el-table-column label="本月工时" width="80" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
         <el-table-column :label="item.label" min-width="80" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
-            <div style="display: flex;align-items: center;width: 100%;margin-bottom: 5px;" v-for="v in scope.row.artsProjectRateDataListResponses[index].artsProjectRates">
-              <!-- <div style="width: 50px;">{{ v.projectStageName }}</div> -->
-              <div>{{ v.timeConsuming }}</div>
-              <!-- <el-image style="width: 100px; height: 50px" :src="v.rateFile" :preview-src-list="[v.rateFile]" :z-index="9999" preview-teleported/> -->
-            </div>
+            <span>{{calculateSum(scope.row.artsProjectRateDataListResponses[index].artsProjectRates)}}</span>
+            <!-- <div style="display: flex;align-items: center;width: 100%;margin-bottom: 5px;" v-for="v in scope.row.artsProjectRateDataListResponses[index].artsProjectRates">
+              <div>{{ v.makeTime }}</div>
+            </div> -->
            </template>
         </el-table-column>
      </el-table>
@@ -397,6 +396,16 @@ watch(
 );
 
 const { queryParams, form, rules } = toRefs(data);
+
+function calculateSum(data) {
+  let a = 0;
+  if(data.length > 0){
+    data.map(item=>{
+      a += Number(item.makeTime)
+    })
+  }
+  return a;
+}
 
  /** 查询部门列表 */
  function getDeptTreeList() {

@@ -87,16 +87,17 @@ export default function ($vm) {
       if(response.code == 200){
         $vm.formInfo.data.artsProjectRateAddListRequestList = [
           {
-            projectId:Number(response.data.projectId),
+            projectId:response.data.projectId,
             projectStage:response.data.projectStage,
             projectRate:response.data.projectRate,
             time:response.data.timeConsuming,
             remarks:response.data.remarks,
             rateFile:response.data.rateFile,
+            makeTime: Number(response.data.makeTime)
           }
         ]
         $vm.formInfo.data.approveRecordVo = {
-          ...response.data.approveRecordVo
+          ...response.data.approveRecordVo,
         }
         $vm.dialogInfo.width = '40%';
         $vm.dialogInfo.title = "任务详情";
