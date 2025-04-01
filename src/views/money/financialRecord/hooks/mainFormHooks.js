@@ -66,7 +66,11 @@ export default function ($vm) {
         $vm.queryParams.categoryId = null
       }
     }else{
-      $vm.queryParams.categoryId = data.id;
+      if(data.category){
+        $vm.queryParams.productionDepartmentId = data.id
+      }else{
+        $vm.queryParams.categoryId = data.id;
+      }
     }
     $vm.handleQuery();
   };

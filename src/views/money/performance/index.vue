@@ -208,8 +208,12 @@ const handleChangeDept = (value) => {
  /** 重置按钮操作 */
  function resetQuery() {
    proxy.resetForm("queryRef");
-   queryParams.value.beginTime = null;
-   queryParams.value.endTime = null;
+  //  queryParams.value.beginTime = null;
+  //  queryParams.value.endTime = null;
+   // 获取当月的第一天
+  queryParams.value.beginTime = outputDate(getFirstDayOfMonth());
+  // 获取当月的最后一天
+  queryParams.value.endTime = outputDate(getLastDayOfMonth());  
    handleQuery();
  }
  /** 多选框选中数据 */

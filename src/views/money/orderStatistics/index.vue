@@ -1,9 +1,9 @@
 <template>
     <div class="app-container">
        <el-form :model="queryParams" ref="queryRef" :inline="true">
-        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectCategoryOneName">
+        <el-form-item label="客户名称" label-width="80px" style="width: 280px" prop="projectEnterpriseName">
             <el-input
-               v-model="queryParams.projectCategoryOneName"
+               v-model="queryParams.projectEnterpriseName"
                placeholder="请输入客户名称"
                clearable
             />
@@ -658,6 +658,7 @@
         <el-dialog title="利润解析" v-model="open4" width="800" append-to-body :close-on-click-modal="false">
           <div style="text-align: right;margin-bottom: 10px;"><span class="orderText">
             订单总金额：{{ profitObj.orderAmount }}</span>
+            <span class="orderText">订单税：{{ profitObj.orderTax }}</span>
             <span class="orderText">人工总成本：{{ profitObj.costLaborTotal }}</span>
             <span class="orderText" style="margin-right: 0;">净利润：
               <!-- {{ profitObj.profitTotal }} -->
@@ -903,12 +904,12 @@ const formInfo = reactive({
     invoiceAmount: [
       { required: true, message: '必填', trigger: 'blur' },
     ],
-    invoiceTime: [
-      { required: true, message: '必填', trigger: 'blur' }
-    ],
-    fileUrl: [
-      { required: true, message: '必填', trigger: 'blur' }
-    ],
+    // invoiceTime: [
+    //   { required: true, message: '必填', trigger: 'blur' }
+    // ],
+    // fileUrl: [
+    //   { required: true, message: '必填', trigger: 'blur' }
+    // ],
   },
   labelWidth: "150px",
 });
@@ -1109,6 +1110,7 @@ const handleChangeDept = (value) => {
     profitObj.value.orderAmount = response.data.orderAmount
     profitObj.value.costLaborTotal = response.data.costLaborTotal
     profitObj.value.profitTotal = response.data.profitTotal
+    profitObj.value.orderTax = response.data.orderTax
     tableData.value = []
     Object.keys(response.data.data).forEach(async(k,val) => {
       // obj[k] = null;
@@ -1122,7 +1124,10 @@ const handleChangeDept = (value) => {
     console.log(tableData.value)
     // tableData.value = response.data.data
    });
-   open4.value = true
+   nextTick(()=>{
+
+    open4.value = true
+   })
  }
 
  /** 合同 */
