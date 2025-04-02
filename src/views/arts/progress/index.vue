@@ -97,7 +97,7 @@
      <el-table v-show="activeName == '汇总预览'" v-loading="loading" :data="rateList1" @selection-change="handleSelectionChange" border>
         <el-table-column type="index" label="序号" width="55" align="center" fixed="left" />
         <el-table-column label="制作人" align="center" prop="producerName" fixed="left" v-if="columns[3].visible" />
-        <el-table-column label="本月工时" width="80" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" />
+        <el-table-column label="本月工时" width="110" align="center" prop="actualTime" fixed="left" v-if="columns[9].visible" sortable :sort-method="sortDate" />
         <el-table-column :label="item.label" min-width="80" align="center" v-for="(item,index) in columnList" :key="index" >
           <template #default="scope">
             <span>{{calculateSum(scope.row.artsProjectRateDataListResponses[index].artsProjectRates)}}</span>
@@ -479,6 +479,15 @@ function getProjectList() {
 //  queryParams.value.startTime = val[0];
 //  queryParams.value.endTime = val[1];
 // };
+
+function sortDate (a, b) {
+  // const dateA = new Date(a.date).getTime();
+  // const dateB = new Date(b.date).getTime();
+  const dateA = Number(a.actualTime);
+  const dateB = Number(b.actualTime);
+  return dateA - dateB;
+};
+
 function getDaysInCurrentMonth(year,month) {
   // const now = new Date();
   // const year = now.getFullYear();

@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-08-06 10:52:05
+ * @LastEditTime: 2025-04-02 10:08:00
 -->
 <template>
   <div class="app-container">
@@ -114,14 +114,14 @@
       <el-table-column label="项目组" align="center" prop="name" />
       <el-table-column label="工作人天" align="center" prop="workDay" sortable :sort-method="sortDate">
         <template #default="scope">
-          <span v-if="scope.row.isExpandeds">{{ scope.row.workDay }} (合计)</span>
-          <span v-else>{{ scope.row.workDay }}</span>
+          <span v-if="scope.row.isExpandeds">{{ scope.row.workDay ? scope.row.workDay.toFixed(2) : '' }} (合计)</span>
+          <span v-else>{{ scope.row.workDay ? scope.row.workDay.toFixed(2) : '' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="绩效人天" align="center" prop="estimateDay" sortable :sort-method="sortDate1">
         <template #default="scope">
-          <span v-if="scope.row.isExpandeds">{{ scope.row.estimateDay }} (合计)</span>
-          <span v-else>{{ scope.row.estimateDay }}</span>
+          <span v-if="scope.row.isExpandeds">{{ scope.row.estimateDay ? scope.row.estimateDay.toFixed(2) : '' }} (合计)</span>
+          <span v-else>{{ scope.row.estimateDay ? scope.row.estimateDay.toFixed(2) : '' }}</span>
         </template>
       </el-table-column>
       <el-table-column label="计划开始日期" align="center" prop="name" />

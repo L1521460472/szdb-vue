@@ -4,7 +4,7 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:47:41
  * @LastEditors: lijiancong
- * @LastEditTime: 2024-12-03 18:34:04
+ * @LastEditTime: 2025-04-02 09:59:14
  */
 import { onMounted, reactive, ref } from "vue";
 import { useRouter } from "vue-router";
@@ -243,7 +243,7 @@ const upload = reactive({
   });
   const option4 = ref({
     title: {
-      text: '收支趋势分析(万元)',
+      text: '收支趋势分析(元)',
       top: '10px',
       left: '20px',
       textStyle:{
