@@ -98,7 +98,7 @@
                 />
               </el-select>
           </el-form-item>
-          <el-form-item label="日期" label-width="80px" prop="month">
+          <el-form-item label="计划开始日期" label-width="96px" prop="month">
             <!-- <el-date-picker
               v-model="dateRange"
               value-format="YYYY-MM-DD"

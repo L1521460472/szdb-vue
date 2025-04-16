@@ -4,37 +4,13 @@
  * @Autor: lijiancong
  * @Date: 2023-02-15 10:37:39
  * @LastEditors: lijiancong
- * @LastEditTime: 2025-03-05 09:48:04
+ * @LastEditTime: 2025-04-16 09:28:16
 -->
 <template>
   <div class="app-container">
-    <el-button class="addTab" @click="handleImport">导入数据</el-button>
+    <el-button class="addTab" v-if="activeName != 'first'" @click="handleImport">导入数据</el-button>
     <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClickTabs">
-      <el-tab-pane label="基础费用" name="first">
-        <el-table v-loading="loading" :data="tableData" border>
-          <!-- <el-table-column type="selection" width="55" align="center" /> -->
-          <el-table-column label="序号" width="55" align="center" type="index" />
-          <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
-          <el-table-column label="费用名称" align="center" prop="expenditureName" />
-          <el-table-column label="总支出" align="center" prop="expenditureCost" />
-          <el-table-column label="费用导入时间" align="center" prop="createTime" />
-          <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
-              <template #default="scope">
-                <el-tooltip content="撤回" placement="top" v-if="scope.row.status == 1">
-                    <el-button link type="primary" icon="RefreshLeft" @click="handleRecall(scope.row)"></el-button>
-                </el-tooltip>
-              </template>
-          </el-table-column> -->
-        </el-table>
-        <pagination
-          v-show="totalValue > 0"
-          :total="totalValue"
-          v-model:page="queryParams.pageNum"
-          v-model:limit="queryParams.pageSize"
-          @pagination="getList"
-        />
-      </el-tab-pane>
-      <el-tab-pane label="工资数据" name="second">
+      <el-tab-pane label="工资数据" name="first">
         <el-form :model="queryParams" ref="queryRef" :inline="true" v-show="showSearch" label-width="68px">
           <el-form-item label="姓名" prop="name">
             <el-input
@@ -105,6 +81,30 @@
           v-model:page="queryParams.pageNum"
           v-model:limit="queryParams.pageSize"
           @pagination="getDataList"
+        />
+      </el-tab-pane>
+      <el-tab-pane label="基础费用" name="second">
+        <el-table v-loading="loading" :data="tableData" border>
+          <!-- <el-table-column type="selection" width="55" align="center" /> -->
+          <el-table-column label="序号" width="55" align="center" type="index" />
+          <el-table-column label="费用归属时间" align="center" prop="expenditureTime" />
+          <el-table-column label="费用名称" align="center" prop="expenditureName" />
+          <el-table-column label="总支出" align="center" prop="expenditureCost" />
+          <el-table-column label="费用导入时间" align="center" prop="createTime" />
+          <!-- <el-table-column label="操作" align="center" width="150" class-name="small-padding fixed-width" fixed="right">
+              <template #default="scope">
+                <el-tooltip content="撤回" placement="top" v-if="scope.row.status == 1">
+                    <el-button link type="primary" icon="RefreshLeft" @click="handleRecall(scope.row)"></el-button>
+                </el-tooltip>
+              </template>
+          </el-table-column> -->
+        </el-table>
+        <pagination
+          v-show="totalValue > 0"
+          :total="totalValue"
+          v-model:page="queryParams.pageNum"
+          v-model:limit="queryParams.pageSize"
+          @pagination="getList"
         />
       </el-tab-pane>
     </el-tabs>
@@ -342,13 +342,14 @@ export default defineComponent({
     }
     // tabs
     const handleClickTabs = (tab, event) => {
-      // console.log(tab, event)
+      console.log(tab, event)
       if(tab.props.name == "first"){
-        instance.getList()
-        instance.upload.type = 1
-      }else{
+        console.log(1111)
         instance.getDataList()
         // instance.upload.type = 2
+      }else{
+        instance.getList()
+        instance.upload.type = 1
       }
     }
 
